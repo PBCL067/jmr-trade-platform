@@ -42,7 +42,7 @@ const TOPICS = [
       {
         type: 'highlight',
         label: 'Why Argentina?',
-        text: 'Argentina is the world's largest corn exporter. Corn is the cheapest raw material for starch. This is why Argentine modified starch costs $0.69/kg FOB while German starch costs $2.18/kg — same product, much cheaper raw material and labour.'
+        text: 'Argentina is the world\'s largest corn exporter. Corn is the cheapest raw material for starch. This is why Argentine modified starch costs $0.69/kg FOB while German starch costs $2.18/kg — same product, much cheaper raw material and labour.'
       },
       {
         type: 'highlight',
@@ -72,7 +72,7 @@ const TOPICS = [
       {
         type: 'highlight',
         label: "Why Argentina and Uruguay?",
-        text: 'Both countries have massive dairy farming industries on the Pampas grasslands. Low land costs and grass-fed cattle make their milk powder among the cheapest in the world. New Zealand is the global benchmark but it's on the other side of the planet from South Africa.'
+        text: 'Both countries have massive dairy farming industries on the Pampas grasslands. Low land costs and grass-fed cattle make their milk powder among the cheapest in the world. New Zealand is the global benchmark but it\'s on the other side of the planet from South Africa.'
       },
       {
         type: 'highlight',
@@ -110,7 +110,7 @@ const TOPICS = [
         type: 'country',
         name: 'Argentina',
         flag: 'AR',
-        summary: 'One of the world's great agricultural exporters. The Pampas region — a vast flat grassland the size of Western Europe — produces enormous quantities of corn, soybeans, wheat and sunflowers. Buenos Aires and Rosario are major export ports.',
+        summary: 'One of the world\'s great agricultural exporters. The Pampas region — a vast flat grassland the size of Western Europe — produces enormous quantities of corn, soybeans, wheat and sunflowers. Buenos Aires and Rosario are major export ports.',
         produces: ['Corn (3rd largest exporter)', 'Soybeans (3rd largest)', 'Wheat (7th largest)', 'Sunflower Oil (2nd largest)', 'Modified Starch', 'Milk Powder', 'Beef'],
         relevance: 'Our primary sourcing country. Cheap raw materials + established food processing industry = competitive prices on processed ingredients.'
       },
@@ -119,19 +119,19 @@ const TOPICS = [
         flag: 'UY',
         summary: 'Small country between Argentina and Brazil. Highly developed dairy industry relative to its size. Already has trade relationships with South Africa — our benchmark competitor for milk powder.',
         produces: ['Full Cream Milk Powder (major exporter)', 'Beef', 'Wool', 'Soybeans'],
-        relevance: 'Uruguay's Conaprole already sells milk powder to SA at $3.53/kg CIF. We need to match or beat this to win business.'
+        relevance: 'Uruguay\'s Conaprole already sells milk powder to SA at $3.53/kg CIF. We need to match or beat this to win business.'
       },
       {
         name: 'South Africa',
         flag: 'ZA',
         summary: 'The most industrialised economy in Africa and our primary target market. Has a large food manufacturing sector that imports significant volumes of ingredients. Major ports at Durban, Cape Town and Port Elizabeth.',
         produces: ['Maize', 'Wine', 'Citrus', 'Sugar'],
-        relevance: 'Our buyer market. SA's food manufacturers import $65M of modified starch and $17M of milk powder per year — and currently buy none of it from Argentina.'
+        relevance: 'Our buyer market. SA\'s food manufacturers import $65M of modified starch and $17M of milk powder per year — and currently buy none of it from Argentina.'
       },
       {
         name: 'Brazil',
         flag: 'BR',
-        summary: 'Agricultural superpower. World's largest coffee and soybean exporter. Large starch and dairy industries. Our neighbour and sometimes competitor.',
+        summary: 'Agricultural superpower. World\'s largest coffee and soybean exporter. Large starch and dairy industries. Our neighbour and sometimes competitor.',
         produces: ['Coffee (world #1)', 'Soybeans (world #1)', 'Sugar', 'Corn', 'Modified Starch', 'Beef'],
         relevance: 'Brazil currently sells starch to SA at $1.25/kg — we can undercut them from Argentina at $0.80/kg landed.'
       },
