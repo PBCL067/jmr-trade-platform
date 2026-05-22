@@ -251,3 +251,84 @@ body {
 @keyframes spin { to { transform: rotate(360deg); } }
 
 .divider { border: none; border-top: 1px solid var(--border); margin: 22px 0; }
+
+/* ── HAMBURGER ───────────────────────────────────────────── */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  flex-shrink: 0;
+}
+.hamburger span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--text-secondary);
+  border-radius: 2px;
+  transition: background 0.15s;
+}
+.hamburger:hover span { background: var(--text-primary); }
+
+/* ── OVERLAY ─────────────────────────────────────────────── */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 99;
+}
+
+/* ── MOBILE BREAKPOINT ───────────────────────────────────── */
+@media (max-width: 768px) {
+  .hamburger { display: flex; }
+
+  .sidebar {
+    position: fixed;
+    left: -220px;
+    top: 0;
+    bottom: 0;
+    z-index: 100;
+    transition: left 0.25s ease;
+  }
+  .sidebar--open { left: 0; }
+
+  .sidebar-overlay { display: block; }
+
+  .top-bar {
+    padding: 0 16px;
+    height: 52px;
+  }
+
+  .top-bar-title { font-size: 15px; }
+
+  .meta-date--desktop { display: none; }
+
+  .meta-tag {
+    font-size: 10px;
+    padding: 2px 7px;
+  }
+
+  .page-body {
+    padding: 16px;
+  }
+
+  .card-grid--2,
+  .card-grid--3,
+  .card-grid--4 {
+    grid-template-columns: 1fr;
+  }
+
+  /* Supplier filters stack on mobile */
+  .supplier-filters {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .meta-tag { display: none; }
+}

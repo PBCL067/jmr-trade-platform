@@ -10,18 +10,19 @@ import Learn from './Learn';
 import './App.css';
 
 const NAV = [
-  { id: 'opportunities', label: 'Opportunities',  icon: '\u25c9' },
-  { id: 'starch',        label: 'Mod. Starch',    icon: '\u25a0' },
-  { id: 'milk',          label: 'Milk Powder',    icon: '\u25a1' },
-  { id: 'landed',        label: 'Landed Cost',    icon: '\u25c6' },
-  { id: 'signals',       label: 'Signals',        icon: '\u25c8' },
-  { id: 'suppliers',     label: 'Suppliers',      icon: '\u25ce' },
-  { id: 'learn',         label: 'Learn',          icon: '\u25d4' },
+  { id: 'opportunities', label: 'Opportunities', icon: '\u25c9' },
+  { id: 'starch',        label: 'Mod. Starch',   icon: '\u25a0' },
+  { id: 'milk',          label: 'Milk Powder',   icon: '\u25a1' },
+  { id: 'landed',        label: 'Landed Cost',   icon: '\u25c6' },
+  { id: 'signals',       label: 'Signals',       icon: '\u25c8' },
+  { id: 'suppliers',     label: 'Suppliers',     icon: '\u25ce' },
+  { id: 'learn',         label: 'Learn',         icon: '\u25d4' },
 ];
 
 export default function App() {
-  const [active, setActive] = useState('opportunities');
+  const [active,     setActive]     = useState('opportunities');
   const [topSignals, setTopSignals] = useState([]);
+  const [menuOpen,   setMenuOpen]   = useState(false);
 
   useEffect(function() {
     (async function() {
@@ -35,6 +36,11 @@ export default function App() {
       } catch(e) { console.error(e); }
     })();
   }, []);
+
+  function navigate(id) {
+    setActive(id);
+    setMenuOpen(false);
+  }
 
   const renderPage = () => {
     switch (active) {
@@ -53,7 +59,12 @@ export default function App() {
 
   return (
     <div className="app">
-      <aside className="sidebar">
+      {/* Overlay for mobile menu */}
+      {menuOpen && (
+        <div className="sidebar-overlay" onClick={() => setMenuOpen(false)} />
+      )}
+
+      <aside className={'sidebar' + (menuOpen ? ' sidebar--open' : '')}>
         <div className="sidebar-logo">
           <span className="logo-mark">JMR</span>
           <span className="logo-sub">Trade Intelligence</span>
@@ -62,7 +73,7 @@ export default function App() {
           {NAV.map(item => (
             <button key={item.id}
               className={'nav-item' + (active === item.id ? ' nav-item--active' : '')}
-              onClick={() => setActive(item.id)}>
+              onClick={() => navigate(item.id)}>
               <span className="nav-icon">{item.icon}</span>
               <span className="nav-label">{item.label}</span>
             </button>
@@ -73,20 +84,29 @@ export default function App() {
           <span className="status-text">Live Data</span>
         </div>
       </aside>
+
       <main className="main-content">
         <header className="top-bar">
-          <div className="top-bar-title">{NAV.find(i => i.id === active)?.label}</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)}
+              aria-label="Toggle menu">
+              <span /><span /><span />
+            </button>
+            <div className="top-bar-title">{NAV.find(i => i.id === active)?.label}</div>
+          </div>
           <div className="top-bar-meta">
             {topSignals.map(function(s) {
               const score = s.combined_score >= 0 ? '+' + s.combined_score.toFixed(2) : s.combined_score.toFixed(2);
               const label = s.commodity.replace(/_/g, ' ').replace(/\b\w/g, function(c) { return c.toUpperCase(); });
               return (
-                <span key={s.commodity} className="meta-tag" style={{ color: s.signal === 'BUY' ? '#2ecc71' : '#e74c3c', borderColor: s.signal === 'BUY' ? '#2ecc71' : '#e74c3c' }}>
+                <span key={s.commodity} className="meta-tag"
+                  style={{ color: s.signal === 'BUY' ? '#2ecc71' : '#e74c3c',
+                           borderColor: s.signal === 'BUY' ? '#2ecc71' : '#e74c3c' }}>
                   {s.signal} {label} {score}
                 </span>
               );
             })}
-            <span className="meta-date">{today}</span>
+            <span className="meta-date meta-date--desktop">{today}</span>
           </div>
         </header>
         <div className="page-body">{renderPage()}</div>
