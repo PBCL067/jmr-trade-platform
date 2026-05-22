@@ -36,7 +36,7 @@ const TOPICS = [
       },
       {
         type: 'chain',
-        label: 'How it's made',
+        label: "How it's made",
         steps: ['Corn (or cassava/wheat/potato)', 'Wet milling → extracts native starch', 'Chemical/heat treatment → modifies the starch', 'Drying → white powder', 'Bagged in 25kg or 1,000kg sacks → exported']
       },
       {
@@ -46,7 +46,7 @@ const TOPICS = [
       },
       {
         type: 'highlight',
-        label: 'Who buys it in South Africa?',
+        label: "Who buys it in South Africa?",
         text: 'Food manufacturers like Tiger Brands, RCL Foods, and Premier Foods. Also paper mills and textile factories. The total SA market is about 57,000 tonnes per year worth $65 million.'
       }
     ]
@@ -66,17 +66,17 @@ const TOPICS = [
       },
       {
         type: 'chain',
-        label: 'How it's made',
+        label: "How it's made",
         steps: ['Fresh cow's milk collected from farms', 'Pasteurised and standardised (fat content adjusted)', 'Evaporator removes most of the water', 'Spray dryer → fine powder', 'Packed in 25kg bags → exported']
       },
       {
         type: 'highlight',
-        label: 'Why Argentina and Uruguay?',
+        label: "Why Argentina and Uruguay?",
         text: 'Both countries have massive dairy farming industries on the Pampas grasslands. Low land costs and grass-fed cattle make their milk powder among the cheapest in the world. New Zealand is the global benchmark but it's on the other side of the planet from South Africa.'
       },
       {
         type: 'highlight',
-        label: 'The opportunity',
+        label: "The opportunity",
         text: 'Uruguay already sells milk powder to South Africa at $3.53/kg CIF. Argentina produces the same product at $3.61/kg FOB. If Buenos Aires to Durban freight is cheaper than Montevideo to Durban, we have a deal.'
       }
     ]
