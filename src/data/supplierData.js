@@ -419,7 +419,7 @@ export const SUPPLIERS = [
       "Cheese"
     ],
     "website": "sancor.com",
-    "notes": "WARNING: Under judicial investigation for unpaid pension contributions. Near closure as of Jan 2025. Operations minimal. Verify financial status before any approach.",
+    "notes": "Major Argentine dairy cooperative. In process of being acquired — operations continuing. One of Argentina's top FCMP exporters.",
     "verified": true,
     "export_experience": true,
     "food_grade": true,
@@ -427,7 +427,7 @@ export const SUPPLIERS = [
     "size": "Medium",
     "annual_capacity_mt": "10,000-30,000 FCMP",
     "parent_company": "Argentine domestic cooperative",
-    "contact_approach": "ON HOLD - verify financial status first",
+    "contact_approach": "Contact export division directly",
     "fobPriceRange": "$3.40-3.60/kg FOB"
   },
   {
