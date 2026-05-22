@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TRADE_FLOWS, AFRICA_PROCESSING } from './data/opportunityData';
+import { TRADE_FLOWS, AFRICA_PROCESSING, TRADE_GAPS } from './data/opportunityData';
 
 const LATAM = ['Argentina','Brazil','Uruguay','Chile','Colombia','Peru','Ecuador','Paraguay','Bolivia','Mexico'];
 const AFRICA = [...new Set(TRADE_FLOWS.map(r => r.importer))].sort();
@@ -250,48 +250,125 @@ function Screener() {
 }
 
 function GapAnalysis() {
-  const sorted = [...AFRICA_PROCESSING].sort((a, b) => b.l1_imports - a.l1_imports);
-  const fmt = (n) => n >= 1e9 ? '$' + (n/1e9).toFixed(1) + 'B' : n >= 1e6 ? '$' + (n/1e6).toFixed(1) + 'M' : '$' + (n/1e3).toFixed(0) + 'K';
+  const [filterExporter, setFilterExporter] = React.useState('All');
+  const [filterLabel,    setFilterLabel]    = React.useState('All');
+
+  const exporters = ['All', ...new Set(TRADE_GAPS.map(g => g.exporter))].sort();
+  const labels    = ['All', 'UNTAPPED', 'NEAR UNTAPPED', 'UNDER-PROCESSED', 'PROCESSING'];
+
+  const filtered = TRADE_GAPS.filter(function(g) {
+    if (filterExporter !== 'All' && g.exporter !== filterExporter) return false;
+    if (filterLabel    !== 'All' && g.label    !== filterLabel)    return false;
+    return true;
+  });
+
+  const LABEL_COLOR = {
+    'UNTAPPED':        '#e74c3c',
+    'NEAR UNTAPPED':   '#e74c3c',
+    'UNDER-PROCESSED': '#e8b84b',
+    'PROCESSING':      '#2ecc71',
+  };
+
+  const fmt = (n) => n >= 1e9 ? '$' + (n/1e9).toFixed(1) + 'B' : n >= 1e6 ? '$' + (n/1e6).toFixed(1) + 'M' : n >= 1e3 ? '$' + (n/1e3).toFixed(0) + 'K' : '$' + n.toFixed(0);
+
+  const selectStyle = {
+    background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 4,
+    color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: 12,
+    padding: '6px 10px', cursor: 'pointer',
+  };
+  const labelStyle = {
+    fontSize: 10, fontFamily: 'var(--font-mono)', color: 'var(--text-muted)',
+    letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 4, display: 'block',
+  };
+
+  const untappedCount = TRADE_GAPS.filter(g => g.label === 'UNTAPPED' || g.label === 'NEAR UNTAPPED').length;
 
   return (
     <div>
-      <div style={{ marginBottom: 16, fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-        Countries importing raw commodities from Latam but not processing them into by-products.
-        Processing ratio = L2 exports / L1 imports. Low ratio = untapped processing opportunity.
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 12, marginBottom: 20 }}>
+        <div className="card" style={{ borderColor: '#e74c3c40' }}>
+          <div style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-muted)', marginBottom: 6 }}>UNTAPPED PAIRS</div>
+          <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 28, color: '#e74c3c' }}>{untappedCount}</div>
+          <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>country pairs buying raw, not processed</div>
+        </div>
+        <div className="card" style={{ borderColor: '#e8b84b40' }}>
+          <div style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-muted)', marginBottom: 6 }}>LARGEST UNTAPPED</div>
+          <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 28, color: '#e8b84b' }}>
+            {fmt(TRADE_GAPS[0]?.l1_usd || 0)}
+          </div>
+          <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>{TRADE_GAPS[0]?.exporter} → {TRADE_GAPS[0]?.importer}</div>
+        </div>
+        <div className="card">
+          <div style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-muted)', marginBottom: 6 }}>TOTAL L1 FLOWING</div>
+          <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 28 }}>
+            {fmt(TRADE_GAPS.reduce((s, g) => s + g.l1_usd, 0))}
+          </div>
+          <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>raw commodities Latam → Africa</div>
+        </div>
       </div>
-      <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
-        <table className="data-table">
-          <thead>
-            <tr>
-              <th>Country</th>
-              <th>L1 Imports from Latam</th>
-              <th>L2 Exports to World</th>
-              <th>Processing Ratio</th>
-              <th>Gap Signal</th>
-            </tr>
-          </thead>
-          <tbody>
-            {sorted.map(function(row) {
-              const ratio = row.processing_ratio;
-              const gapColor = ratio === 0 ? '#e74c3c' : ratio < 0.3 ? '#e8b84b' : '#2ecc71';
-              const gapLabel = ratio === 0 ? 'NO PROCESSING' : ratio < 0.3 ? 'UNDER-PROCESSING' : 'ACTIVE PROCESSOR';
-              return (
-                <tr key={row.country}>
-                  <td style={{ color: 'var(--text-primary)', fontWeight: 500 }}>{row.country}</td>
-                  <td style={{ fontFamily: 'var(--font-mono)', fontSize: 12 }}>{fmt(row.l1_imports)}</td>
-                  <td style={{ fontFamily: 'var(--font-mono)', fontSize: 12 }}>{fmt(row.l2_exports)}</td>
-                  <td style={{ fontFamily: 'var(--font-mono)', fontSize: 12 }}>{ratio > 0 ? ratio.toFixed(2) + 'x' : '-'}</td>
-                  <td>
-                    <span style={{ padding: '2px 8px', borderRadius: 3, fontSize: 11, fontFamily: 'var(--font-mono)', fontWeight: 700,
-                      color: gapColor, background: gapColor + '18', border: '1px solid ' + gapColor + '40' }}>
-                      {gapLabel}
+
+      <div style={{ display: 'flex', gap: 12, marginBottom: 16, alignItems: 'flex-end' }}>
+        <div>
+          <span style={labelStyle}>Exporter</span>
+          <select value={filterExporter} onChange={e => setFilterExporter(e.target.value)} style={selectStyle}>
+            {exporters.map(e => <option key={e}>{e}</option>)}
+          </select>
+        </div>
+        <div>
+          <span style={labelStyle}>Signal</span>
+          <select value={filterLabel} onChange={e => setFilterLabel(e.target.value)} style={selectStyle}>
+            {labels.map(l => <option key={l}>{l}</option>)}
+          </select>
+        </div>
+        <span style={{ fontSize: 12, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', paddingBottom: 8 }}>
+          {filtered.length} pairs
+        </span>
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        {filtered.map(function(g, i) {
+          const color = LABEL_COLOR[g.label] || '#4a5a70';
+          return (
+            <div key={i} className="card" style={{ borderLeft: '3px solid ' + color }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
+                <div>
+                  <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 16 }}>
+                    {g.exporter} → {g.importer}
+                  </div>
+                  <div style={{ fontSize: 12, color: 'var(--text-secondary)', marginTop: 4, lineHeight: 1.6 }}>
+                    {g.description}
+                  </div>
+                </div>
+                <span style={{ marginLeft: 16, flexShrink: 0, padding: '3px 10px', borderRadius: 3, fontSize: 11,
+                  fontFamily: 'var(--font-mono)', fontWeight: 700, letterSpacing: '0.06em',
+                  color, background: color + '18', border: '1px solid ' + color + '40' }}>
+                  {g.label}
+                </span>
+              </div>
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+                <div style={{ padding: '6px 12px', background: 'var(--bg-hover)', borderRadius: 4, fontSize: 12 }}>
+                  <span style={{ color: 'var(--text-muted)' }}>Raw bought </span>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, color: 'var(--text-primary)' }}>{fmt(g.l1_usd)}</span>
+                </div>
+                <div style={{ padding: '6px 12px', background: 'var(--bg-hover)', borderRadius: 4, fontSize: 12 }}>
+                  <span style={{ color: 'var(--text-muted)' }}>Processed bought </span>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, color: g.l2_usd > 0 ? '#e8b84b' : '#e74c3c' }}>
+                    {g.l2_usd > 0 ? fmt(g.l2_usd) : 'ZERO'}
+                  </span>
+                </div>
+                {g.top_products.map(function(p) {
+                  return (
+                    <span key={p.product} style={{ padding: '4px 10px', background: 'var(--bg-card)',
+                      border: '1px solid var(--border)', borderRadius: 3,
+                      fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
+                      {p.product} {fmt(p.fob_usd)}
                     </span>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
