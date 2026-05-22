@@ -4,14 +4,16 @@ import ModifiedStarch from './ModifiedStarch';
 import MilkPowder from './MilkPowder';
 import Signals from './Signals';
 import Suppliers from './Suppliers';
+import Learn from './Learn';
 import './App.css';
 
 const NAV = [
-  { id: 'opportunities', label: 'Opportunities',    icon: '◉' },
-  { id: 'starch',        label: 'Modified Starch',  icon: '■' },
-  { id: 'milk',          label: 'Milk Powder',       icon: '□' },
-  { id: 'signals',       label: 'Signals',           icon: '◈' },
-  { id: 'suppliers',     label: 'Suppliers',         icon: '◎' },
+  { id: 'opportunities', label: 'Opportunities',   icon: '◉' },
+  { id: 'starch',        label: 'Modified Starch', icon: '■' },
+  { id: 'milk',          label: 'Milk Powder',      icon: '□' },
+  { id: 'signals',       label: 'Signals',          icon: '◈' },
+  { id: 'suppliers',     label: 'Suppliers',        icon: '◎' },
+  { id: 'learn',         label: 'Learn',            icon: '◔' },
 ];
 
 export default function App() {
@@ -24,6 +26,7 @@ export default function App() {
       case 'milk':          return <MilkPowder />;
       case 'signals':       return <Signals />;
       case 'suppliers':     return <Suppliers />;
+      case 'learn':         return <Learn />;
       default:              return <Opportunities />;
     }
   };

@@ -1,150 +1,153 @@
 import React, { useState, useEffect } from 'react';
 import { fetchCollection } from './firebase';
 
-const STATIC_SUPPLIERS = [
-  {
-    id: 'ingredion-arg', name: 'Ingredion Argentina', country: 'Argentina',
-    commodity: 'Modified Starch', hsCode: '3505', type: 'Manufacturer', status: 'TARGET',
-    website: 'ingredion.com/sa/es-ar', contact: 'Export team - via website',
-    notes: 'Global starch leader. Local production in Argentina.',
-    certifications: ['Food Grade', 'ISO 9001'], fobPriceRange: '$0.58-0.65/kg',
-  },
-  {
-    id: 'bragan-sa', name: 'Bragan / Solevo', country: 'South Africa',
-    commodity: 'Modified Starch', hsCode: '3505', type: 'Buyer / Distributor', status: 'CONFIRMED',
-    website: '', contact: 'Direct contact confirmed',
-    notes: 'Confirmed buyer for SA market. Current procurement price ~$1.09/kg.',
-    certifications: [], fobPriceRange: null,
-  },
-  {
-    id: 'gasc', name: 'GASC', country: 'Egypt',
-    commodity: 'Wheat HRW', hsCode: '1001', type: 'State Buyer', status: 'RESEARCH',
-    website: 'gasc.gov.eg', contact: 'Tender-based procurement',
-    notes: "World's largest wheat importer. Purchases via regular international tenders.",
-    certifications: [], fobPriceRange: null,
-  },
-  {
-    id: 'indonesia-coffee', name: 'Indonesia Coffee Exporters', country: 'Indonesia',
-    commodity: 'Coffee Arabica', hsCode: '0901', type: 'Exporter Group', status: 'RESEARCH',
-    website: '', contact: 'AEKI (Association of Indonesian Coffee Exporters)',
-    notes: '4th largest coffee producer. Strong Arabica from Sumatra.',
-    certifications: [], fobPriceRange: null,
-  },
-];
+const COUNTRIES = ['All', 'Argentina', 'Brazil', 'Uruguay', 'Colombia', 'South Africa'];
+const CATEGORIES = ['All', 'Modified Starch', 'Dairy', 'Edible Oils', 'Coffee', 'Grains', 'Food Manufacturing'];
+const ROLES = ['All', 'Supplier', 'Buyer'];
 
-const STATUS_CLS = { CONFIRMED: 'badge--buy', TARGET: 'badge--hold', RESEARCH: 'badge--low', ACTIVE: 'badge--buy' };
+const ROLE_COLOR = {
+  'Manufacturer': '#3b82f6', 'Manufacturer/Exporter': '#3b82f6',
+  'Exporter': '#3b82f6', 'Export Authority / Cooperative': '#3b82f6',
+  'Grain Trader/Exporter': '#3b82f6',
+  'Buyer/Distributor': '#2ecc71', 'Buyer / Food Manufacturer': '#2ecc71',
+  'Buyer / Dairy Manufacturer': '#2ecc71',
+  'Domestic Producer': '#4a5a70',
+};
 
 function SupplierCard({ s }) {
-  const certs = Array.isArray(s.certifications) ? s.certifications : [];
-  const status = s.status || 'RESEARCH';
+  const roleColor = ROLE_COLOR[s.role] || '#4a5a70';
+  const isSupplier = s.role && (s.role.includes('Manufacturer') || s.role.includes('Exporter') || s.role.includes('Trader') || s.role.includes('Cooperative'));
+  const isBuyer = s.role && s.role.includes('Buyer');
+
   return (
-    <div className="card">
+    <div className="card" style={{ borderLeft: '3px solid ' + roleColor }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
-        <div>
+        <div style={{ flex: 1 }}>
           <div className="card-title">{s.name}</div>
-          <div className="card-sub">{s.country} &nbsp;&middot;&nbsp; {s.type}</div>
+          <div className="card-sub">{s.city || s.country} &nbsp;&middot;&nbsp; {s.role}</div>
         </div>
-        <span className={'badge ' + (STATUS_CLS[status] || 'badge--low')}>{status}</span>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4 }}>
+          {s.verified && (
+            <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: '#2ecc71',
+              background: 'rgba(46,204,113,0.1)', border: '1px solid rgba(46,204,113,0.2)',
+              padding: '2px 7px', borderRadius: 3 }}>VERIFIED</span>
+          )}
+          {s.priority === 1 && (
+            <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: '#e8b84b',
+              background: 'rgba(232,184,75,0.1)', border: '1px solid rgba(232,184,75,0.2)',
+              padding: '2px 7px', borderRadius: 3 }}>PRIORITY</span>
+          )}
+        </div>
       </div>
+
       <div style={{ marginBottom: 10 }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid var(--border)', fontSize: 12 }}>
-          <span style={{ color: 'var(--text-muted)' }}>Commodity</span>
-          <span style={{ color: 'var(--text-secondary)' }}>{s.commodity} (HS {s.hsCode})</span>
-        </div>
+        {s.products && (
+          <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginBottom: 8 }}>
+            {(Array.isArray(s.products) ? s.products : [s.products]).slice(0, 4).map(p => (
+              <span key={p} style={{ fontSize: 11, color: 'var(--text-muted)',
+                background: 'var(--bg-hover)', border: '1px solid var(--border)',
+                padding: '2px 7px', borderRadius: 3, fontFamily: 'var(--font-mono)' }}>{p}</span>
+            ))}
+          </div>
+        )}
+
         {s.fobPriceRange && (
-          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid var(--border)', fontSize: 12 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 0',
+            borderBottom: '1px solid var(--border)', fontSize: 12 }}>
             <span style={{ color: 'var(--text-muted)' }}>FOB Price</span>
             <span className="val val--gold">{s.fobPriceRange}</span>
           </div>
         )}
         {s.website && (
-          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid var(--border)', fontSize: 12 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 0',
+            borderBottom: '1px solid var(--border)', fontSize: 12 }}>
             <span style={{ color: 'var(--text-muted)' }}>Website</span>
             <span style={{ color: 'var(--blue)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>{s.website}</span>
           </div>
         )}
-        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', fontSize: 12 }}>
-          <span style={{ color: 'var(--text-muted)' }}>Contact</span>
-          <span style={{ color: 'var(--text-secondary)', textAlign: 'right', maxWidth: '60%' }}>{s.contact}</span>
-        </div>
+        {s.contact_approach && (
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 0',
+            fontSize: 12 }}>
+            <span style={{ color: 'var(--text-muted)' }}>Contact</span>
+            <span style={{ color: 'var(--text-secondary)', textAlign: 'right', maxWidth: '60%' }}>{s.contact_approach}</span>
+          </div>
+        )}
       </div>
-      {certs.length > 0 && (
-        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 10 }}>
-          {certs.map(function(c) {
-            return <span key={c} style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-muted)', background: 'var(--bg-hover)', border: '1px solid var(--border)', padding: '2px 7px', borderRadius: 3 }}>{c}</span>;
-          })}
-        </div>
+
+      {s.notes && (
+        <div style={{ fontSize: 12, color: 'var(--text-muted)', fontStyle: 'italic', lineHeight: 1.5 }}>{s.notes}</div>
       )}
-      {s.notes && <div style={{ fontSize: 12, color: 'var(--text-muted)', fontStyle: 'italic', lineHeight: 1.5 }}>{s.notes}</div>}
     </div>
   );
 }
 
 export default function Suppliers() {
-  const [suppliers, setSuppliers] = useState(STATIC_SUPPLIERS);
-  const [view, setView] = useState('cards');
-  const [loading, setLoading] = useState(false);
+  const [suppliers, setSuppliers] = useState([]);
+  const [loading, setLoading]     = useState(true);
+  const [country, setCountry]     = useState('All');
+  const [category, setCategory]   = useState('All');
+  const [role, setRole]           = useState('All');
+  const [search, setSearch]       = useState('');
 
   useEffect(function() {
     (async function() {
       try {
-        setLoading(true);
         const data = await fetchCollection('suppliers');
-        const valid = data && data.filter(function(d) { return d.name && d.commodity; });
-        if (valid && valid.length > 0) setSuppliers(valid);
-      } catch (e) {}
+        setSuppliers(data);
+      } catch(e) { console.error(e); }
       finally { setLoading(false); }
     })();
   }, []);
+
+  const filtered = suppliers.filter(function(s) {
+    if (country !== 'All' && s.country !== country) return false;
+    if (category !== 'All' && !(s.product_category || '').includes(category) &&
+        !(Array.isArray(s.products) && s.products.some(p => p.includes(category)))) return false;
+    if (role === 'Supplier' && s.role && s.role.includes('Buyer') && !s.role.includes('Manufacturer')) return false;
+    if (role === 'Buyer' && s.role && !s.role.includes('Buyer')) return false;
+    if (search && !s.name.toLowerCase().includes(search.toLowerCase()) &&
+        !(s.notes || '').toLowerCase().includes(search.toLowerCase())) return false;
+    return true;
+  });
+
+  const selectStyle = {
+    background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 4,
+    color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: 12,
+    padding: '6px 10px', cursor: 'pointer',
+  };
 
   if (loading) return <div className="loading">Loading suppliers</div>;
 
   return (
     <div>
-      <div className="page-section">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
-          <div className="section-label" style={{ marginBottom: 0 }}>Verified Suppliers &amp; Buyers</div>
-          <div style={{ display: 'flex', gap: 6 }}>
-            {['cards', 'table'].map(function(v) {
-              return (
-                <button key={v} onClick={function() { setView(v); }} style={{
-                  background: view === v ? 'var(--bg-hover)' : 'none',
-                  border: '1px solid ' + (view === v ? 'var(--border-bright)' : 'var(--border)'),
-                  borderRadius: 4, padding: '4px 12px', cursor: 'pointer',
-                  color: view === v ? 'var(--text-primary)' : 'var(--text-muted)',
-                  fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: '0.06em', textTransform: 'uppercase',
-                }}>{v}</button>
-              );
-            })}
-          </div>
-        </div>
-        {view === 'cards' ? (
-          <div className="card-grid card-grid--2">
-            {suppliers.map(function(s) { return <SupplierCard key={s.id} s={s} />; })}
-          </div>
-        ) : (
-          <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
-            <table className="data-table">
-              <thead><tr><th>Name</th><th>Country</th><th>Commodity</th><th>HS</th><th>Type</th><th>Status</th><th>FOB</th></tr></thead>
-              <tbody>
-                {suppliers.map(function(s) {
-                  const status = s.status || 'RESEARCH';
-                  return (
-                    <tr key={s.id}>
-                      <td style={{ color: 'var(--text-primary)', fontWeight: 500 }}>{s.name}</td>
-                      <td>{s.country}</td><td>{s.commodity}</td>
-                      <td style={{ fontFamily: 'var(--font-mono)', fontSize: 12 }}>{s.hsCode}</td>
-                      <td>{s.type}</td>
-                      <td><span className={'badge ' + (STATUS_CLS[status] || 'badge--low')}>{status}</span></td>
-                      <td className="val val--gold" style={{ fontFamily: 'var(--font-mono)', fontSize: 12 }}>{s.fobPriceRange || '-'}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        )}
+      <div style={{ display: 'flex', gap: 10, marginBottom: 20, flexWrap: 'wrap', alignItems: 'center' }}>
+        <input value={search} onChange={e => setSearch(e.target.value)}
+          placeholder="Search suppliers..."
+          style={{ ...selectStyle, flex: 1, minWidth: 180 }} />
+        <select value={country} onChange={e => setCountry(e.target.value)} style={selectStyle}>
+          {COUNTRIES.map(c => <option key={c}>{c}</option>)}
+        </select>
+        <select value={category} onChange={e => setCategory(e.target.value)} style={selectStyle}>
+          {CATEGORIES.map(c => <option key={c}>{c}</option>)}
+        </select>
+        <select value={role} onChange={e => setRole(e.target.value)} style={selectStyle}>
+          {ROLES.map(r => <option key={r}>{r}</option>)}
+        </select>
+        <span style={{ fontSize: 12, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', whiteSpace: 'nowrap' }}>
+          {filtered.length} found
+        </span>
       </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 14 }}>
+        {filtered.map(s => <SupplierCard key={s.id} s={s} />)}
+      </div>
+
+      {filtered.length === 0 && (
+        <div style={{ textAlign: 'center', padding: 40, color: 'var(--text-muted)',
+          fontFamily: 'var(--font-mono)', fontSize: 12 }}>
+          No suppliers match your filters
+        </div>
+      )}
     </div>
   );
 }

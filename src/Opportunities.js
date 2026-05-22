@@ -3,12 +3,12 @@ import React from 'react';
 const DEALS = [
   {
     id: 'starch',
-    status: 'CONFIRMED',
+    status: 'PIPELINE',
     title: 'Modified Starch',
     route: 'Argentina → South Africa',
     hs: 'HS 3505',
-    buyer: 'Bragan / Solevo',
-    supplier: 'Ingredion Argentina',
+    buyer: 'Bragan / Solevo (interested)',
+    supplier: 'Ingredion Argentina (to confirm)',
     fob: 0.61,
     landed: 0.80,
     market: 1.09,
@@ -17,7 +17,7 @@ const DEALS = [
     sa_market_usd_m: 65.9,
     current_sa_suppliers: 'Thailand, Netherlands, Brazil',
     arg_exports_to_sa: 0,
-    notes: 'Argentina currently exports zero modified starch to SA. Price advantage confirmed. Buyer identified.',
+    notes: 'Buyer is interested. Supplier not yet confirmed. Argentina is the lowest-cost global exporter at $0.69/kg FOB. Landing at $0.80/kg undercuts all current SA suppliers.',
     nextSteps: [
       'Contact Ingredion Argentina export team (ingredion.com/sa/es-ar)',
       'Get SACU-Mercosur tariff rate for HS 3505',
@@ -42,7 +42,7 @@ const DEALS = [
     sa_market_usd_m: 17.7,
     current_sa_suppliers: 'New Zealand, Uruguay, France',
     arg_exports_to_sa: 0,
-    notes: 'Uruguay already supplies SA at $3.53/kg CIF. Argentina FOB $3.61/kg is competitive. Smaller margin than starch but large volume opportunity.',
+    notes: 'Uruguay already supplies SA at $3.53/kg CIF. Argentina FOB $3.61/kg is competitive. Smaller margin than starch but large volume opportunity. Need to find a buyer first.',
     nextSteps: [
       'Identify SA milk powder distributor / buyer',
       'Get SACU-Mercosur tariff for HS 040221',
@@ -58,7 +58,7 @@ const DEALS = [
     route: 'Argentina → South Africa',
     hs: 'HS 151211',
     buyer: 'TBC',
-    supplier: 'Multiple Argentine exporters',
+    supplier: 'AGD / Molinos',
     fob: 1.10,
     landed: null,
     market: null,
@@ -71,7 +71,7 @@ const DEALS = [
     nextSteps: [
       'Map existing Argentine sunflower oil exporters to SA',
       'Identify SA industrial buyers (food manufacturers)',
-      'Assess tariff position',
+      'Assess tariff position under SACU-Mercosur',
       'Compare our potential margin vs commodity brokers',
     ],
   },
@@ -83,21 +83,17 @@ const STATUS_BG    = { CONFIRMED: 'rgba(46,204,113,0.08)', PIPELINE: 'rgba(232,1
 function DealCard({ deal }) {
   const color = STATUS_COLOR[deal.status];
   const bg    = STATUS_BG[deal.status];
-
   return (
     <div className="card" style={{ borderColor: color + '40', marginBottom: 20 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
         <div>
-          <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 20, marginBottom: 4 }}>
-            {deal.title}
-          </div>
+          <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 20, marginBottom: 4 }}>{deal.title}</div>
           <div style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-muted)', letterSpacing: '0.06em' }}>
             {deal.route} &nbsp;|&nbsp; {deal.hs}
           </div>
         </div>
         <div style={{ padding: '4px 14px', borderRadius: 4, fontSize: 12, fontWeight: 700,
-          fontFamily: 'var(--font-mono)', letterSpacing: '0.08em',
-          color, background: bg, border: '1px solid ' + color + '40' }}>
+          fontFamily: 'var(--font-mono)', letterSpacing: '0.08em', color, background: bg, border: '1px solid ' + color + '40' }}>
           {deal.status}
         </div>
       </div>
@@ -106,23 +102,20 @@ function DealCard({ deal }) {
         <div>
           <div className="section-label" style={{ marginBottom: 10 }}>Price Stack (USD/kg)</div>
           {[
-            ['Argentina FOB',    deal.fob,       false],
-            ['Est. Landed SA',   deal.landed,    false],
-            ['SA Market Price',  deal.market,    true],
-            ['Our Advantage',    deal.advantage, true],
+            ['Argentina FOB',   deal.fob,       false],
+            ['Est. Landed SA',  deal.landed,    false],
+            ['SA Market Price', deal.market,    true],
+            ['Our Advantage',   deal.advantage, true],
           ].filter(r => r[1] != null).map(([label, val, highlight]) => (
             <div key={label} style={{ display: 'flex', justifyContent: 'space-between',
               padding: '7px 0', borderBottom: '1px solid var(--border)', fontSize: 13 }}>
               <span style={{ color: 'var(--text-secondary)' }}>{label}</span>
-              <span style={{ fontFamily: 'var(--font-mono)',
-                color: highlight ? color : 'var(--text-primary)',
-                fontWeight: highlight ? 700 : 400 }}>
+              <span style={{ fontFamily: 'var(--font-mono)', color: highlight ? color : 'var(--text-primary)', fontWeight: highlight ? 700 : 400 }}>
                 ${val.toFixed(2)}
               </span>
             </div>
           ))}
         </div>
-
         <div>
           <div className="section-label" style={{ marginBottom: 10 }}>SA Market</div>
           <div style={{ padding: '10px 14px', background: 'var(--bg-hover)', borderRadius: 4, marginBottom: 8 }}>
@@ -146,22 +139,19 @@ function DealCard({ deal }) {
         </div>
       </div>
 
-      {deal.buyer !== 'TBC' && (
-        <div style={{ marginBottom: 14, padding: '10px 14px',
-          background: 'rgba(46,204,113,0.06)', border: '1px solid rgba(46,204,113,0.2)', borderRadius: 4,
-          display: 'flex', gap: 24 }}>
-          <div>
-            <div style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)',
-              letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 3 }}>Buyer</div>
-            <div style={{ color: '#2ecc71', fontWeight: 600 }}>{deal.buyer}</div>
-          </div>
-          <div>
-            <div style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)',
-              letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 3 }}>Supplier</div>
-            <div style={{ color: 'var(--text-primary)', fontWeight: 500 }}>{deal.supplier}</div>
-          </div>
+      <div style={{ marginBottom: 14, padding: '10px 14px', background: 'var(--bg-hover)', borderRadius: 4,
+        display: 'flex', gap: 32 }}>
+        <div>
+          <div style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)',
+            letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 3 }}>Buyer</div>
+          <div style={{ color: deal.buyer === 'TBC' ? 'var(--text-muted)' : color, fontWeight: 500 }}>{deal.buyer}</div>
         </div>
-      )}
+        <div>
+          <div style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)',
+            letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 3 }}>Supplier</div>
+          <div style={{ color: 'var(--text-primary)', fontWeight: 500 }}>{deal.supplier}</div>
+        </div>
+      </div>
 
       <div style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.7,
         padding: '10px 14px', background: 'var(--bg-hover)', borderRadius: 4, marginBottom: 14 }}>
@@ -171,9 +161,7 @@ function DealCard({ deal }) {
       <div className="section-label" style={{ marginBottom: 8 }}>Next Steps</div>
       <ol style={{ paddingLeft: 18 }}>
         {deal.nextSteps.map((step, i) => (
-          <li key={i} style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 8, lineHeight: 1.6 }}>
-            {step}
-          </li>
+          <li key={i} style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 8, lineHeight: 1.6 }}>{step}</li>
         ))}
       </ol>
     </div>
