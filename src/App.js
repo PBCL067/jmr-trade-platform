@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { fetchCollection } from './firebase';
 import Opportunities from './Opportunities';
 import ModifiedStarch from './ModifiedStarch';
 import MilkPowder from './MilkPowder';
@@ -20,6 +21,20 @@ const NAV = [
 
 export default function App() {
   const [active, setActive] = useState('opportunities');
+  const [topSignals, setTopSignals] = useState([]);
+
+  useEffect(function() {
+    (async function() {
+      try {
+        const docs = await fetchCollection('signals');
+        const sorted = docs
+          .filter(function(d) { return d.signal === 'BUY' || d.signal === 'SELL'; })
+          .sort(function(a, b) { return Math.abs(b.combined_score) - Math.abs(a.combined_score); })
+          .slice(0, 2);
+        setTopSignals(sorted);
+      } catch(e) { console.error(e); }
+    })();
+  }, []);
 
   const renderPage = () => {
     switch (active) {
@@ -62,8 +77,15 @@ export default function App() {
         <header className="top-bar">
           <div className="top-bar-title">{NAV.find(i => i.id === active)?.label}</div>
           <div className="top-bar-meta">
-            <span className="meta-tag">BUY Coffee +1.85</span>
-            <span className="meta-tag">BUY Wheat +0.61</span>
+            {topSignals.map(function(s) {
+              const score = s.combined_score >= 0 ? '+' + s.combined_score.toFixed(2) : s.combined_score.toFixed(2);
+              const label = s.commodity.replace(/_/g, ' ').replace(/\b\w/g, function(c) { return c.toUpperCase(); });
+              return (
+                <span key={s.commodity} className="meta-tag" style={{ color: s.signal === 'BUY' ? '#2ecc71' : '#e74c3c', borderColor: s.signal === 'BUY' ? '#2ecc71' : '#e74c3c' }}>
+                  {s.signal} {label} {score}
+                </span>
+              );
+            })}
             <span className="meta-date">{today}</span>
           </div>
         </header>
