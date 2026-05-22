@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { fetchCollection } from './firebase';
+import React, { useState } from 'react';
+import { SUPPLIERS } from './data/supplierData';
 
-const COUNTRIES  = ['All', 'Argentina', 'Brazil', 'Uruguay', 'Colombia', 'South Africa'];
-const CATEGORIES = ['All', 'Modified Starch', 'Dairy', 'Edible Oils', 'Coffee', 'Grains'];
+const COUNTRIES  = ['All', 'Argentina', 'Brazil', 'Uruguay', 'Chile', 'South Africa'];
+const CATEGORIES = ['All', 'Modified Starch', 'Dairy'];
 const ROLES      = ['All', 'Supplier', 'Buyer', 'Competitive Intel'];
+const SIZES      = ['All', 'Large', 'Medium', 'Small'];
 
 const ROLE_COLOR = {
   'Manufacturer/Exporter':          '#3b82f6',
@@ -29,11 +30,14 @@ const ROLE_TYPE = {
   'Domestic Producer':              'Competitive Intel',
 };
 
+const SIZE_COLOR = { Large: '#e8b84b', Medium: '#4a9eda', Small: '#2ecc71' };
+
 function SupplierCard({ s }) {
   const role     = s.role || 'Supplier';
   const color    = ROLE_COLOR[role] || '#4a5a70';
   const roleType = ROLE_TYPE[role] || 'Supplier';
   const products = Array.isArray(s.products) ? s.products : [];
+  const hasWarning = s.notes && s.notes.startsWith('WARNING');
 
   return (
     <div className="card" style={{ borderLeft: '3px solid ' + color }}>
@@ -43,6 +47,13 @@ function SupplierCard({ s }) {
           <div className="card-sub">{s.city || s.country} &nbsp;&middot;&nbsp; {role}</div>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4, flexShrink: 0 }}>
+          {s.size && (
+            <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)',
+              color: SIZE_COLOR[s.size] || '#4a5a70',
+              background: (SIZE_COLOR[s.size] || '#4a5a70') + '18',
+              border: '1px solid ' + (SIZE_COLOR[s.size] || '#4a5a70') + '40',
+              padding: '2px 7px', borderRadius: 3 }}>{s.size.toUpperCase()}</span>
+          )}
           {s.verified && (
             <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: '#2ecc71',
               background: 'rgba(46,204,113,0.1)', border: '1px solid rgba(46,204,113,0.2)',
@@ -75,10 +86,22 @@ function SupplierCard({ s }) {
       )}
 
       <div>
+        {s.annual_capacity_mt && (
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 0', borderBottom: '1px solid var(--border)', fontSize: 12 }}>
+            <span style={{ color: 'var(--text-muted)' }}>Annual Capacity</span>
+            <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-primary)' }}>{s.annual_capacity_mt} MT</span>
+          </div>
+        )}
         {s.fobPriceRange && (
           <div style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 0', borderBottom: '1px solid var(--border)', fontSize: 12 }}>
             <span style={{ color: 'var(--text-muted)' }}>FOB Price</span>
             <span className="val val--gold">{s.fobPriceRange}</span>
+          </div>
+        )}
+        {s.parent_company && (
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 0', borderBottom: '1px solid var(--border)', fontSize: 12 }}>
+            <span style={{ color: 'var(--text-muted)' }}>Parent</span>
+            <span style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>{s.parent_company}</span>
           </div>
         )}
         {s.website && (
@@ -95,7 +118,12 @@ function SupplierCard({ s }) {
         )}
       </div>
 
-      {s.notes && (
+      {hasWarning && (
+        <div style={{ marginTop: 8, padding: '8px 12px', background: 'rgba(231,76,60,0.08)',
+          border: '1px solid rgba(231,76,60,0.3)', borderRadius: 4,
+          fontSize: 12, color: '#e74c3c', lineHeight: 1.5 }}>{s.notes}</div>
+      )}
+      {!hasWarning && s.notes && (
         <div style={{ marginTop: 8, fontSize: 12, color: 'var(--text-muted)', fontStyle: 'italic', lineHeight: 1.5 }}>{s.notes}</div>
       )}
     </div>
@@ -103,35 +131,19 @@ function SupplierCard({ s }) {
 }
 
 export default function Suppliers() {
-  const [suppliers, setSuppliers] = useState([]);
-  const [loading, setLoading]     = useState(true);
-  const [country, setCountry]     = useState('All');
-  const [category, setCategory]   = useState('All');
-  const [role, setRole]           = useState('All');
-  const [search, setSearch]       = useState('');
+  const [country,  setCountry]  = useState('All');
+  const [category, setCategory] = useState('All');
+  const [role,     setRole]     = useState('All');
+  const [size,     setSize]     = useState('All');
+  const [search,   setSearch]   = useState('');
 
-  useEffect(function() {
-    (async function() {
-      try {
-        const data = await fetchCollection('suppliers');
-        // Sort: priority 1 first, then verified, then alphabetical
-        data.sort(function(a, b) {
-          if ((a.priority || 99) !== (b.priority || 99)) return (a.priority || 99) - (b.priority || 99);
-          if (a.verified !== b.verified) return a.verified ? -1 : 1;
-          return (a.name || '').localeCompare(b.name || '');
-        });
-        setSuppliers(data);
-      } catch(e) { console.error(e); }
-      finally { setLoading(false); }
-    })();
-  }, []);
-
-  const filtered = suppliers.filter(function(s) {
-    if (country !== 'All' && s.country !== country) return false;
+  const filtered = SUPPLIERS.filter(function(s) {
+    if (country  !== 'All' && s.country !== country) return false;
+    if (size     !== 'All' && s.size    !== size)    return false;
     if (category !== 'All') {
-      const cat = (s.product_category || '').toLowerCase();
-      const prods = (Array.isArray(s.products) ? s.products.join(' ') : '').toLowerCase();
-      if (!cat.includes(category.toLowerCase()) && !prods.includes(category.toLowerCase())) return false;
+      const cat  = (s.product_category || '').toLowerCase();
+      const prod = (Array.isArray(s.products) ? s.products.join(' ') : '').toLowerCase();
+      if (!cat.includes(category.toLowerCase()) && !prod.includes(category.toLowerCase())) return false;
     }
     if (role !== 'All') {
       const rt = ROLE_TYPE[s.role] || 'Supplier';
@@ -139,77 +151,93 @@ export default function Suppliers() {
     }
     if (search) {
       const q = search.toLowerCase();
-      const searchable = ((s.name || '') + ' ' + (s.country || '') + ' ' + (Array.isArray(s.products) ? s.products.join(' ') : '') + ' ' + (s.notes || '')).toLowerCase();
-      if (!searchable.includes(q)) return false;
+      const haystack = ((s.name||'') + ' ' + (s.country||'') + ' ' +
+        (Array.isArray(s.products) ? s.products.join(' ') : '') + ' ' + (s.notes||'')).toLowerCase();
+      if (!haystack.includes(q)) return false;
     }
     return true;
+  }).sort(function(a, b) {
+    if ((a.priority||99) !== (b.priority||99)) return (a.priority||99) - (b.priority||99);
+    if (a.verified !== b.verified) return a.verified ? -1 : 1;
+    return (a.name||'').localeCompare(b.name||'');
   });
+
+  const supplierCards = filtered.filter(s => (ROLE_TYPE[s.role]||'Supplier') === 'Supplier');
+  const buyerCards    = filtered.filter(s => (ROLE_TYPE[s.role]||'') === 'Buyer');
+  const intelCards    = filtered.filter(s => (ROLE_TYPE[s.role]||'') === 'Competitive Intel');
 
   const selectStyle = {
     background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 4,
-    color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: 12, padding: '6px 10px', cursor: 'pointer',
+    color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: 12,
+    padding: '6px 10px', cursor: 'pointer', width: '100%',
   };
-
-  if (loading) return <div className="loading">Loading suppliers</div>;
-
-  // Group by role type
-  const supplierCards = filtered.filter(s => (ROLE_TYPE[s.role] || 'Supplier') === 'Supplier');
-  const buyerCards    = filtered.filter(s => (ROLE_TYPE[s.role] || '') === 'Buyer');
-  const intelCards    = filtered.filter(s => (ROLE_TYPE[s.role] || '') === 'Competitive Intel');
+  const labelStyle = {
+    fontSize: 10, fontFamily: 'var(--font-mono)', color: 'var(--text-muted)',
+    letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 4, display: 'block',
+  };
 
   return (
     <div>
-      <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap', alignItems: 'center' }}>
-        <input value={search} onChange={e => setSearch(e.target.value)}
-          placeholder="Search..."
-          style={{ ...selectStyle, flex: 1, minWidth: 160 }} />
-        <select value={country}  onChange={e => setCountry(e.target.value)}  style={selectStyle}>
-          {COUNTRIES.map(c  => <option key={c}>{c}</option>)}
-        </select>
-        <select value={category} onChange={e => setCategory(e.target.value)} style={selectStyle}>
-          {CATEGORIES.map(c => <option key={c}>{c}</option>)}
-        </select>
-        <select value={role}     onChange={e => setRole(e.target.value)}     style={selectStyle}>
-          {ROLES.map(r => <option key={r}>{r}</option>)}
-        </select>
-        <span style={{ fontSize: 12, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', whiteSpace: 'nowrap' }}>
-          {filtered.length} of {suppliers.length}
-        </span>
+      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr', gap: 8, marginBottom: 16, alignItems: 'end' }}>
+        <div>
+          <span style={labelStyle}>Search</span>
+          <input value={search} onChange={e => setSearch(e.target.value)}
+            placeholder="Name, product, country..."
+            style={{ ...selectStyle }} />
+        </div>
+        <div>
+          <span style={labelStyle}>Country</span>
+          <select value={country} onChange={e => setCountry(e.target.value)} style={selectStyle}>
+            {COUNTRIES.map(c => <option key={c}>{c}</option>)}
+          </select>
+        </div>
+        <div>
+          <span style={labelStyle}>Category</span>
+          <select value={category} onChange={e => setCategory(e.target.value)} style={selectStyle}>
+            {CATEGORIES.map(c => <option key={c}>{c}</option>)}
+          </select>
+        </div>
+        <div>
+          <span style={labelStyle}>Size</span>
+          <select value={size} onChange={e => setSize(e.target.value)} style={selectStyle}>
+            {SIZES.map(s => <option key={s}>{s}</option>)}
+          </select>
+        </div>
+        <div>
+          <span style={labelStyle}>Role</span>
+          <select value={role} onChange={e => setRole(e.target.value)} style={selectStyle}>
+            {ROLES.map(r => <option key={r}>{r}</option>)}
+          </select>
+        </div>
+      </div>
+      <div style={{ marginBottom: 16, fontSize: 12, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+        {filtered.length} of {SUPPLIERS.length} suppliers
       </div>
 
       {supplierCards.length > 0 && (
         <div className="page-section">
-          <div className="section-label" style={{ marginBottom: 12 }}>
-            Suppliers ({supplierCards.length})
-          </div>
+          <div className="section-label" style={{ marginBottom: 12 }}>Suppliers ({supplierCards.length})</div>
           <div className="card-grid card-grid--2">
             {supplierCards.map(s => <SupplierCard key={s.id} s={s} />)}
           </div>
         </div>
       )}
-
       {buyerCards.length > 0 && (
         <div className="page-section">
-          <div className="section-label" style={{ marginBottom: 12 }}>
-            Buyers ({buyerCards.length})
-          </div>
+          <div className="section-label" style={{ marginBottom: 12 }}>Buyers ({buyerCards.length})</div>
           <div className="card-grid card-grid--2">
             {buyerCards.map(s => <SupplierCard key={s.id} s={s} />)}
           </div>
         </div>
       )}
-
       {intelCards.length > 0 && (
         <div className="page-section">
-          <div className="section-label" style={{ marginBottom: 12 }}>
-            Competitive Intel ({intelCards.length})
-          </div>
+          <div className="section-label" style={{ marginBottom: 12 }}>Competitive Intel ({intelCards.length})</div>
           <div className="card-grid card-grid--2">
             {intelCards.map(s => <SupplierCard key={s.id} s={s} />)}
           </div>
         </div>
       )}
-
       {filtered.length === 0 && (
         <div style={{ textAlign: 'center', padding: 40, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontSize: 12 }}>
           No suppliers match your filters
