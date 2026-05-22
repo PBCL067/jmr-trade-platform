@@ -1,13 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { db } from './firebase';
-import { collection, query, where, orderBy, limit, getDocs } from 'firebase/firestore';
+import React, { useState } from 'react';
+import { TRADE_FLOWS, AFRICA_PROCESSING } from './data/opportunityData';
 
 const LATAM = ['Argentina','Brazil','Uruguay','Chile','Colombia','Peru','Ecuador','Paraguay','Bolivia','Mexico'];
-const AFRICA = [
-  'South Africa','Nigeria','Egypt','Kenya','Ethiopia','Ghana','Tanzania','Uganda',
-  'Mozambique','Zambia','Zimbabwe','Angola','Cameroon','Morocco','Tunisia','Algeria',
-  'Sudan','Senegal','Namibia','Botswana','Rwanda','Madagascar'
-];
+const AFRICA = [...new Set(TRADE_FLOWS.map(r => r.importer))].sort();
 
 const DEALS = [
   {
@@ -135,99 +130,86 @@ function DealCard({ deal }) {
   );
 }
 
-function TrendArrow({ trend }) {
-  if (trend === 'Growing')   return <span style={{ color: '#2ecc71' }}>&#8599;</span>;
-  if (trend === 'Declining') return <span style={{ color: '#e74c3c' }}>&#8600;</span>;
-  return <span style={{ color: '#4a5a70' }}>&#8594;</span>;
-}
-
 function Screener() {
   const [exporter, setExporter] = useState('Argentina');
   const [importer, setImporter] = useState('All Africa');
-  const [opps, setOpps]         = useState([]);
-  const [loading, setLoading]   = useState(false);
+  const [layer, setLayer]       = useState('ALL');
   const [selected, setSelected] = useState(null);
 
-  useEffect(function() {
-    async function load() {
-      setLoading(true);
-      setSelected(null);
-      try {
-        let q;
-        if (importer === 'All Africa') {
-          q = query(collection(db, 'global_opportunities'),
-            where('exporter', '==', exporter),
-            where('importer', 'in', AFRICA.slice(0, 10)),
-            orderBy('opportunity_score', 'desc'),
-            limit(50));
-        } else {
-          q = query(collection(db, 'global_opportunities'),
-            where('exporter', '==', exporter),
-            where('importer', '==', importer),
-            orderBy('opportunity_score', 'desc'),
-            limit(50));
-        }
-        const snap = await getDocs(q);
-        setOpps(snap.docs.map(d => ({ id: d.id, ...d.data() })));
-      } catch(e) { console.error(e); setOpps([]); }
-      finally { setLoading(false); }
-    }
-    load();
-  }, [exporter, importer]);
+  const filtered = TRADE_FLOWS.filter(r => {
+    if (r.exporter !== exporter) return false;
+    if (importer !== 'All Africa' && r.importer !== importer) return false;
+    if (layer !== 'ALL' && r.layer !== layer) return false;
+    return true;
+  }).sort((a, b) => b.fob_usd - a.fob_usd);
 
   const selectStyle = {
     background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 4,
     color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: 12, padding: '6px 10px', cursor: 'pointer',
   };
 
+  const fmt = (n) => n >= 1e9 ? '$' + (n/1e9).toFixed(1) + 'B' : n >= 1e6 ? '$' + (n/1e6).toFixed(1) + 'M' : n >= 1e3 ? '$' + (n/1e3).toFixed(0) + 'K' : '$' + n.toFixed(0);
+
   return (
     <div>
       <div style={{ display: 'flex', gap: 12, alignItems: 'center', marginBottom: 16, flexWrap: 'wrap' }}>
         <div style={{ fontSize: 12, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>FROM</div>
-        <select value={exporter} onChange={e => setExporter(e.target.value)} style={selectStyle}>
+        <select value={exporter} onChange={e => { setExporter(e.target.value); setSelected(null); }} style={selectStyle}>
           {LATAM.map(c => <option key={c}>{c}</option>)}
         </select>
-        <div style={{ color: 'var(--gold-bright)', fontSize: 18 }}>&#8594;</div>
+        <div style={{ color: 'var(--gold-bright)', fontSize: 18 }}>\u2192</div>
         <div style={{ fontSize: 12, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>TO</div>
-        <select value={importer} onChange={e => setImporter(e.target.value)} style={selectStyle}>
+        <select value={importer} onChange={e => { setImporter(e.target.value); setSelected(null); }} style={selectStyle}>
           <option>All Africa</option>
           {AFRICA.map(c => <option key={c}>{c}</option>)}
         </select>
+        <select value={layer} onChange={e => { setLayer(e.target.value); setSelected(null); }} style={selectStyle}>
+          <option value="ALL">L1 + L2</option>
+          <option value="L1">L1 Raw Only</option>
+          <option value="L2">L2 By-Products Only</option>
+        </select>
         <span style={{ fontSize: 12, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-          {opps.length} commodities
+          {filtered.length} flows
         </span>
       </div>
 
-      {loading && <div className="loading">Loading</div>}
+      {filtered.length === 0 && (
+        <div style={{ padding: 24, textAlign: 'center', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontSize: 13 }}>
+          No trade flows found for this selection
+        </div>
+      )}
 
-      {!loading && opps.length > 0 && (
+      {filtered.length > 0 && (
         <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
           <table className="data-table">
             <thead>
               <tr>
-                <th>Commodity</th><th>To</th><th>Trend</th>
-                <th>Supply (MT/yr)</th><th>Demand (MT/yr)</th><th>Score</th>
+                <th>Product</th><th>To</th><th>Layer</th>
+                <th>FOB Value</th><th>Volume (MT)</th><th>$/kg</th><th>Processor?</th>
               </tr>
             </thead>
             <tbody>
-              {opps.map(function(row) {
+              {filtered.map(function(row, i) {
+                const isSelected = selected && selected.product === row.product && selected.importer === row.importer;
                 return (
-                  <tr key={row.id} onClick={() => setSelected(selected?.id === row.id ? null : row)}
-                    style={{ cursor: 'pointer', background: selected?.id === row.id ? 'var(--bg-hover)' : 'transparent' }}>
-                    <td style={{ color: 'var(--text-primary)', fontWeight: 500 }}>{row.commodity}</td>
+                  <tr key={i} onClick={() => setSelected(isSelected ? null : row)}
+                    style={{ cursor: 'pointer', background: isSelected ? 'var(--bg-hover)' : 'transparent' }}>
+                    <td style={{ color: 'var(--text-primary)', fontWeight: 500 }}>{row.product}</td>
                     <td style={{ fontFamily: 'var(--font-mono)', fontSize: 12 }}>{row.importer}</td>
-                    <td><TrendArrow trend={row.trend} /></td>
-                    <td style={{ fontFamily: 'var(--font-mono)', fontSize: 12 }}>
-                      {row.avg_export_mt ? (row.avg_export_mt/1000).toFixed(0) + 'k' : '-'}
-                    </td>
-                    <td style={{ fontFamily: 'var(--font-mono)', fontSize: 12 }}>
-                      {row.avg_import_mt ? (row.avg_import_mt/1000).toFixed(0) + 'k' : '-'}
-                    </td>
                     <td>
-                      <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, fontSize: 13,
-                        color: row.opportunity_score > 80 ? '#2ecc71' : row.opportunity_score > 50 ? '#e8b84b' : '#4a5a70' }}>
-                        {Math.round(row.opportunity_score)}
+                      <span style={{ padding: '2px 8px', borderRadius: 3, fontSize: 11, fontFamily: 'var(--font-mono)', fontWeight: 700,
+                        color: row.layer === 'L1' ? '#4a9eda' : '#e8b84b',
+                        background: row.layer === 'L1' ? 'rgba(74,158,218,0.1)' : 'rgba(232,184,75,0.1)',
+                        border: '1px solid ' + (row.layer === 'L1' ? 'rgba(74,158,218,0.3)' : 'rgba(232,184,75,0.3)') }}>
+                        {row.layer}
                       </span>
+                    </td>
+                    <td style={{ fontFamily: 'var(--font-mono)', fontSize: 12 }}>{fmt(row.fob_usd)}</td>
+                    <td style={{ fontFamily: 'var(--font-mono)', fontSize: 12 }}>{row.volume_mt > 0 ? row.volume_mt.toLocaleString(undefined, {maximumFractionDigits:0}) : '-'}</td>
+                    <td style={{ fontFamily: 'var(--font-mono)', fontSize: 12 }}>{row.price_per_kg > 0 ? '$' + row.price_per_kg.toFixed(2) : '-'}</td>
+                    <td style={{ fontFamily: 'var(--font-mono)', fontSize: 12,
+                      color: row.importer_is_processor ? '#e8b84b' : 'var(--text-muted)' }}>
+                      {row.importer_is_processor ? 'YES \u26a1' : '-'}
                     </td>
                   </tr>
                 );
@@ -240,14 +222,14 @@ function Screener() {
       {selected && (
         <div className="card" style={{ marginTop: 14, borderColor: 'var(--border-bright)' }}>
           <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 16, marginBottom: 12 }}>
-            {selected.commodity} &nbsp;&#8594;&nbsp; {selected.importer}
+            {selected.product} \u2192 {selected.importer}
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12 }}>
             {[
-              ['Avg Export', selected.avg_export_mt ? (selected.avg_export_mt/1000).toFixed(1) + 'k MT/yr' : '-'],
-              ['Avg Import', selected.avg_import_mt ? (selected.avg_import_mt/1000).toFixed(1) + 'k MT/yr' : '-'],
-              ['Import growth', selected.import_growth_pct != null ? selected.import_growth_pct.toFixed(1) + '%' : '-'],
-              ['Opp. Score', Math.round(selected.opportunity_score)],
+              ['FOB Value', fmt(selected.fob_usd)],
+              ['Volume', selected.volume_mt > 0 ? selected.volume_mt.toLocaleString(undefined, {maximumFractionDigits:0}) + ' MT' : '-'],
+              ['Price/kg', selected.price_per_kg > 0 ? '$' + selected.price_per_kg.toFixed(3) : '-'],
+              ['Processing Ratio', selected.importer_processing_ratio > 0 ? selected.importer_processing_ratio.toFixed(2) + 'x' : '-'],
             ].map(([label, value]) => (
               <div key={label} style={{ padding: '10px 12px', background: 'var(--bg-hover)', borderRadius: 4 }}>
                 <div style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginBottom: 4 }}>{label}</div>
@@ -255,8 +237,62 @@ function Screener() {
               </div>
             ))}
           </div>
+          {selected.importer_is_processor && (
+            <div style={{ marginTop: 12, padding: '8px 12px', background: 'rgba(232,184,75,0.08)',
+              border: '1px solid rgba(232,184,75,0.2)', borderRadius: 4, fontSize: 12, color: '#e8b84b', fontFamily: 'var(--font-mono)' }}>
+              \u26a1 {selected.importer} is an active processor \u2014 exports ${(selected.importer_l2_exports/1e6).toFixed(1)}M of by-products to world markets
+            </div>
+          )}
         </div>
       )}
+    </div>
+  );
+}
+
+function GapAnalysis() {
+  const sorted = [...AFRICA_PROCESSING].sort((a, b) => b.l1_imports - a.l1_imports);
+  const fmt = (n) => n >= 1e9 ? '$' + (n/1e9).toFixed(1) + 'B' : n >= 1e6 ? '$' + (n/1e6).toFixed(1) + 'M' : '$' + (n/1e3).toFixed(0) + 'K';
+
+  return (
+    <div>
+      <div style={{ marginBottom: 16, fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+        Countries importing raw commodities from Latam but not processing them into by-products.
+        Processing ratio = L2 exports / L1 imports. Low ratio = untapped processing opportunity.
+      </div>
+      <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+        <table className="data-table">
+          <thead>
+            <tr>
+              <th>Country</th>
+              <th>L1 Imports from Latam</th>
+              <th>L2 Exports to World</th>
+              <th>Processing Ratio</th>
+              <th>Gap Signal</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sorted.map(function(row) {
+              const ratio = row.processing_ratio;
+              const gapColor = ratio === 0 ? '#e74c3c' : ratio < 0.3 ? '#e8b84b' : '#2ecc71';
+              const gapLabel = ratio === 0 ? 'NO PROCESSING' : ratio < 0.3 ? 'UNDER-PROCESSING' : 'ACTIVE PROCESSOR';
+              return (
+                <tr key={row.country}>
+                  <td style={{ color: 'var(--text-primary)', fontWeight: 500 }}>{row.country}</td>
+                  <td style={{ fontFamily: 'var(--font-mono)', fontSize: 12 }}>{fmt(row.l1_imports)}</td>
+                  <td style={{ fontFamily: 'var(--font-mono)', fontSize: 12 }}>{fmt(row.l2_exports)}</td>
+                  <td style={{ fontFamily: 'var(--font-mono)', fontSize: 12 }}>{ratio > 0 ? ratio.toFixed(2) + 'x' : '-'}</td>
+                  <td>
+                    <span style={{ padding: '2px 8px', borderRadius: 3, fontSize: 11, fontFamily: 'var(--font-mono)', fontWeight: 700,
+                      color: gapColor, background: gapColor + '18', border: '1px solid ' + gapColor + '40' }}>
+                      {gapLabel}
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
@@ -267,7 +303,7 @@ export default function Opportunities() {
   return (
     <div>
       <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
-        {[['deals', 'Active Deals'], ['screen', 'Market Screener']].map(([id, label]) => (
+        {[['deals','Active Deals'],['screen','Trade Flows'],['gaps','Gap Analysis']].map(([id, label]) => (
           <button key={id} onClick={() => setView(id)} style={{
             background: view === id ? 'var(--bg-hover)' : 'none',
             border: '1px solid ' + (view === id ? 'var(--border-bright)' : 'var(--border)'),
@@ -288,16 +324,8 @@ export default function Opportunities() {
           {DEALS.map(deal => <DealCard key={deal.id} deal={deal} />)}
         </div>
       )}
-
-      {view === 'screen' && (
-        <div>
-          <div style={{ marginBottom: 16, fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-            Screen any Latam exporter against any African market. Data from USDA PSD 2020-2026.
-            Score = log(supply) x log(demand). Higher = bigger opportunity.
-          </div>
-          <Screener />
-        </div>
-      )}
+      {view === 'screen' && <Screener />}
+      {view === 'gaps' && <GapAnalysis />}
     </div>
   );
 }
