@@ -297,14 +297,14 @@ function GapAnalysis() {
           <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 28, color: '#e8b84b' }}>
             {fmt(TRADE_GAPS[0]?.l1_usd || 0)}
           </div>
-          <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>{TRADE_GAPS[0]?.exporter} â†’ {TRADE_GAPS[0]?.importer}</div>
+          <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>{TRADE_GAPS[0]?.exporter} → {TRADE_GAPS[0]?.importer}</div>
         </div>
         <div className="card">
           <div style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-muted)', marginBottom: 6 }}>TOTAL L1 FLOWING</div>
           <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 28 }}>
             {fmt(TRADE_GAPS.reduce((s, g) => s + g.l1_usd, 0))}
           </div>
-          <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>raw commodities Latam â†’ Africa</div>
+          <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>raw commodities Latam → Africa</div>
         </div>
       </div>
 
@@ -334,7 +334,7 @@ function GapAnalysis() {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
                 <div>
                   <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 16 }}>
-                    {g.exporter} â†’ {g.importer}
+                    {g.exporter} → {g.importer}
                   </div>
                   <div style={{ fontSize: 12, color: 'var(--text-secondary)', marginTop: 4, lineHeight: 1.6 }}>
                     {g.description}
