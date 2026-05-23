@@ -570,5 +570,41 @@ export const SUPPLIERS = [
       "ISO 9001"
     ],
     "fobPriceRange": "$0.70-0.90/kg FOB"
+  },
+  {
+    "id": "semino_argentina",
+    "name": "Molinos Juan Semino",
+    "country": "Argentina",
+    "country_code": "AR",
+    "city": "Carcarana, Santa Fe",
+    "role": "Manufacturer/Exporter",
+    "product_category": "Modified Starch",
+    "products": [
+      "Wheat Starch",
+      "Vital Wheat Gluten",
+      "Modified Wheat Starch",
+      "Acetylated Starch",
+      "Oxidized Starch",
+      "Pregelatinized Starch",
+      "Hydroxypropyl Starch",
+      "Dextrins",
+      "Wheat Flour",
+      "Injection Starch"
+    ],
+    "website": "semino.com.ar",
+    "notes": "Founded 1865 \u2014 the only producer of Wheat Starch and Vital Wheat Gluten in Latin America. Six-generation family company. Plant in Carcarana, Santa Fe. International sales via F&F Ingredients. Attends Gulfood annually \u2014 actively targeting Africa and Middle East markets.",
+    "verified": true,
+    "export_experience": true,
+    "food_grade": true,
+    "priority": 1,
+    "size": "Medium",
+    "annual_capacity_mt": "100,000",
+    "parent_company": "Molinos Juan Semino SA (family-owned)",
+    "contact_approach": "Via semino.com.ar or F&F Ingredients (exclusive international rep)",
+    "certifications": [
+      "ISO 9001",
+      "Halal",
+      "Kosher"
+    ]
   }
 ];

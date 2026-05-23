@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { TRADE_FLOWS, AFRICA_PROCESSING, TRADE_GAPS } from './data/opportunityData';
+import IngredientFlow from './IngredientFlow';
 
 const LATAM = ['Argentina','Brazil','Uruguay','Chile','Colombia','Peru','Ecuador','Paraguay','Bolivia','Mexico'];
 const AFRICA = [...new Set(TRADE_FLOWS.map(r => r.importer))].sort();
@@ -296,14 +297,14 @@ function GapAnalysis() {
           <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 28, color: '#e8b84b' }}>
             {fmt(TRADE_GAPS[0]?.l1_usd || 0)}
           </div>
-          <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>{TRADE_GAPS[0]?.exporter} → {TRADE_GAPS[0]?.importer}</div>
+          <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>{TRADE_GAPS[0]?.exporter} â†’ {TRADE_GAPS[0]?.importer}</div>
         </div>
         <div className="card">
           <div style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-muted)', marginBottom: 6 }}>TOTAL L1 FLOWING</div>
           <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 28 }}>
             {fmt(TRADE_GAPS.reduce((s, g) => s + g.l1_usd, 0))}
           </div>
-          <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>raw commodities Latam → Africa</div>
+          <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>raw commodities Latam â†’ Africa</div>
         </div>
       </div>
 
@@ -333,7 +334,7 @@ function GapAnalysis() {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
                 <div>
                   <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 16 }}>
-                    {g.exporter} → {g.importer}
+                    {g.exporter} â†’ {g.importer}
                   </div>
                   <div style={{ fontSize: 12, color: 'var(--text-secondary)', marginTop: 4, lineHeight: 1.6 }}>
                     {g.description}
@@ -380,7 +381,7 @@ export default function Opportunities() {
   return (
     <div>
       <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
-        {[['deals','Active Deals'],['screen','Trade Flows'],['gaps','Gap Analysis']].map(([id, label]) => (
+        {[['deals','Active Deals'],['screen','Trade Flows'],['gaps','Gap Analysis'],['ingredients','Ingredient Flow']].map(([id, label]) => (
           <button key={id} onClick={() => setView(id)} style={{
             background: view === id ? 'var(--bg-hover)' : 'none',
             border: '1px solid ' + (view === id ? 'var(--border-bright)' : 'var(--border)'),
@@ -403,6 +404,7 @@ export default function Opportunities() {
       )}
       {view === 'screen' && <Screener />}
       {view === 'gaps' && <GapAnalysis />}
+      {view === 'ingredients' && <IngredientFlow />}
     </div>
   );
 }
