@@ -666,5 +666,33 @@ export const SUPPLIERS = [
     "certifications": [
       "ISO 9001"
     ]
+  },
+  {
+    "id": "vertrauen_argentina",
+    "name": "Vertrauen SRL",
+    "country": "Argentina",
+    "country_code": "AR",
+    "city": "San Francisco, Cordoba",
+    "role": "Domestic Producer",
+    "product_category": "Modified Starch",
+    "products": [
+      "Corn Starch",
+      "Potato Starch",
+      "Cassava Starch",
+      "Dextrose",
+      "Maltodextrin",
+      "Modified Starches",
+      "Food Additives",
+      "Premixes"
+    ],
+    "website": "vertrauensrl.com.ar",
+    "notes": "Argentine food ingredient distributor and premix manufacturer based in Parque Industrial San Francisco, Cordoba. Sources starches from primary producers (Ingredion etc) and resells. Also manufactures dairy, deli meat and bakery premixes. Useful for local Argentine market pricing intel and understanding domestic starch distribution channels. Not a primary export supplier.",
+    "verified": true,
+    "export_experience": false,
+    "food_grade": true,
+    "priority": 3,
+    "size": "Small",
+    "parent_company": "Independent",
+    "contact_approach": "Via vertrauensrl.com.ar/contacto \u2014 +54 (3564) 530066"
   }
 ];
