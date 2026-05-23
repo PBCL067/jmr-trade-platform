@@ -904,5 +904,38 @@ export const SUPPLIERS = [
     "size": "Large",
     "parent_company": "Industry Association",
     "contact_approach": "cafagda@cafagda.com.ar"
+  },
+  {
+    "id": "glucovil_argentina",
+    "name": "Glucovil Argentina",
+    "country": "Argentina",
+    "country_code": "AR",
+    "city": "Villa Mercedes, San Luis",
+    "role": "Manufacturer/Exporter",
+    "product_category": "Modified Starch",
+    "products": [
+      "Native Corn Starch",
+      "Modified Starch (Cationic)",
+      "Modified Starch (Hydrolysed)",
+      "Modified Starch (Oxidised)",
+      "Pharma Grade Starch",
+      "Glucose Syrup",
+      "Fructose 42",
+      "Fructose 55",
+      "Maltodextrin",
+      "Corn Oil",
+      "Gluten Feed",
+      "Gluten Meal"
+    ],
+    "website": "glucovil.com.ar",
+    "notes": "Full corn wet milling plant in Villa Mercedes, San Luis. CAFAGDA member. Produces complete range of corn derivatives: native and modified starches (cationic, hydrolysed, oxidised), glucose syrups (Fructose 42/55), maltodextrin, refined corn oil, and animal feed byproducts. Sophisticated industrial operation with multiple product lines. Export capability to be confirmed \u2014 headquarters in Buenos Aires suggests commercial export operation.",
+    "verified": true,
+    "export_experience": false,
+    "food_grade": true,
+    "priority": 1,
+    "size": "Medium",
+    "annual_capacity_mt": "Unknown \u2014 confirm directly",
+    "parent_company": "Independent",
+    "contact_approach": "info@glucovil.com.ar | +54 11 4378-1750 | Sarmiento 459 5th Floor, CABA"
   }
 ];
