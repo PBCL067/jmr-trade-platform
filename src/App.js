@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { fetchCollection } from './firebase';
 import Opportunities from './Opportunities';
-import ModifiedStarch from './ModifiedStarch';
-import MilkPowder from './MilkPowder';
+import ProductIntel from './ProductIntel';
 import Signals from './Signals';
 import Suppliers from './Suppliers';
 import LandedCost from './LandedCost';
@@ -11,8 +10,7 @@ import './App.css';
 
 const NAV = [
   { id: 'opportunities', label: 'Opportunities', icon: '\u25c9' },
-  { id: 'starch',        label: 'Mod. Starch',   icon: '\u25a0' },
-  { id: 'milk',          label: 'Milk Powder',   icon: '\u25a1' },
+  { id: 'intel',         label: 'Product Intel', icon: '\u25a0' },
   { id: 'landed',        label: 'Landed Cost',   icon: '\u25c6' },
   { id: 'signals',       label: 'Signals',       icon: '\u25c8' },
   { id: 'suppliers',     label: 'Suppliers',     icon: '\u25ce' },
@@ -45,8 +43,7 @@ export default function App() {
   const renderPage = () => {
     switch (active) {
       case 'opportunities': return <Opportunities />;
-      case 'starch':        return <ModifiedStarch />;
-      case 'milk':          return <MilkPowder />;
+      case 'intel':         return <ProductIntel />;
       case 'landed':        return <LandedCost />;
       case 'signals':       return <Signals />;
       case 'suppliers':     return <Suppliers />;
