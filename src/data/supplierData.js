@@ -606,5 +606,65 @@ export const SUPPLIERS = [
       "Halal",
       "Kosher"
     ]
+  },
+  {
+    "id": "tate_lyle_gemacom_brazil",
+    "name": "Tate & Lyle / Gemacom Tech",
+    "country": "Brazil",
+    "country_code": "BR",
+    "city": "Guarani, Minas Gerais",
+    "role": "Manufacturer/Exporter",
+    "product_category": "Modified Starch",
+    "products": [
+      "Modified Tapioca Starch",
+      "Modified Corn Starch",
+      "Specialty Starches",
+      "Stabiliser Systems",
+      "AMIDOGEM LINE Starches"
+    ],
+    "website": "tateandlyle.com",
+    "notes": "Tate & Lyle plant in Guarani, MG producing modified and tapioca starches under the AMIDOGEM LINE brand. Developed specifically for dairy and meat processing applications. Gemacom Tech is their Brazilian R&D and manufacturing arm. Exports to Colombia and broader Latam. Strong specialty starch capability.",
+    "verified": true,
+    "export_experience": true,
+    "food_grade": true,
+    "priority": 1,
+    "size": "Large",
+    "annual_capacity_mt": ">50,000",
+    "parent_company": "Tate & Lyle PLC (UK)",
+    "contact_approach": "Via tateandlyle.com Latin America office or Guarani plant directly",
+    "certifications": [
+      "ISO 9001",
+      "FSSC 22000"
+    ]
+  },
+  {
+    "id": "almex_mexico",
+    "name": "Almidones Mexicanos (ALMEX)",
+    "country": "Mexico",
+    "country_code": "MX",
+    "city": "Guadalajara, Jalisco",
+    "role": "Manufacturer/Exporter",
+    "product_category": "Modified Starch",
+    "products": [
+      "Modified Corn Starch",
+      "Native Corn Starch",
+      "Glucose Syrup",
+      "Fructose Syrup",
+      "Corn Gluten",
+      "Dextrose"
+    ],
+    "website": "almidones.com.mx",
+    "notes": "Founded 1960. Corn wet milling specialist in Guadalajara. $41.9M revenue. ISO certified. Primarily domestic Mexico focus but open to export. Worth approaching as a trader/price comparison option \u2014 Mexico corn starch pricing can be competitive for Central America and Caribbean routes.",
+    "verified": true,
+    "export_experience": false,
+    "food_grade": true,
+    "priority": 3,
+    "size": "Medium",
+    "annual_capacity_mt": "50,000-100,000",
+    "parent_company": "Independent",
+    "contact_approach": "Via almexcustomerservice@almidones.com.mx",
+    "certifications": [
+      "ISO 9001"
+    ]
   }
 ];
