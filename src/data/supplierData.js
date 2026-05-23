@@ -598,4 +598,27 @@ export const SUPPLIERS = [
     "parent_company": "Milco SA (Pty) Ltd",
     "contact_approach": "Via procurement division"
   }
+,
+  {
+    "id": "lorenz_brazil",
+    "name": "Lorenz",
+    "country": "Brazil",
+    "country_code": "BR",
+    "city": "Cianorte, Parana",
+    "role": "Manufacturer/Exporter",
+    "product_category": "Modified Starch",
+    "products": ["Cassava Modified Starch", "Hydroxypropyl Starch", "Pre-gelatinized Starch", "Maltodextrin", "Glucose Syrup", "Dextrins"],
+    "website": "lorenz.com.br",
+    "notes": "First cassava starch producer in Latin America, founded 1916. Specialist in hydroxypropyl modified starches with resistance to UHT processes, freezing cycles, and extreme pH/pressure/temperature. Four plants in Parana and Mato Grosso do Sul. Actively targeting sub-Saharan Africa export markets.",
+    "verified": true,
+    "export_experience": true,
+    "food_grade": true,
+    "priority": 1,
+    "size": "Large",
+    "annual_capacity_mt": "280,000",
+    "parent_company": "GTFoods (Brazil)",
+    "contact_approach": "Via lorenz.com.br export enquiry",
+    "certifications": ["ISO 9001"],
+    "fobPriceRange": "$0.70-0.90/kg FOB"
+  }
 ];
