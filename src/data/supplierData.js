@@ -828,5 +828,81 @@ export const SUPPLIERS = [
     "annual_capacity_mt": "Unknown \u2014 confirm directly",
     "parent_company": "Independent",
     "contact_approach": "ventas@fspsa.com.py | WhatsApp +595 983 953-025"
+  },
+  {
+    "id": "almidonera_diesel",
+    "name": "Almidonera Diesel",
+    "country": "Argentina",
+    "country_code": "AR",
+    "city": "Puerto Rico, Misiones",
+    "role": "Manufacturer/Exporter",
+    "product_category": "Modified Starch",
+    "products": [
+      "Cassava Starch (Fecula de Mandioca)",
+      "Cassava Flour"
+    ],
+    "website": "almidoneradiesel.com.ar",
+    "notes": "Cassava starch manufacturer in Puerto Rico, Misiones \u2014 Argentina's cassava production region bordering Paraguay. Produces fecula de mandioca for food (confectionery, sauces, emulsified meats, bakery, ice cream) and industrial applications (paper, textiles, adhesives, pharmaceuticals). Small to medium operation. Export capability unconfirmed \u2014 needs direct contact.",
+    "verified": false,
+    "export_experience": false,
+    "food_grade": true,
+    "priority": 2,
+    "size": "Small",
+    "parent_company": "Independent",
+    "contact_approach": "info@almidoneradiesel.com.ar | WhatsApp +54 9 3743 475002"
+  },
+  {
+    "id": "femag_argentina",
+    "name": "Femag (Graef Hnos)",
+    "country": "Argentina",
+    "country_code": "AR",
+    "city": "Misiones, Argentina",
+    "role": "Manufacturer/Exporter",
+    "product_category": "Modified Starch",
+    "products": [
+      "Native Cassava Starch",
+      "Modified Cassava Starch (E1422)",
+      "Acetylated Distarch Adipate",
+      "Corn Starch"
+    ],
+    "website": "fecula.com.ar",
+    "notes": "Argentine cassava starch manufacturer in Misiones. Produces both native and modified cassava starch (E1422 \u2014 acetylated distarch adipate). Modified starch is freeze-thaw stable, heat resistant, low retrogradation index \u2014 ideal for frozen food, meat processing and dairy. Gluten-free certified (Sin TACC). Minimum order 3 tonnes. Export capability to be confirmed.",
+    "verified": true,
+    "export_experience": false,
+    "food_grade": true,
+    "priority": 2,
+    "size": "Small",
+    "annual_capacity_mt": "Unknown \u2014 confirm directly",
+    "parent_company": "Graef Hermanos",
+    "contact_approach": "graefhnos@gmail.com | WhatsApp +54 9 3743 50-3293",
+    "certifications": [
+      "Sin TACC (Gluten Free)"
+    ]
+  },
+  {
+    "id": "cafagda",
+    "name": "CAFAGDA",
+    "country": "Argentina",
+    "country_code": "AR",
+    "city": "Buenos Aires",
+    "role": "Domestic Producer",
+    "product_category": "Modified Starch",
+    "products": [
+      "Industry Association \u2014 Modified Starches",
+      "Glucose Syrups",
+      "Dextrins",
+      "Maltodextrin",
+      "Wheat Gluten",
+      "Corn Oil"
+    ],
+    "website": "cafagda.com.ar",
+    "notes": "Argentine Chamber of Starch and Glucose Manufacturers (Camara Argentina de Fabricantes de Almidon, Glucosa, Derivados y Afines). Industry association representing all major Argentine starch producers: Ingredion (Ardion), Arcor (Ingrecor), Glucovil, Glutal, Semino. Key intel source for industry production stats, export data, new members and regulatory changes. Not a supplier \u2014 contact for market intelligence only.",
+    "verified": true,
+    "export_experience": false,
+    "food_grade": true,
+    "priority": 2,
+    "size": "Large",
+    "parent_company": "Industry Association",
+    "contact_approach": "cafagda@cafagda.com.ar"
   }
 ];
