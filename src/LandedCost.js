@@ -36,40 +36,40 @@ const PRODUCTS = {
   'Sunflower Oil': {
     hs: 'HS 1512.11',
     saMarket: 1.09,
-    tariffType: 'fixed',
+    tariffType: 'pct_by_supplier',
     tariffUsd: 0,
-    tariffNote: 'TBC — pending SARS confirmation',
+    tariffNote: 'CONFIRMED: 10% MFN | 4% MERCOSUR (Argentina/Brazil/Uruguay/Paraguay)',
     suppliers: [
-      { name: 'Argentina',   fob: 0.837, freight: 0.12, highlight: true },
-      { name: 'Ukraine',     fob: 0.910, freight: 0.18 },
-      { name: 'Russia',      fob: 0.890, freight: 0.19 },
-      { name: 'EU Average',  fob: 1.050, freight: 0.17 },
+      { name: 'Argentina',   fob: 0.837, freight: 0.12, highlight: true, tariff_pct: 0.04 },
+      { name: 'Ukraine',     fob: 0.910, freight: 0.18, tariff_pct: 0.10 },
+      { name: 'Russia',      fob: 0.890, freight: 0.19, tariff_pct: 0.10 },
+      { name: 'EU Average',  fob: 1.050, freight: 0.17, tariff_pct: 0.10 },
     ],
   },
   'Soybean Oil': {
     hs: 'HS 1507.90',
     saMarket: 1.15,
-    tariffType: 'fixed',
+    tariffType: 'pct_by_supplier',
     tariffUsd: 0,
-    tariffNote: 'TBC — verify with SARS',
+    tariffNote: 'CONFIRMED: 10% MFN all origins incl. MERCOSUR',
     suppliers: [
-      { name: 'Argentina',   fob: 0.950, freight: 0.12, highlight: true },
-      { name: 'Brazil',      fob: 0.980, freight: 0.11 },
-      { name: 'USA',         fob: 1.010, freight: 0.16 },
-      { name: 'EU',          fob: 1.150, freight: 0.17 },
+      { name: 'Argentina',   fob: 0.950, freight: 0.12, highlight: true, tariff_pct: 0.10 },
+      { name: 'Brazil',      fob: 0.980, freight: 0.11, tariff_pct: 0.10 },
+      { name: 'USA',         fob: 1.010, freight: 0.16, tariff_pct: 0.10 },
+      { name: 'EU',          fob: 1.150, freight: 0.17, tariff_pct: 0.10 },
     ],
   },
   'Soybean Meal': {
     hs: 'HS 2304.00',
     saMarket: 0.62,
-    tariffType: 'fixed',
+    tariffType: 'pct_by_supplier',
     tariffUsd: 0,
-    tariffNote: 'FREE — check SARS',
+    tariffNote: 'CONFIRMED: 6.6% MFN | 2.64% MERCOSUR (Argentina/Brazil/Uruguay/Paraguay)',
     suppliers: [
-      { name: 'Argentina',   fob: 0.495, freight: 0.12, highlight: true },
-      { name: 'Brazil',      fob: 0.510, freight: 0.11 },
-      { name: 'USA',         fob: 0.540, freight: 0.16 },
-      { name: 'India',       fob: 0.560, freight: 0.22 },
+      { name: 'Argentina',   fob: 0.495, freight: 0.12, highlight: true, tariff_pct: 0.0264 },
+      { name: 'Brazil',      fob: 0.510, freight: 0.11, tariff_pct: 0.0264 },
+      { name: 'USA',         fob: 0.540, freight: 0.16, tariff_pct: 0.066 },
+      { name: 'India',       fob: 0.560, freight: 0.22, tariff_pct: 0.066 },
     ],
   },
   'Corn': {
@@ -77,7 +77,7 @@ const PRODUCTS = {
     saMarket: 0.28,
     tariffType: 'fixed',
     tariffUsd: 0,
-    tariffNote: 'FREE — check SARS',
+    tariffNote: 'CONFIRMED: FREE — all origins',
     suppliers: [
       { name: 'Argentina',   fob: 0.197, freight: 0.12, highlight: true },
       { name: 'Brazil',      fob: 0.200, freight: 0.11 },
@@ -110,8 +110,9 @@ function SupplierTable({ suppliers, saMarket, tariffUsd, title, tariffNote }) {
         </thead>
         <tbody>
           {suppliers.map(function(s) {
-            const ins    = s.fob * INSURANCE;
-            const landed = s.fob + s.freight + ins + tariffUsd;
+            const ins        = s.fob * INSURANCE;
+            const effectiveTariff = s.tariff_pct !== undefined ? s.fob * s.tariff_pct : tariffUsd;
+            const landed = s.fob + s.freight + ins + effectiveTariff;
             const margin = saMarket - landed;
             const status = margin > 0.05 ? 'VIABLE' : margin > 0 ? 'MARGINAL' : 'NOT VIABLE';
             const color  = margin > 0.05 ? '#2ecc71' : margin > 0 ? '#e8b84b' : '#e74c3c';
@@ -122,8 +123,9 @@ function SupplierTable({ suppliers, saMarket, tariffUsd, title, tariffNote }) {
                 </td>
                 <td style={{ fontFamily: 'var(--font-mono)', fontSize: 12 }}>${s.fob.toFixed(3)}</td>
                 <td style={{ fontFamily: 'var(--font-mono)', fontSize: 12 }}>${s.freight.toFixed(3)}</td>
-                <td style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: tariffUsd > 0 ? '#e8b84b' : 'var(--text-muted)' }}>
-                  ${tariffUsd.toFixed(3)}
+                <td style={{ fontFamily: 'var(--font-mono)', fontSize: 12,
+                  color: effectiveTariff > 0 ? (s.tariff_pct !== undefined && s.highlight ? '#2ecc71' : '#e8b84b') : 'var(--text-muted)' }}>
+                  ${effectiveTariff.toFixed(3)}{s.tariff_pct !== undefined ? ' (' + (s.tariff_pct*100).toFixed(2) + '%)' : ''}
                 </td>
                 <td style={{ fontFamily: 'var(--font-mono)', fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>
                   ${landed.toFixed(3)}
