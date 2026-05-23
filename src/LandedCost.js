@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { TARIFFS, getTariffUsd, MERCOSUR_COUNTRIES } from './data/tariffData';
 
 const PRODUCTS = {
   'Modified Starch': {
@@ -40,10 +41,10 @@ const PRODUCTS = {
     tariffUsd: 0,
     tariffNote: 'CONFIRMED: 10% MFN | 4% MERCOSUR (Argentina/Brazil/Uruguay/Paraguay)',
     suppliers: [
-      { name: 'Argentina',   fob: 0.837, freight: 0.12, highlight: true, tariff_pct: 0.04 },
-      { name: 'Ukraine',     fob: 0.910, freight: 0.18, tariff_pct: 0.10 },
-      { name: 'Russia',      fob: 0.890, freight: 0.19, tariff_pct: 0.10 },
-      { name: 'EU Average',  fob: 1.050, freight: 0.17, tariff_pct: 0.10 },
+      { name: 'Argentina',   fob: 0.837, freight: 0.12, highlight: true },
+      { name: 'Ukraine',     fob: 0.910, freight: 0.18 },
+      { name: 'Russia',      fob: 0.890, freight: 0.19 },
+      { name: 'EU Average',  fob: 1.050, freight: 0.17 },
     ],
   },
   'Soybean Oil': {
@@ -53,10 +54,10 @@ const PRODUCTS = {
     tariffUsd: 0,
     tariffNote: 'CONFIRMED: 10% MFN all origins incl. MERCOSUR',
     suppliers: [
-      { name: 'Argentina',   fob: 0.950, freight: 0.12, highlight: true, tariff_pct: 0.10 },
-      { name: 'Brazil',      fob: 0.980, freight: 0.11, tariff_pct: 0.10 },
-      { name: 'USA',         fob: 1.010, freight: 0.16, tariff_pct: 0.10 },
-      { name: 'EU',          fob: 1.150, freight: 0.17, tariff_pct: 0.10 },
+      { name: 'Argentina',   fob: 0.950, freight: 0.12, highlight: true },
+      { name: 'Brazil',      fob: 0.980, freight: 0.11 },
+      { name: 'USA',         fob: 1.010, freight: 0.16 },
+      { name: 'EU',          fob: 1.150, freight: 0.17 },
     ],
   },
   'Soybean Meal': {
@@ -66,10 +67,10 @@ const PRODUCTS = {
     tariffUsd: 0,
     tariffNote: 'CONFIRMED: 6.6% MFN | 2.64% MERCOSUR (Argentina/Brazil/Uruguay/Paraguay)',
     suppliers: [
-      { name: 'Argentina',   fob: 0.495, freight: 0.12, highlight: true, tariff_pct: 0.0264 },
-      { name: 'Brazil',      fob: 0.510, freight: 0.11, tariff_pct: 0.0264 },
-      { name: 'USA',         fob: 0.540, freight: 0.16, tariff_pct: 0.066 },
-      { name: 'India',       fob: 0.560, freight: 0.22, tariff_pct: 0.066 },
+      { name: 'Argentina',   fob: 0.495, freight: 0.12, highlight: true },
+      { name: 'Brazil',      fob: 0.510, freight: 0.11 },
+      { name: 'USA',         fob: 0.540, freight: 0.16 },
+      { name: 'India',       fob: 0.560, freight: 0.22 },
     ],
   },
   'Corn': {
@@ -89,7 +90,7 @@ const PRODUCTS = {
 
 const INSURANCE = 0.005;
 
-function SupplierTable({ suppliers, saMarket, tariffUsd, title, tariffNote }) {
+function SupplierTable({ suppliers, saMarket, tariffUsd, title, tariffNote, hsCode, zarUsd }) {
   return (
     <div className="card" style={{ marginBottom: 20 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
@@ -110,8 +111,9 @@ function SupplierTable({ suppliers, saMarket, tariffUsd, title, tariffNote }) {
         </thead>
         <tbody>
           {suppliers.map(function(s) {
-            const ins        = s.fob * INSURANCE;
-            const effectiveTariff = s.tariff_pct !== undefined ? s.fob * s.tariff_pct : tariffUsd;
+            const ins = s.fob * INSURANCE;
+            const tariffInfo = getTariffUsd(hsCode, s.name, zarUsd);
+            const effectiveTariff = tariffInfo.isPct ? s.fob * tariffInfo.rate : tariffInfo.rate;
             const landed = s.fob + s.freight + ins + effectiveTariff;
             const margin = saMarket - landed;
             const status = margin > 0.05 ? 'VIABLE' : margin > 0 ? 'MARGINAL' : 'NOT VIABLE';
@@ -124,8 +126,8 @@ function SupplierTable({ suppliers, saMarket, tariffUsd, title, tariffNote }) {
                 <td style={{ fontFamily: 'var(--font-mono)', fontSize: 12 }}>${s.fob.toFixed(3)}</td>
                 <td style={{ fontFamily: 'var(--font-mono)', fontSize: 12 }}>${s.freight.toFixed(3)}</td>
                 <td style={{ fontFamily: 'var(--font-mono)', fontSize: 12,
-                  color: effectiveTariff > 0 ? (s.tariff_pct !== undefined && s.highlight ? '#2ecc71' : '#e8b84b') : 'var(--text-muted)' }}>
-                  ${effectiveTariff.toFixed(3)}{s.tariff_pct !== undefined ? ' (' + (s.tariff_pct*100).toFixed(2) + '%)' : ''}
+                  color: effectiveTariff > 0 ? (MERCOSUR_COUNTRIES.includes(s.name) && tariffInfo.rate < (getTariffUsd(hsCode, 'Other', zarUsd).rate) ? '#2ecc71' : '#e8b84b') : 'var(--text-muted)' }}>
+                  ${effectiveTariff.toFixed(3)} <span style={{fontSize:10}}>({tariffInfo.label})</span>
                 </td>
                 <td style={{ fontFamily: 'var(--font-mono)', fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>
                   ${landed.toFixed(3)}
@@ -270,6 +272,8 @@ export default function LandedCost() {
         tariffUsd={tariffUsd}
         tariffNote={p.tariffNote}
         title={selected + ' (' + p.hs + ') — Delivered Durban'}
+        hsCode={p.hs.replace('HS ','').replace('.','')}
+        zarUsd={zarUsd}
       />
 
       <div style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginTop: 8 }}>

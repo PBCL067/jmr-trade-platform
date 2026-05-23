@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { TARIFFS } from './data/tariffData';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell } from 'recharts';
 
 const PRODUCTS = {
