@@ -8,7 +8,7 @@ const AFRICA = [...new Set(TRADE_FLOWS.map(r => r.importer))].sort();
 const DEALS = [
   {
     id: 'starch', status: 'PIPELINE', title: 'Modified Starch',
-    route: 'Argentina \u2192 South Africa', hs: 'HS 3505',
+    route: 'Argentina → South Africa', hs: 'HS 3505',
     buyer: 'Bragan / Solevo (interested)', supplier: 'Ingredion Argentina (to confirm)',
     fob: 0.61, landed: 0.80, market: 1.09, advantage: 0.29,
     sa_market_mt: 57799, sa_market_usd_m: 65.9,
@@ -19,13 +19,13 @@ const DEALS = [
       'Contact Ingredion Argentina export team (ingredion.com/sa/es-ar)',
       'Get SACU-Mercosur tariff rate for HS 3505 from SARS',
       'Confirm food grade certification and MOQ with Ingredion',
-      'Get freight quote Buenos Aires \u2192 Durban (20ft FCL)',
+      'Get freight quote Buenos Aires → Durban (20ft FCL)',
       'Present landed cost analysis to Bragan/Solevo contact',
     ],
   },
   {
     id: 'milk', status: 'PIPELINE', title: 'Full Cream Milk Powder',
-    route: 'Argentina \u2192 South Africa', hs: 'HS 040221',
+    route: 'Argentina → South Africa', hs: 'HS 040221',
     buyer: 'TBC', supplier: 'SanCor / Mastellone',
     fob: 3.61, landed: 4.00, market: 4.11, advantage: 0.11,
     sa_market_mt: 4312, sa_market_usd_m: 17.7,
@@ -35,13 +35,13 @@ const DEALS = [
     nextSteps: [
       'Confirm SA MFN import tariff for HS 040221 via SARS or customs broker',
       'Identify SA milk powder distributor or buyer',
-      'Compare freight Buenos Aires \u2192 Durban vs Auckland \u2192 Durban',
+      'Compare freight Buenos Aires → Durban vs Auckland → Durban',
       'Get MOQ and lead time from SanCor export team',
     ],
   },
   {
     id: 'sunflower', status: 'RESEARCH', title: 'Sunflower Oil',
-    route: 'Argentina \u2192 South Africa', hs: 'HS 151211',
+    route: 'Argentina → South Africa', hs: 'HS 151211',
     buyer: 'TBC', supplier: 'AGD / Molinos',
     fob: 1.10, landed: null, market: null, advantage: null,
     sa_market_mt: 160000, sa_market_usd_m: null,
@@ -105,7 +105,7 @@ function DealCard({ deal }) {
           {deal.arg_exports_to_sa === 0 && (
             <div style={{ marginTop: 8, padding: '6px 10px', background: 'rgba(232,184,75,0.08)',
               border: '1px solid rgba(232,184,75,0.2)', borderRadius: 4, fontSize: 12, color: '#e8b84b', fontFamily: 'var(--font-mono)' }}>
-              ARG EXPORTS TO SA: ZERO \u2014 UNTAPPED
+              ARG EXPORTS TO SA: ZERO — UNTAPPED
             </div>
           )}
         </div>
@@ -158,7 +158,7 @@ function Screener() {
         <select value={exporter} onChange={e => { setExporter(e.target.value); setSelected(null); }} style={selectStyle}>
           {LATAM.map(c => <option key={c}>{c}</option>)}
         </select>
-        <div style={{ color: 'var(--gold-bright)', fontSize: 18 }}>\u2192</div>
+        <div style={{ color: 'var(--gold-bright)', fontSize: 18 }}>→</div>
         <div style={{ fontSize: 12, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>TO</div>
         <select value={importer} onChange={e => { setImporter(e.target.value); setSelected(null); }} style={selectStyle}>
           <option>All Africa</option>
@@ -210,7 +210,7 @@ function Screener() {
                     <td style={{ fontFamily: 'var(--font-mono)', fontSize: 12 }}>{row.price_per_kg > 0 ? '$' + row.price_per_kg.toFixed(2) : '-'}</td>
                     <td style={{ fontFamily: 'var(--font-mono)', fontSize: 12,
                       color: row.importer_is_processor ? '#e8b84b' : 'var(--text-muted)' }}>
-                      {row.importer_is_processor ? 'YES \u26a1' : '-'}
+                      {row.importer_is_processor ? 'YES ⚡' : '-'}
                     </td>
                   </tr>
                 );
@@ -223,7 +223,7 @@ function Screener() {
       {selected && (
         <div className="card" style={{ marginTop: 14, borderColor: 'var(--border-bright)' }}>
           <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 16, marginBottom: 12 }}>
-            {selected.product} \u2192 {selected.importer}
+            {selected.product} → {selected.importer}
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12 }}>
             {[
@@ -241,7 +241,7 @@ function Screener() {
           {selected.importer_is_processor && (
             <div style={{ marginTop: 12, padding: '8px 12px', background: 'rgba(232,184,75,0.08)',
               border: '1px solid rgba(232,184,75,0.2)', borderRadius: 4, fontSize: 12, color: '#e8b84b', fontFamily: 'var(--font-mono)' }}>
-              \u26a1 {selected.importer} is an active processor \u2014 exports ${(selected.importer_l2_exports/1e6).toFixed(1)}M of by-products to world markets
+              ⚡ {selected.importer} is an active processor — exports ${(selected.importer_l2_exports/1e6).toFixed(1)}M of by-products to world markets
             </div>
           )}
         </div>
@@ -397,7 +397,7 @@ export default function Opportunities() {
           <div style={{ marginBottom: 20, padding: '10px 14px',
             background: 'rgba(200,153,58,0.06)', border: '1px solid rgba(200,153,58,0.2)', borderRadius: 6,
             fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--gold-bright)', letterSpacing: '0.04em' }}>
-            FOCUS: Argentina \u2192 South Africa &nbsp;|&nbsp; Dry goods &amp; long-life food ingredients &nbsp;|&nbsp; Updated May 2026
+            FOCUS: Argentina → South Africa &nbsp;|&nbsp; Dry goods &amp; long-life food ingredients &nbsp;|&nbsp; Updated May 2026
           </div>
           {DEALS.map(deal => <DealCard key={deal.id} deal={deal} />)}
         </div>

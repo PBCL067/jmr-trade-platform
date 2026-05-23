@@ -82,7 +82,7 @@ export default function IngredientFlow() {
                   </div>
                 </div>
                 <div style={{ marginLeft: 16, fontSize: 18, color: 'var(--text-muted)', flexShrink: 0 }}>
-                  {isSelected ? '\u25b2' : '\u25bc'}
+                  {isSelected ? '▲' : '▼'}
                 </div>
               </div>
 
@@ -127,7 +127,7 @@ export default function IngredientFlow() {
                           background: 'var(--bg-hover)', borderRadius: 4,
                           fontSize: 12, color: 'var(--text-primary)',
                           fontFamily: 'var(--font-mono)' }}>
-                          \u25c9 {s}
+                          ◉ {s}
                         </div>
                       );
                     })}
@@ -140,7 +140,7 @@ export default function IngredientFlow() {
                             background: 'rgba(46,204,113,0.05)', borderRadius: 4,
                             border: '1px solid rgba(46,204,113,0.15)',
                             fontSize: 12, color: 'var(--text-secondary)' }}>
-                            \u25b6 {b}
+                            ▶ {b}
                           </div>
                         );
                       })}
