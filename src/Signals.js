@@ -66,10 +66,10 @@ function SignalDetail({ name, data }) {
         <div>
           <div className="section-label" style={{ marginBottom: 10 }}>Signal Components</div>
           {[
-            ['Momentum vs 12m avg', data.momentum * 10],
-            ['3-month trend',       data.trend_3m_pct / 10],
-            ['Seasonal',            data.seasonal_adj * 10],
-            ['5yr rank',            (data.pct_rank_5yr - 0.5) * 2],
+            ['Momentum',     data.momentum_score],
+            ['Trend',        data.trend_score],
+            ['Seasonal',     data.seasonal_score > 1 ? 1 : data.seasonal_score < -1 ? -1 : data.seasonal_score],
+            ['5yr Rank',     data.rank_score],
           ].map(function(c) {
             return (
               <div key={c[0]} style={{ marginBottom: 10 }}>
