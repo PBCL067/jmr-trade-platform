@@ -54,7 +54,7 @@ const PRODUCTS = {
       { label: 'Argentina FOB',          value: '$3.61/kg', sub: 'Mastellone / SanCor',          color: '#2ecc71' },
       { label: 'Uruguay FOB (to SA)',    value: '$3.53/kg', sub: 'Precedent: already in SA',      color: '#e8b84b' },
       { label: 'SA Market Price (CIF)', value: '$3.24/kg', sub: 'NZ benchmark (lowest)',          color: '#3b82f6' },
-      { label: 'SA Market Size',        value: '4,312 MT', sub: '$17.7M/yr — growing',            color: '#e8b84b' },
+      { label: 'Algeria alone (2025)',   value: '$324M',    sub: '2nd largest buyer after Brazil',  color: '#e8b84b' },
     ],
     sa_suppliers: [
       { supplier: 'New Zealand', volume_mt: 1727, price_per_kg: 3.240, share_pct: 42 },
@@ -100,7 +100,7 @@ const PRODUCTS = {
       { label: 'Argentina FOB Price',   value: '$0.20/kg', sub: '3rd largest global exporter',    color: '#2ecc71' },
       { label: 'Brazil FOB (to SA)',    value: '$0.20/kg', sub: 'Main Latam competitor',           color: '#e8b84b' },
       { label: 'Argentina to Africa',  value: '$1.33B',   sub: 'Algeria, Egypt, Morocco (2023)',   color: '#3b82f6' },
-      { label: 'Top African buyer',    value: 'Algeria',  sub: '$602M from Argentina alone',       color: '#e8b84b' },
+      { label: 'Maghreb + Egypt',      value: '$1.21B',   sub: 'Argentina corn to N.Africa 2025',  color: '#e8b84b' },
     ],
     sa_suppliers: [
       { supplier: 'Argentina', volume_mt: 162290, price_per_kg: 0.197, share_pct: 43 },
@@ -137,7 +137,7 @@ const PRODUCTS = {
       { label: 'Argentina FOB Price',  value: '$0.50/kg', sub: 'World #1 exporter',               color: '#2ecc71' },
       { label: 'Argentina to Africa', value: '$871M',    sub: 'Egypt, Libya, Algeria, Morocco',    color: '#e8b84b' },
       { label: 'Egypt alone',         value: '$360M',    sub: 'Largest single buyer',              color: '#3b82f6' },
-      { label: 'SA imports',          value: 'Minimal',  sub: 'SA produces own soy meal',          color: '#4a5a70' },
+      { label: 'Total soy exports',   value: '$21.4B',   sub: 'World #1 in oil & meal (2025)',      color: '#4a5a70' },
     ],
     sa_suppliers: [
       { supplier: 'Argentina', volume_mt: 0, price_per_kg: 0.495, share_pct: 0 },
