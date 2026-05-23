@@ -66,64 +66,6 @@ export const SUPPLIERS = [
     "fobPriceRange": "$0.70-0.80/kg FOB"
   },
   {
-    "id": "cargill_brazil",
-    "name": "Cargill Brazil",
-    "country": "Brazil",
-    "country_code": "BR",
-    "city": "Uberl\u00e2ndia, Minas Gerais",
-    "role": "Manufacturer/Exporter",
-    "product_category": "Modified Starch",
-    "products": [
-      "Modified Corn Starch",
-      "Native Starch",
-      "Glucose Syrup",
-      "Maltodextrin"
-    ],
-    "website": "cargill.com.br",
-    "notes": "Major starch producer in Brazil. Large scale plant in Uberl\u00e2ndia. Exports to Africa and Middle East. Top 3 Brazilian starch exporter.",
-    "verified": true,
-    "export_experience": true,
-    "food_grade": true,
-    "priority": 1,
-    "size": "Large",
-    "annual_capacity_mt": ">50,000",
-    "parent_company": "Cargill Inc (USA)",
-    "contact_approach": "Via cargill.com.br export enquiry",
-    "certifications": [
-      "ISO 9001",
-      "FSSC 22000"
-    ],
-    "fobPriceRange": "$0.70-0.80/kg FOB"
-  },
-  {
-    "id": "cargill_argentina",
-    "name": "Cargill Argentina",
-    "country": "Argentina",
-    "country_code": "AR",
-    "city": "Buenos Aires",
-    "role": "Manufacturer/Exporter",
-    "product_category": "Modified Starch",
-    "products": [
-      "Corn Starch",
-      "Modified Starch",
-      "Glucose Syrup"
-    ],
-    "website": "cargill.com.ar",
-    "notes": "Major grain and starch processor in Argentina. Port access via Rosario and Buenos Aires.",
-    "verified": true,
-    "export_experience": true,
-    "food_grade": true,
-    "priority": 1,
-    "size": "Large",
-    "annual_capacity_mt": ">50,000",
-    "parent_company": "Cargill Inc (USA)",
-    "contact_approach": "Via cargill.com.ar",
-    "certifications": [
-      "ISO 9001"
-    ],
-    "fobPriceRange": "$0.65-0.75/kg FOB"
-  },
-  {
     "id": "adm_brasil",
     "name": "ADM Brasil",
     "country": "Brazil",
@@ -419,7 +361,7 @@ export const SUPPLIERS = [
       "Cheese"
     ],
     "website": "sancor.com",
-    "notes": "Major Argentine dairy cooperative. In process of being acquired — operations continuing. One of Argentina's top FCMP exporters.",
+    "notes": "Major Argentine dairy cooperative. In process of being acquired \u2014 operations continuing. One of Argentina's top FCMP exporters.",
     "verified": true,
     "export_experience": true,
     "food_grade": true,
@@ -597,8 +539,7 @@ export const SUPPLIERS = [
     "priority": 2,
     "parent_company": "Milco SA (Pty) Ltd",
     "contact_approach": "Via procurement division"
-  }
-,
+  },
   {
     "id": "lorenz_brazil",
     "name": "Lorenz",
@@ -607,7 +548,14 @@ export const SUPPLIERS = [
     "city": "Cianorte, Parana",
     "role": "Manufacturer/Exporter",
     "product_category": "Modified Starch",
-    "products": ["Cassava Modified Starch", "Hydroxypropyl Starch", "Pre-gelatinized Starch", "Maltodextrin", "Glucose Syrup", "Dextrins"],
+    "products": [
+      "Cassava Modified Starch",
+      "Hydroxypropyl Starch",
+      "Pre-gelatinized Starch",
+      "Maltodextrin",
+      "Glucose Syrup",
+      "Dextrins"
+    ],
     "website": "lorenz.com.br",
     "notes": "First cassava starch producer in Latin America, founded 1916. Specialist in hydroxypropyl modified starches with resistance to UHT processes, freezing cycles, and extreme pH/pressure/temperature. Four plants in Parana and Mato Grosso do Sul. Actively targeting sub-Saharan Africa export markets.",
     "verified": true,
@@ -618,7 +566,9 @@ export const SUPPLIERS = [
     "annual_capacity_mt": "280,000",
     "parent_company": "GTFoods (Brazil)",
     "contact_approach": "Via lorenz.com.br export enquiry",
-    "certifications": ["ISO 9001"],
+    "certifications": [
+      "ISO 9001"
+    ],
     "fobPriceRange": "$0.70-0.90/kg FOB"
   }
 ];
