@@ -68,8 +68,8 @@ export const SUPPLIERS = [
     ],
     "fobPriceRange": "$0.70-0.80/kg FOB",
     "nearest_port": "Santos",
-    "port_distance_km": 170,
-    "port_notes": "Mogi Guacu to Santos via Anhanguera"
+    "port_distance_km": 242,
+    "port_notes": "Mogi Guacu to Santos via Anhanguera/Imigrantes \u2014 242km"
   },
   {
     "id": "adm_brasil",
@@ -202,7 +202,7 @@ export const SUPPLIERS = [
     "name": "Amidos Nevada",
     "country": "Brazil",
     "country_code": "BR",
-    "city": "Brazil",
+    "city": "Sete Quedas, Mato Grosso do Sul",
     "role": "Manufacturer/Exporter",
     "product_category": "Modified Starch",
     "products": [
@@ -219,9 +219,9 @@ export const SUPPLIERS = [
     "size": "Medium",
     "annual_capacity_mt": "10,000-50,000",
     "parent_company": "Independent",
-    "nearest_port": "Santos",
-    "port_distance_km": 300,
-    "port_notes": "Estimated \u2014 confirm plant location"
+    "nearest_port": "Paranagua",
+    "port_distance_km": 900,
+    "port_notes": "Sete Quedas to Paranagua \u2014 over 900km via BR-163/BR-277"
   },
   {
     "id": "alur_uruguay",
@@ -432,9 +432,9 @@ export const SUPPLIERS = [
     "annual_capacity_mt": "10,000-20,000 FCMP",
     "parent_company": "CCPR Cooperative",
     "contact_approach": "Via itambe.com.br",
-    "nearest_port": "Santos",
-    "port_distance_km": 600,
-    "port_notes": "Belo Horizonte to Santos"
+    "nearest_port": "Rio de Janeiro",
+    "port_distance_km": 500,
+    "port_notes": "Belo Horizonte to Rio de Janeiro \u2014 just under 500km via BR-040"
   },
   {
     "id": "claldy_uruguay",
@@ -619,8 +619,8 @@ export const SUPPLIERS = [
     ],
     "fobPriceRange": "$0.70-0.90/kg FOB",
     "nearest_port": "Paranagua",
-    "port_distance_km": 150,
-    "port_notes": "Cianorte, Parana to Paranagua"
+    "port_distance_km": 605,
+    "port_notes": "Cianorte, Parana to Paranagua \u2014 605km via BR-369/BR-277"
   },
   {
     "id": "semino_argentina",
@@ -690,9 +690,9 @@ export const SUPPLIERS = [
       "ISO 9001",
       "FSSC 22000"
     ],
-    "nearest_port": "Santos",
-    "port_distance_km": 450,
-    "port_notes": "Guarani, MG to Santos"
+    "nearest_port": "Campos dos Goytacazes",
+    "port_distance_km": 300,
+    "port_notes": "Guarani, MG to Campos dos Goytacazes \u2014 approx 300km"
   },
   {
     "id": "almex_mexico",
@@ -922,9 +922,9 @@ export const SUPPLIERS = [
     "size": "Small",
     "parent_company": "Independent",
     "contact_approach": "info@almidoneradiesel.com.ar | WhatsApp +54 9 3743 475002",
-    "nearest_port": "Buenos Aires",
-    "port_distance_km": 1100,
-    "port_notes": "Puerto Rico, Misiones \u2014 very long haul or Paraguay river barge option"
+    "nearest_port": "Puerto de Posadas",
+    "port_distance_km": 130,
+    "port_notes": "Puerto Rico, Misiones to Puerto de Posadas \u2014 approx 130km"
   },
   {
     "id": "femag_argentina",
@@ -953,9 +953,9 @@ export const SUPPLIERS = [
     "certifications": [
       "Sin TACC (Gluten Free)"
     ],
-    "nearest_port": "Buenos Aires",
-    "port_distance_km": 1100,
-    "port_notes": "Misiones \u2014 long haul or Paraguay river barge option"
+    "nearest_port": "Puerto de Posadas",
+    "port_distance_km": 130,
+    "port_notes": "Misiones to Puerto de Posadas \u2014 approx 130km"
   },
   {
     "id": "cafagda",
@@ -1015,8 +1015,8 @@ export const SUPPLIERS = [
     "annual_capacity_mt": "Unknown \u2014 confirm directly",
     "parent_company": "Independent",
     "contact_approach": "info@glucovil.com.ar | +54 11 4378-1750 | Sarmiento 459 5th Floor, CABA",
-    "nearest_port": "Buenos Aires",
-    "port_distance_km": 750,
-    "port_notes": "Villa Mercedes, San Luis \u2014 long inland haul"
+    "nearest_port": "Rosario",
+    "port_distance_km": 550,
+    "port_notes": "Villa Mercedes, San Luis to Rosario via RN8 \u2014 approx 550km"
   }
 ];
