@@ -922,9 +922,9 @@ export const SUPPLIERS = [
     "size": "Small",
     "parent_company": "Independent",
     "contact_approach": "info@almidoneradiesel.com.ar | WhatsApp +54 9 3743 475002",
-    "nearest_port": "Puerto de Posadas",
+    "nearest_port": "Puerto de Posadas (river) via Rosario",
     "port_distance_km": 130,
-    "port_notes": "Puerto Rico, Misiones to Puerto de Posadas \u2014 approx 130km"
+    "port_notes": "Puerto de Posadas (~130km) is a river port on the Parana. Goods travel by barge down to Rosario or Buenos Aires for ocean export \u2014 add ~800km barge leg and 5-7 days transit to landed cost calculation."
   },
   {
     "id": "femag_argentina",
@@ -953,9 +953,9 @@ export const SUPPLIERS = [
     "certifications": [
       "Sin TACC (Gluten Free)"
     ],
-    "nearest_port": "Puerto de Posadas",
+    "nearest_port": "Puerto de Posadas (river) via Rosario",
     "port_distance_km": 130,
-    "port_notes": "Misiones to Puerto de Posadas \u2014 approx 130km"
+    "port_notes": "Puerto de Posadas (~130km) is a river port on the Parana. Goods travel by barge down to Rosario or Buenos Aires for ocean export \u2014 add ~800km barge leg and 5-7 days transit to landed cost calculation."
   },
   {
     "id": "cafagda",
