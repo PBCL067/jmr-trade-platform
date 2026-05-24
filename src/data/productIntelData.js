@@ -58,11 +58,11 @@ export const SA_IMPORT_INTEL = [
     ],
     "our_suppliers": [
       "Aceitera General Deheza (AGD)",
-      "Molinos Rio de la Plata",
-      "Vicentin SAIC",
-      "Oleaginosa Moreno (Glencore)",
       "COFCO International Argentina",
-      "Bunge Argentina (Flour)"
+      "Molinos Rio de la Plata",
+      "Oleaginosa Moreno (Glencore)",
+      "Vicentin SAIC",
+      "Viterra Argentina"
     ],
     "year": 2024
   },
@@ -129,9 +129,9 @@ export const SA_IMPORT_INTEL = [
       }
     ],
     "our_suppliers": [
-      "Viterra Argentina",
       "COFCO International Argentina",
-      "Bunge Argentina (Flour)"
+      "Vicentin SAIC",
+      "Viterra Argentina"
     ],
     "year": 2024
   },
@@ -198,10 +198,13 @@ export const SA_IMPORT_INTEL = [
       }
     ],
     "our_suppliers": [
-      "Viterra Argentina",
-      "Vicentin SAIC",
+      "ADM Brasil (Soy Protein)",
+      "Aceitera General Deheza (AGD)",
       "Bunge Argentina (Flour)",
-      "COFCO International Argentina"
+      "COFCO International Argentina",
+      "Oleaginosa Moreno (Glencore)",
+      "Vicentin SAIC",
+      "Viterra Argentina"
     ],
     "year": 2024
   },
@@ -215,7 +218,7 @@ export const SA_IMPORT_INTEL = [
     "latam_pct": 10.6,
     "latam_cif_usd": 5607235.0,
     "gap_signal": "UNDERREPRESENTED",
-    "gap_note": "SA imports $100M of modified starches annually. Comtrade reports all types under HS 350510 \u2014 covers modified corn, cassava and wheat starches combined. Thailand and USA dominate. Zero Latam supply currently. 15 of our suppliers across Argentina, Brazil and Paraguay can compete on price.",
+    "gap_note": "SA imports $100M of modified starches annually. Comtrade reports all types under HS 350510 — covers modified corn, cassava and wheat starches combined. Thailand and USA dominate. Zero Latam supply currently. 15 of our suppliers across Argentina, Brazil and Paraguay can compete on price.",
     "top_suppliers": [
       {
         "origin": "Thailand",
@@ -262,21 +265,29 @@ export const SA_IMPORT_INTEL = [
       }
     ],
     "our_suppliers": [
+      "ADM Brasil",
+      "Almidonera Diesel",
+      "Almidones Mexicanos (ALMEX)",
+      "Almidones de Sucre (ADS)",
+      "Amidos Nevada",
+      "Arcor Group",
+      "Fecularia Salto Pilao SA",
+      "Femag (Graef Hnos)",
+      "Glucovil Argentina",
+      "Gluten y Almidones Industriales",
+      "IMSA (Industrializadora de Maiz)",
       "Ingredion Argentina",
       "Ingredion Brazil",
+      "Ingredion Chile (Arcor JV)",
+      "Ingredion Colombia",
+      "Ingredion Ecuador",
+      "Ingredion Peru",
+      "La Fabrica de Almidon LF",
       "Lorenz",
       "Molinos Juan Semino",
-      "Glucovil Argentina",
-      "ADM Brasil",
-      "Tereos Brasil",
-      "Arcor Group",
       "Roquette Argentina",
-      "Fecularia Salto Pilao",
-      "Amidos Nevada",
-      "Femag (Graef Hnos)",
-      "Almidonera Diesel",
-      "COFCO International Argentina",
-      "Bunge Argentina (Flour)"
+      "Tate & Lyle / Gemacom Tech",
+      "Tereos Brasil"
     ],
     "year": 2024
   },
@@ -343,8 +354,6 @@ export const SA_IMPORT_INTEL = [
       }
     ],
     "our_suppliers": [
-      "Ingredion Brazil",
-      "ADM Brasil",
       "ADM Brasil (Soy Protein)",
       "IFF (DuPont) Esteio Brazil"
     ],
@@ -370,7 +379,7 @@ export const SA_IMPORT_INTEL = [
         "is_latam": false
       },
       {
-        "origin": "T\u00fcrkiye",
+        "origin": "Türkiye",
         "cif_usd": 5929033.0,
         "volume_mt": 17355.7,
         "price_per_kg": 0.3416,
@@ -400,12 +409,16 @@ export const SA_IMPORT_INTEL = [
     ],
     "latam_suppliers": [],
     "our_suppliers": [
-      "Molinos Juan Semino",
-      "Molino Canuelas",
-      "Molino Lagomarsino",
       "Bunge Argentina (Flour)",
       "COFCO International Argentina",
-      "Molino Chabas"
+      "GRUMA (Maseca/GIMSA)",
+      "Gruma Centroamerica",
+      "Minsa Corporation",
+      "Molino Canuelas",
+      "Molino Chabas",
+      "Molino Lagomarsino",
+      "Molinos Juan Semino",
+      "Molinos Rio de la Plata"
     ],
     "year": 2024
   },
@@ -467,9 +480,12 @@ export const SA_IMPORT_INTEL = [
     ],
     "our_suppliers": [
       "Aceitera General Deheza (AGD)",
+      "Bunge Argentina (Flour)",
+      "COFCO International Argentina",
       "Molinos Rio de la Plata",
+      "Oleaginosa Moreno (Glencore)",
       "Vicentin SAIC",
-      "Oleaginosa Moreno (Glencore)"
+      "Viterra Argentina"
     ],
     "year": 2024
   },
@@ -552,7 +568,7 @@ export const SA_IMPORT_INTEL = [
         "is_latam": false
       },
       {
-        "origin": "T\u00fcrkiye",
+        "origin": "Türkiye",
         "cif_usd": 1160402.0,
         "volume_mt": 2273.5,
         "price_per_kg": 0.5104,
@@ -582,11 +598,19 @@ export const SA_IMPORT_INTEL = [
     ],
     "latam_suppliers": [],
     "our_suppliers": [
-      "Glucovil Argentina",
       "ADM Brasil",
-      "Tereos Brasil",
+      "Almidones Mexicanos (ALMEX)",
+      "Arcor Group",
+      "Glucovil Argentina",
+      "IMSA (Industrializadora de Maiz)",
       "Ingredion Argentina",
-      "Ingredion Brazil"
+      "Ingredion Brazil",
+      "Ingredion Chile (Arcor JV)",
+      "Ingredion Colombia",
+      "Ingredion Ecuador",
+      "Ingredion Peru",
+      "Lorenz",
+      "Tereos Brasil"
     ],
     "year": 2024
   },
@@ -647,11 +671,15 @@ export const SA_IMPORT_INTEL = [
       }
     ],
     "our_suppliers": [
-      "Lorenz",
-      "Fecularia Salto Pilao",
-      "Amidos Nevada",
+      "Almidonera Diesel",
+      "Almidones Mexicanos (ALMEX)",
+      "Almidones de Sucre (ADS)",
+      "Fecularia Salto Pilao SA",
       "Femag (Graef Hnos)",
-      "Almidonera Diesel"
+      "Ingredion Argentina",
+      "La Fabrica de Almidon LF",
+      "Lorenz",
+      "Tate & Lyle / Gemacom Tech"
     ],
     "year": 2024
   },
@@ -718,14 +746,15 @@ export const SA_IMPORT_INTEL = [
       }
     ],
     "our_suppliers": [
-      "Conaprole",
-      "Mastellone (La Serenisima)",
-      "SanCor",
       "Claldy",
-      "Itambe",
       "Colun",
-      "Soprole",
-      "Pili (Lacteos Finos del Uruguay)"
+      "Conaprole",
+      "Itambe",
+      "Lactolanda",
+      "Mastellone Hermanos (La Serenisima)",
+      "Pili (Lacteos Finos del Uruguay)",
+      "SanCor",
+      "Soprole"
     ],
     "year": 2024
   },
@@ -799,8 +828,8 @@ export const SA_IMPORT_INTEL = [
     ],
     "our_suppliers": [
       "Gelnex (Darling Ingredients)",
-      "PB Leiner Argentina",
-      "Gelprime Industry"
+      "Gelprime Industry",
+      "PB Leiner Argentina"
     ],
     "year": 2024
   },
@@ -817,7 +846,7 @@ export const SA_IMPORT_INTEL = [
     "gap_note": "Latam only 0.6% of SA imports. Significant room to grow.",
     "top_suppliers": [
       {
-        "origin": "T\u00fcrkiye",
+        "origin": "Türkiye",
         "cif_usd": 1872605.0,
         "volume_mt": 3928.9,
         "price_per_kg": 0.4766,
@@ -861,10 +890,21 @@ export const SA_IMPORT_INTEL = [
       }
     ],
     "our_suppliers": [
+      "ADM Brasil",
+      "Almidones Mexicanos (ALMEX)",
+      "Amidos Nevada",
+      "Fecularia Salto Pilao SA",
+      "Femag (Graef Hnos)",
+      "Glucovil Argentina",
+      "IMSA (Industrializadora de Maiz)",
       "Ingredion Argentina",
       "Ingredion Brazil",
-      "Glucovil Argentina",
-      "ADM Brasil",
+      "Ingredion Chile (Arcor JV)",
+      "Ingredion Colombia",
+      "Ingredion Ecuador",
+      "Ingredion Peru",
+      "Roquette Argentina",
+      "Tate & Lyle / Gemacom Tech",
       "Tereos Brasil"
     ],
     "year": 2024
@@ -919,8 +959,10 @@ export const SA_IMPORT_INTEL = [
     ],
     "latam_suppliers": [],
     "our_suppliers": [
-      "Molinos Juan Semino",
-      "Molino Chabas"
+      "Almidones Mexicanos (ALMEX)",
+      "Gluten y Almidones Industriales",
+      "Molino Chabas",
+      "Molinos Juan Semino"
     ],
     "year": 2024
   },
@@ -974,9 +1016,11 @@ export const SA_IMPORT_INTEL = [
     ],
     "latam_suppliers": [],
     "our_suppliers": [
-      "Molinos Juan Semino",
-      "Molino Canuelas"
+      "GRUMA (Maseca/GIMSA)",
+      "Gruma Centroamerica",
+      "Minsa Corporation"
     ],
     "year": 2024
   }
 ];
+
