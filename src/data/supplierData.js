@@ -30,7 +30,10 @@ export const SUPPLIERS = [
       "Kosher",
       "Halal"
     ],
-    "fobPriceRange": "$0.65-0.75/kg FOB"
+    "fobPriceRange": "$0.65-0.75/kg FOB",
+    "nearest_port": "Rosario",
+    "port_distance_km": 200,
+    "port_notes": "Baradero to Rosario via RN9"
   },
   {
     "id": "ingredion_brazil",
@@ -63,7 +66,10 @@ export const SUPPLIERS = [
       "Kosher",
       "Halal"
     ],
-    "fobPriceRange": "$0.70-0.80/kg FOB"
+    "fobPriceRange": "$0.70-0.80/kg FOB",
+    "nearest_port": "Santos",
+    "port_distance_km": 170,
+    "port_notes": "Mogi Guacu to Santos via Anhanguera"
   },
   {
     "id": "adm_brasil",
@@ -93,7 +99,10 @@ export const SUPPLIERS = [
       "ISO 9001",
       "FSSC 22000"
     ],
-    "fobPriceRange": "$0.70-0.80/kg FOB"
+    "fobPriceRange": "$0.70-0.80/kg FOB",
+    "nearest_port": "Santos",
+    "port_distance_km": 70,
+    "port_notes": "Sao Paulo to Santos"
   },
   {
     "id": "tereos_brazil",
@@ -123,7 +132,10 @@ export const SUPPLIERS = [
     "certifications": [
       "ISO 9001",
       "FSSC 22000"
-    ]
+    ],
+    "nearest_port": "Santos",
+    "port_distance_km": 400,
+    "port_notes": "Palmital to Santos"
   },
   {
     "id": "arcor_argentina",
@@ -147,7 +159,10 @@ export const SUPPLIERS = [
     "size": "Medium",
     "annual_capacity_mt": "10,000-50,000",
     "parent_company": "Arcor S.A.I.C.",
-    "contact_approach": "Via export division"
+    "contact_approach": "Via export division",
+    "nearest_port": "Rosario",
+    "port_distance_km": 400,
+    "port_notes": "Cordoba to Rosario via A008"
   },
   {
     "id": "roquette_argentina",
@@ -177,7 +192,10 @@ export const SUPPLIERS = [
       "ISO 9001",
       "GMP Pharma"
     ],
-    "fobPriceRange": "$0.80-1.00/kg FOB"
+    "fobPriceRange": "$0.80-1.00/kg FOB",
+    "nearest_port": "Rosario",
+    "port_distance_km": 300,
+    "port_notes": "Estimated \u2014 confirm plant location"
   },
   {
     "id": "amidos_nevada_brazil",
@@ -200,7 +218,10 @@ export const SUPPLIERS = [
     "priority": 2,
     "size": "Medium",
     "annual_capacity_mt": "10,000-50,000",
-    "parent_company": "Independent"
+    "parent_company": "Independent",
+    "nearest_port": "Santos",
+    "port_distance_km": 300,
+    "port_notes": "Estimated \u2014 confirm plant location"
   },
   {
     "id": "alur_uruguay",
@@ -223,7 +244,10 @@ export const SUPPLIERS = [
     "priority": 3,
     "size": "Small",
     "annual_capacity_mt": "<10,000",
-    "parent_company": "ANCAP (Uruguay state)"
+    "parent_company": "ANCAP (Uruguay state)",
+    "nearest_port": "Montevideo",
+    "port_distance_km": 380,
+    "port_notes": "Paysandu to Montevideo \u2014 long haul across Uruguay"
   },
   {
     "id": "ingrain_sa",
@@ -281,7 +305,10 @@ export const SUPPLIERS = [
       "FSSC 22000",
       "Halal",
       "Kosher"
-    ]
+    ],
+    "nearest_port": "Montevideo",
+    "port_distance_km": 50,
+    "port_notes": "Montevideo port \u2014 very close"
   },
   {
     "id": "mastellone_argentina",
@@ -314,7 +341,10 @@ export const SUPPLIERS = [
       "FSSC 22000",
       "Halal",
       "Kosher"
-    ]
+    ],
+    "nearest_port": "Buenos Aires",
+    "port_distance_km": 60,
+    "port_notes": "General Rodriguez, Buenos Aires province"
   },
   {
     "id": "colun_chile",
@@ -344,7 +374,10 @@ export const SUPPLIERS = [
     "certifications": [
       "ISO 9001",
       "FSSC 22000"
-    ]
+    ],
+    "nearest_port": "Puerto Montt",
+    "port_distance_km": 100,
+    "port_notes": "La Union to Puerto Montt \u2014 southern Chile"
   },
   {
     "id": "sancor_argentina",
@@ -370,7 +403,10 @@ export const SUPPLIERS = [
     "annual_capacity_mt": "10,000-30,000 FCMP",
     "parent_company": "Argentine domestic cooperative",
     "contact_approach": "Contact export division directly",
-    "fobPriceRange": "$3.40-3.60/kg FOB"
+    "fobPriceRange": "$3.40-3.60/kg FOB",
+    "nearest_port": "Rosario",
+    "port_distance_km": 140,
+    "port_notes": "Sunchales, Santa Fe to Rosario"
   },
   {
     "id": "itambe_brazil",
@@ -395,7 +431,10 @@ export const SUPPLIERS = [
     "size": "Medium",
     "annual_capacity_mt": "10,000-20,000 FCMP",
     "parent_company": "CCPR Cooperative",
-    "contact_approach": "Via itambe.com.br"
+    "contact_approach": "Via itambe.com.br",
+    "nearest_port": "Santos",
+    "port_distance_km": 600,
+    "port_notes": "Belo Horizonte to Santos"
   },
   {
     "id": "claldy_uruguay",
@@ -418,7 +457,10 @@ export const SUPPLIERS = [
     "priority": 2,
     "size": "Small",
     "annual_capacity_mt": "<10,000 FCMP",
-    "parent_company": "Private"
+    "parent_company": "Private",
+    "nearest_port": "Montevideo",
+    "port_distance_km": 30,
+    "port_notes": "Montevideo \u2014 close to port"
   },
   {
     "id": "pili_uruguay",
@@ -441,7 +483,10 @@ export const SUPPLIERS = [
     "priority": 2,
     "size": "Small",
     "annual_capacity_mt": "<10,000 FCMP",
-    "parent_company": "Private"
+    "parent_company": "Private",
+    "nearest_port": "Montevideo",
+    "port_distance_km": 350,
+    "port_notes": "Young, Rio Negro to Montevideo"
   },
   {
     "id": "soprole_chile",
@@ -465,7 +510,10 @@ export const SUPPLIERS = [
     "priority": 3,
     "size": "Small",
     "annual_capacity_mt": "<10,000 FCMP",
-    "parent_company": "Fonterra (New Zealand)"
+    "parent_company": "Fonterra (New Zealand)",
+    "nearest_port": "San Antonio",
+    "port_distance_km": 90,
+    "port_notes": "Santiago to San Antonio port"
   },
   {
     "id": "bragan_solevo_sa",
@@ -569,7 +617,10 @@ export const SUPPLIERS = [
     "certifications": [
       "ISO 9001"
     ],
-    "fobPriceRange": "$0.70-0.90/kg FOB"
+    "fobPriceRange": "$0.70-0.90/kg FOB",
+    "nearest_port": "Paranagua",
+    "port_distance_km": 150,
+    "port_notes": "Cianorte, Parana to Paranagua"
   },
   {
     "id": "semino_argentina",
@@ -605,7 +656,10 @@ export const SUPPLIERS = [
       "ISO 9001",
       "Halal",
       "Kosher"
-    ]
+    ],
+    "nearest_port": "Rosario",
+    "port_distance_km": 110,
+    "port_notes": "Carcarana, Santa Fe \u2014 very close to Rosario"
   },
   {
     "id": "tate_lyle_gemacom_brazil",
@@ -635,7 +689,10 @@ export const SUPPLIERS = [
     "certifications": [
       "ISO 9001",
       "FSSC 22000"
-    ]
+    ],
+    "nearest_port": "Santos",
+    "port_distance_km": 450,
+    "port_notes": "Guarani, MG to Santos"
   },
   {
     "id": "almex_mexico",
@@ -665,7 +722,10 @@ export const SUPPLIERS = [
     "contact_approach": "Via almexcustomerservice@almidones.com.mx",
     "certifications": [
       "ISO 9001"
-    ]
+    ],
+    "nearest_port": "Manzanillo",
+    "port_distance_km": 350,
+    "port_notes": "Guadalajara to Manzanillo \u2014 main Pacific export port"
   },
   {
     "id": "vertrauen_argentina",
@@ -693,7 +753,10 @@ export const SUPPLIERS = [
     "priority": 3,
     "size": "Small",
     "parent_company": "Independent",
-    "contact_approach": "Via vertrauensrl.com.ar/contacto \u2014 +54 (3564) 530066"
+    "contact_approach": "Via vertrauensrl.com.ar/contacto \u2014 +54 (3564) 530066",
+    "nearest_port": "Rosario",
+    "port_distance_km": 470,
+    "port_notes": "San Francisco, Cordoba to Rosario"
   },
   {
     "id": "ciso_paraguay",
@@ -720,7 +783,10 @@ export const SUPPLIERS = [
     "priority": 3,
     "size": "Small",
     "parent_company": "Independent",
-    "contact_approach": "ventas@cisosrl.com.py | +595 994 852271"
+    "contact_approach": "ventas@cisosrl.com.py | +595 994 852271",
+    "nearest_port": "Asuncion",
+    "port_distance_km": 10,
+    "port_notes": "Asuncion \u2014 close to river port"
   },
   {
     "id": "insuquim_paraguay",
@@ -765,7 +831,10 @@ export const SUPPLIERS = [
     "priority": 2,
     "size": "Small",
     "parent_company": "Independent",
-    "contact_approach": "Direct contact needed \u2014 no website found. Search via Paraguay Chamber of Industry."
+    "contact_approach": "Direct contact needed \u2014 no website found. Search via Paraguay Chamber of Industry.",
+    "nearest_port": "Asuncion / Paranagua",
+    "port_distance_km": 0,
+    "port_notes": "Caaguazu \u2014 river barge option via Paraguay-Parana waterway"
   },
   {
     "id": "mathiesen_group",
@@ -827,7 +896,10 @@ export const SUPPLIERS = [
     "size": "Medium",
     "annual_capacity_mt": "Unknown \u2014 confirm directly",
     "parent_company": "Independent",
-    "contact_approach": "ventas@fspsa.com.py | WhatsApp +595 983 953-025"
+    "contact_approach": "ventas@fspsa.com.py | WhatsApp +595 983 953-025",
+    "nearest_port": "Asuncion / Paranagua",
+    "port_distance_km": 0,
+    "port_notes": "Paraguay \u2014 river barge to Paranagua or Buenos Aires"
   },
   {
     "id": "almidonera_diesel",
@@ -849,7 +921,10 @@ export const SUPPLIERS = [
     "priority": 2,
     "size": "Small",
     "parent_company": "Independent",
-    "contact_approach": "info@almidoneradiesel.com.ar | WhatsApp +54 9 3743 475002"
+    "contact_approach": "info@almidoneradiesel.com.ar | WhatsApp +54 9 3743 475002",
+    "nearest_port": "Buenos Aires",
+    "port_distance_km": 1100,
+    "port_notes": "Puerto Rico, Misiones \u2014 very long haul or Paraguay river barge option"
   },
   {
     "id": "femag_argentina",
@@ -877,7 +952,10 @@ export const SUPPLIERS = [
     "contact_approach": "graefhnos@gmail.com | WhatsApp +54 9 3743 50-3293",
     "certifications": [
       "Sin TACC (Gluten Free)"
-    ]
+    ],
+    "nearest_port": "Buenos Aires",
+    "port_distance_km": 1100,
+    "port_notes": "Misiones \u2014 long haul or Paraguay river barge option"
   },
   {
     "id": "cafagda",
@@ -936,6 +1014,9 @@ export const SUPPLIERS = [
     "size": "Medium",
     "annual_capacity_mt": "Unknown \u2014 confirm directly",
     "parent_company": "Independent",
-    "contact_approach": "info@glucovil.com.ar | +54 11 4378-1750 | Sarmiento 459 5th Floor, CABA"
+    "contact_approach": "info@glucovil.com.ar | +54 11 4378-1750 | Sarmiento 459 5th Floor, CABA",
+    "nearest_port": "Buenos Aires",
+    "port_distance_km": 750,
+    "port_notes": "Villa Mercedes, San Luis \u2014 long inland haul"
   }
 ];

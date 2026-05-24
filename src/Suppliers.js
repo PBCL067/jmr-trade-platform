@@ -110,6 +110,19 @@ function SupplierCard({ s }) {
             <span style={{ color: 'var(--blue)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>{s.website}</span>
           </div>
         )}
+        {s.nearest_port && (
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 0', borderBottom: '1px solid var(--border)', fontSize: 12 }}>
+            <span style={{ color: 'var(--text-muted)' }}>Nearest Export Port</span>
+            <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)', textAlign: 'right' }}>
+              {s.nearest_port}
+              {s.port_distance_km > 0 && (
+                <span style={{ color: s.port_distance_km < 200 ? '#2ecc71' : s.port_distance_km < 600 ? '#e8b84b' : '#e74c3c', marginLeft: 8 }}>
+                  {s.port_distance_km} km
+                </span>
+              )}
+            </span>
+          </div>
+        )}
         {s.contact_approach && (
           <div style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 0', fontSize: 12 }}>
             <span style={{ color: 'var(--text-muted)' }}>Contact</span>
