@@ -140,10 +140,27 @@ export default function SupplierMap() {
       `);
 
       marker.bindPopup(popup);
-      marker.on('click', () => { setSelected(s.id); marker.openPopup(); });
+      marker.on('click', () => { setSelected(s.id); });
+      marker.on('popupopen', () => setSelected(s.id));
       markersRef.current[s.id] = marker;
     });
-  }, [filtered, selected, mapReady]);
+  }, [filtered, mapReady]);
+
+  // Highlight selected marker without redrawing all
+  useEffect(() => {
+    Object.entries(markersRef.current).forEach(([id, marker]) => {
+      const s = SUPPLIERS.find(sup => sup.id === id);
+      if (!s) return;
+      const color = getColor(s);
+      const isSelected = selected === id;
+      marker.setStyle({
+        color:       isSelected ? '#ffffff' : color,
+        weight:      isSelected ? 3 : 1.5,
+        fillOpacity: isSelected ? 1 : 0.8,
+      });
+      if (isSelected) marker.openPopup();
+    });
+  }, [selected]);
 
   // Inject popup styles once
   useEffect(() => {
