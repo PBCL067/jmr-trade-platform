@@ -13,11 +13,11 @@ import './App.css';
 const NAV = [
   { id: 'opportunities', label: 'Opportunities', icon: '\u25c9' },
   { id: 'intel',         label: 'Product Intel', icon: '\u25a0' },
+  { id: 'market',       label: 'Market Intel',  icon: '\u25cb' },
   { id: 'landed',        label: 'Landed Cost',   icon: '\u25c6' },
   { id: 'signals',       label: 'Signals',       icon: '\u25c8' },
   { id: 'suppliers',     label: 'Suppliers',     icon: '\u25ce' },
   { id: 'map',          label: 'Supplier Map',  icon: '\u25b3' },
-  { id: 'market',       label: 'Market Intel',  icon: '\u25cb' },
   { id: 'learn',         label: 'Learn',         icon: '\u25d4' },
 ];
 
