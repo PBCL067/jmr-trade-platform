@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { SUPPLIERS } from './data/supplierData';
 
 const SUPPLIER_COORDS = {
@@ -31,16 +31,6 @@ const SUPPLIER_COORDS = {
   "almex_mexico":             { lat:  20.659699, lng: -103.349609 },
 };
 
-const ROLE_TYPE = {
-  'Manufacturer/Exporter':      'Supplier',
-  'Manufacturer':               'Supplier',
-  'Exporter':                   'Supplier',
-  'Buyer/Distributor':          'Buyer',
-  'Buyer / Food Manufacturer':  'Buyer',
-  'Buyer / Dairy Manufacturer': 'Buyer',
-  'Domestic Producer':          'Intel',
-};
-
 const CATEGORY_COLORS = {
   'Modified Starch': '#3b82f6',
   'Dairy':           '#2ecc71',
@@ -48,26 +38,124 @@ const CATEGORY_COLORS = {
   'default':         '#4a5a70',
 };
 
+const SIZE_RADIUS = { Large: 14, Medium: 10, Small: 7 };
+
+function getColor(s) {
+  return CATEGORY_COLORS[s.product_category] || CATEGORY_COLORS.default;
+}
+
 export default function SupplierMap() {
+  const mapRef    = useRef(null);
+  const leafletRef = useRef(null);
+  const markersRef = useRef({});
+
   const [filterCategory, setFilterCategory] = useState('All');
   const [filterCountry,  setFilterCountry]  = useState('All');
   const [filterSize,     setFilterSize]     = useState('All');
-  const [filterRole,     setFilterRole]     = useState('All');
   const [selected,       setSelected]       = useState(null);
 
   const categories = ['All', 'Modified Starch', 'Dairy', 'Edible Oils'];
-  const countries  = ['All', 'Argentina', 'Brazil', 'Uruguay', 'Chile', 'Paraguay', 'Mexico', 'South Africa'];
+  const countries  = ['All', 'Argentina', 'Brazil', 'Uruguay', 'Chile', 'Paraguay', 'Mexico'];
   const sizes      = ['All', 'Large', 'Medium', 'Small'];
-  const roles      = ['All', 'Supplier', 'Intel'];
 
   const filtered = SUPPLIERS.filter(s => {
     if (!SUPPLIER_COORDS[s.id]) return false;
     if (filterCategory !== 'All' && s.product_category !== filterCategory) return false;
     if (filterCountry  !== 'All' && s.country !== filterCountry) return false;
     if (filterSize     !== 'All' && s.size    !== filterSize)    return false;
-    if (filterRole     !== 'All' && (ROLE_TYPE[s.role]||'Intel') !== filterRole) return false;
     return true;
   });
+
+  // Load Leaflet dynamically
+  useEffect(() => {
+    if (leafletRef.current) return;
+
+    const link = document.createElement('link');
+    link.rel  = 'stylesheet';
+    link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+    document.head.appendChild(link);
+
+    const script = document.createElement('script');
+    script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+    script.onload = () => {
+      const L = window.L;
+      const map = L.map(mapRef.current, {
+        center: [-25, -55],
+        zoom: 3,
+        zoomControl: true,
+      });
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 18,
+      }).addTo(map);
+
+      leafletRef.current = map;
+
+      // Force resize after mount
+      setTimeout(() => map.invalidateSize(), 100);
+    };
+    document.head.appendChild(script);
+  }, []);
+
+  // Update markers when filter changes
+  useEffect(() => {
+    const L = window.L;
+    if (!L || !leafletRef.current) return;
+    const map = leafletRef.current;
+
+    // Remove all existing markers
+    Object.values(markersRef.current).forEach(m => map.removeLayer(m));
+    markersRef.current = {};
+
+    filtered.forEach(s => {
+      const coords = SUPPLIER_COORDS[s.id];
+      if (!coords) return;
+      const color  = getColor(s);
+      const radius = SIZE_RADIUS[s.size] || 8;
+      const isSelected = selected === s.id;
+
+      const marker = L.circleMarker([coords.lat, coords.lng], {
+        radius,
+        fillColor:   color,
+        color:       isSelected ? '#ffffff' : color,
+        weight:      isSelected ? 3 : 1.5,
+        opacity:     1,
+        fillOpacity: isSelected ? 1 : 0.8,
+      }).addTo(map);
+
+      const popup = L.popup({ maxWidth: 280, className: 'jmr-popup' }).setContent(`
+        <div style="font-family: IBM Plex Mono, monospace; padding: 4px;">
+          <div style="font-weight:700; font-size:13px; color:#e8edf5; margin-bottom:4px;">${s.name}</div>
+          <div style="font-size:11px; color:#8a9ab5; margin-bottom:6px;">${s.city || s.country} · ${s.product_category}</div>
+          ${s.size ? `<div style="font-size:10px; color:${color}; margin-bottom:4px;">${s.size.toUpperCase()} · ${s.role}</div>` : ''}
+          ${s.nearest_port ? `<div style="font-size:10px; color:#8a9ab5;">Port: ${s.nearest_port} ${s.port_distance_km > 0 ? '('+s.port_distance_km+'km)':''}</div>` : ''}
+          ${s.fobPriceRange ? `<div style="font-size:11px; color:#e8b84b; margin-top:4px;">FOB: ${s.fobPriceRange}</div>` : ''}
+          ${s.website ? `<div style="font-size:10px; color:#3b82f6; margin-top:4px;">${s.website}</div>` : ''}
+        </div>
+      `);
+
+      marker.bindPopup(popup);
+      marker.on('click', () => setSelected(s.id));
+      markersRef.current[s.id] = marker;
+    });
+  }, [filtered, selected]);
+
+  // Inject popup styles once
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.innerHTML = `
+      .jmr-popup .leaflet-popup-content-wrapper {
+        background: #111926; border: 1px solid #1e2d42;
+        border-radius: 6px; color: #e8edf5; box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      }
+      .jmr-popup .leaflet-popup-tip { background: #111926; }
+      .jmr-popup .leaflet-popup-close-button { color: #4a5a70 !important; }
+    `;
+    document.head.appendChild(style);
+  }, []);
+
+  const selectedSupplier = selected ? SUPPLIERS.find(s => s.id === selected) : null;
 
   const selectStyle = {
     background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 4,
@@ -79,120 +167,79 @@ export default function SupplierMap() {
     letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 4, display: 'block',
   };
 
-  const selectedSupplier = selected ? SUPPLIERS.find(s => s.id === selected) : null;
-  const mapCenter = selectedSupplier && SUPPLIER_COORDS[selectedSupplier.id]
-    ? `${SUPPLIER_COORDS[selectedSupplier.id].lat},${SUPPLIER_COORDS[selectedSupplier.id].lng}`
-    : '-25,-55';
-  const mapZoom = selectedSupplier ? 8 : 3;
-
   return (
     <div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 8, marginBottom: 16 }}>
+      {/* Filters */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 8, marginBottom: 12 }}>
         <div><span style={labelStyle}>Category</span>
-          <select value={filterCategory} onChange={e => { setFilterCategory(e.target.value); setSelected(null); }} style={selectStyle}>
+          <select value={filterCategory} onChange={e => setFilterCategory(e.target.value)} style={selectStyle}>
             {categories.map(c => <option key={c}>{c}</option>)}
           </select>
         </div>
         <div><span style={labelStyle}>Country</span>
-          <select value={filterCountry} onChange={e => { setFilterCountry(e.target.value); setSelected(null); }} style={selectStyle}>
+          <select value={filterCountry} onChange={e => setFilterCountry(e.target.value)} style={selectStyle}>
             {countries.map(c => <option key={c}>{c}</option>)}
           </select>
         </div>
         <div><span style={labelStyle}>Size</span>
-          <select value={filterSize} onChange={e => { setFilterSize(e.target.value); setSelected(null); }} style={selectStyle}>
+          <select value={filterSize} onChange={e => setFilterSize(e.target.value)} style={selectStyle}>
             {sizes.map(s => <option key={s}>{s}</option>)}
           </select>
         </div>
-        <div><span style={labelStyle}>Role</span>
-          <select value={filterRole} onChange={e => { setFilterRole(e.target.value); setSelected(null); }} style={selectStyle}>
-            {roles.map(r => <option key={r}>{r}</option>)}
-          </select>
-        </div>
-      </div>
-
-      <div style={{ fontSize: 12, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginBottom: 12 }}>
-        {filtered.length} suppliers — click a card to locate on map
-      </div>
-
-      <div style={{ display: 'grid', gridTemplateColumns: '320px 1fr', gap: 16, alignItems: 'start' }}>
-        <div style={{ maxHeight: 580, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 6 }}>
-          {filtered.map(s => {
-            const color = CATEGORY_COLORS[s.product_category] || CATEGORY_COLORS.default;
-            const isSelected = selected === s.id;
-            return (
-              <div key={s.id} onClick={() => setSelected(isSelected ? null : s.id)}
-                style={{ padding: '10px 12px', borderRadius: 4, cursor: 'pointer',
-                  background: isSelected ? 'var(--bg-hover)' : 'var(--bg-card)',
-                  border: '1px solid ' + (isSelected ? color : 'var(--border)'),
-                  borderLeft: '3px solid ' + color }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                  <div>
-                    <div style={{ fontWeight: 600, fontSize: 13, color: 'var(--text-primary)', marginBottom: 2 }}>{s.name}</div>
-                    <div style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-                      {s.city || s.country}
-                    </div>
-                  </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 3, alignItems: 'flex-end', flexShrink: 0, marginLeft: 8 }}>
-                    {s.size && (
-                      <span style={{ fontSize: 9, fontFamily: 'var(--font-mono)', fontWeight: 700,
-                        color: s.size === 'Large' ? '#e8b84b' : s.size === 'Medium' ? '#4a9eda' : '#2ecc71',
-                        background: (s.size === 'Large' ? '#e8b84b' : s.size === 'Medium' ? '#4a9eda' : '#2ecc71') + '18',
-                        padding: '1px 5px', borderRadius: 2 }}>{s.size.toUpperCase()}</span>
-                    )}
-                    {s.nearest_port && s.port_distance_km > 0 && (
-                      <span style={{ fontSize: 9, fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
-                        {s.nearest_port.split(' ')[0]} {s.port_distance_km}km
-                      </span>
-                    )}
-                  </div>
-                </div>
-                <div style={{ marginTop: 4, display: 'flex', gap: 4, flexWrap: 'wrap' }}>
-                  {(s.products||[]).slice(0,2).map(p => (
-                    <span key={p} style={{ fontSize: 9, color: 'var(--text-muted)', background: 'var(--bg-hover)',
-                      border: '1px solid var(--border)', padding: '1px 5px', borderRadius: 2,
-                      fontFamily: 'var(--font-mono)' }}>{p}</span>
-                  ))}
-                </div>
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
+          <div style={{ display: 'flex', gap: 16, paddingBottom: 6 }}>
+            {Object.entries(CATEGORY_COLORS).filter(([k]) => k !== 'default').map(([label, color]) => (
+              <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                <div style={{ width: 10, height: 10, borderRadius: '50%', background: color }} />
+                <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>{label}</span>
               </div>
-            );
-          })}
-        </div>
-
-        <div style={{ borderRadius: 6, overflow: 'hidden', border: '1px solid var(--border)', height: 580 }}>
-          <iframe
-            title="Supplier Map"
-            width="100%"
-            height="100%"
-            style={{ border: 0 }}
-            loading="lazy"
-            src={`https://maps.google.com/maps?q=${mapCenter}&z=${mapZoom}&output=embed`}
-          />
+            ))}
+          </div>
         </div>
       </div>
 
+      <div style={{ fontSize: 12, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginBottom: 8 }}>
+        {filtered.length} suppliers shown · Large = bigger dot · Click a marker for details
+      </div>
+
+      {/* Map */}
+      <div ref={mapRef} style={{ height: 560, borderRadius: 6, border: '1px solid var(--border)' }} />
+
+      {/* Selected supplier detail */}
       {selectedSupplier && (
-        <div className="card" style={{ marginTop: 14, borderColor: CATEGORY_COLORS[selectedSupplier.product_category] || 'var(--border)' }}>
+        <div className="card" style={{ marginTop: 14, borderColor: getColor(selectedSupplier) + '60' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
             <div>
               <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 16 }}>{selectedSupplier.name}</div>
               <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2 }}>{selectedSupplier.city} · {selectedSupplier.role}</div>
             </div>
-            {selectedSupplier.website && (
-              <span style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: '#3b82f6' }}>{selectedSupplier.website}</span>
-            )}
+            <button onClick={() => setSelected(null)}
+              style={{ background: 'none', border: '1px solid var(--border)', borderRadius: 4,
+                color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontSize: 11,
+                padding: '3px 8px', cursor: 'pointer' }}>close</button>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 10, marginBottom: 10 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 10, marginBottom: 10 }}>
             {[
-              ['Size',     selectedSupplier.size || 'Unknown'],
-              ['Port',     selectedSupplier.nearest_port || 'Unknown'],
-              ['Distance', selectedSupplier.port_distance_km ? selectedSupplier.port_distance_km + ' km' : 'Unknown'],
+              ['Size',       selectedSupplier.size || 'Unknown'],
+              ['Port',       selectedSupplier.nearest_port ? selectedSupplier.nearest_port.split(' ')[0] : 'Unknown'],
+              ['Distance',   selectedSupplier.port_distance_km ? selectedSupplier.port_distance_km + ' km' : 'Unknown'],
+              ['FOB',        selectedSupplier.fobPriceRange || 'TBC'],
             ].map(([label, value]) => (
               <div key={label} style={{ padding: '8px 10px', background: 'var(--bg-hover)', borderRadius: 4 }}>
                 <div style={{ fontSize: 10, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginBottom: 3 }}>{label}</div>
-                <div style={{ fontSize: 13, fontFamily: 'var(--font-mono)', color: 'var(--text-primary)' }}>{value}</div>
+                <div style={{ fontSize: 12, fontFamily: 'var(--font-mono)', color: 'var(--text-primary)' }}>{value}</div>
               </div>
             ))}
           </div>
+          {selectedSupplier.certifications && selectedSupplier.certifications.length > 0 && (
+            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 8 }}>
+              {selectedSupplier.certifications.map(c => (
+                <span key={c} style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: '#2ecc71',
+                  background: 'rgba(46,204,113,0.1)', border: '1px solid rgba(46,204,113,0.2)',
+                  padding: '2px 6px', borderRadius: 3 }}>{c}</span>
+              ))}
+            </div>
+          )}
           {selectedSupplier.notes && (
             <div style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: 8 }}>{selectedSupplier.notes}</div>
           )}
