@@ -5,6 +5,7 @@ import ProductIntel from './ProductIntel';
 import Signals from './Signals';
 import Suppliers from './Suppliers';
 import SupplierMap from './SupplierMap';
+import MarketIntel from './MarketIntel';
 import LandedCost from './LandedCost';
 import Learn from './Learn';
 import './App.css';
@@ -16,6 +17,7 @@ const NAV = [
   { id: 'signals',       label: 'Signals',       icon: '\u25c8' },
   { id: 'suppliers',     label: 'Suppliers',     icon: '\u25ce' },
   { id: 'map',          label: 'Supplier Map',  icon: '\u25b3' },
+  { id: 'market',       label: 'Market Intel',  icon: '\u25cb' },
   { id: 'learn',         label: 'Learn',         icon: '\u25d4' },
 ];
 
@@ -50,6 +52,7 @@ export default function App() {
       case 'signals':       return <Signals />;
       case 'suppliers':     return <Suppliers />;
       case 'map':           return <SupplierMap />;
+      case 'market':        return <MarketIntel />;
       case 'learn':         return <Learn />;
       default:              return <Opportunities />;
     }
