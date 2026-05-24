@@ -29,13 +29,32 @@ const SUPPLIER_COORDS = {
   "insuquim_paraguay":        { lat: -25.296000, lng: -57.620000 },
   "lf_almidones_paraguay":    { lat: -25.250000, lng: -56.020000 },
   "almex_mexico":             { lat:  20.659699, lng: -103.349609 },
+  "molino_canuelas":          { lat: -35.057573, lng:  -58.750034 },
+  "molino_lagomarsino":       { lat: -34.657030, lng:  -58.371331 },
+  "bunge_argentina_flour":    { lat: -32.926615, lng:  -60.660495 },
+  "vicentin_argentina":       { lat: -29.117501, lng:  -59.657156 },
+  "oleaginosa_moreno":        { lat: -38.733772, lng:  -62.279476 },
+  "cofco_argentina":          { lat: -32.944948, lng:  -60.643560 },
+  "gelnex_brazil":            { lat: -27.182836, lng:  -52.232586 },
+  "pb_leiner_argentina":      { lat: -31.711497, lng:  -60.796016 },
+  "gelprime_brazil":          { lat: -23.151103, lng:  -51.005503 },
+  "adm_brasil_protein":       { lat: -20.484227, lng:  -54.752301 },
+  "iff_brazil_protein":       { lat: -29.851397, lng:  -51.176537 },
+  "tate_lyle_gemacom_brazil": { lat: -21.398555, lng:  -43.102979 },
+  "molino_chabas":            { lat: -33.237073, lng:  -61.352074 },
+  "pili_uruguay":             { lat: -32.693096, lng:  -57.645885 },
+  "soprole_chile":            { lat: -33.552290, lng:  -70.700049 },
 };
 
 const CATEGORY_COLORS = {
-  'Modified Starch': '#3b82f6',
-  'Dairy':           '#2ecc71',
-  'Edible Oils':     '#e8b84b',
-  'default':         '#4a5a70',
+  'Modified Starch':              '#3b82f6',
+  'Dairy':                        '#2ecc71',
+  'Edible Oils':                  '#e8b84b',
+  'Wheat Flour':                  '#f97316',
+  'Gelatin':                      '#a855f7',
+  'Soy Protein':                  '#06b6d4',
+  'Food Ingredients Distribution':'#6366f1',
+  'default':                      '#4a5a70',
 };
 
 const SIZE_RADIUS = { Large: 14, Medium: 10, Small: 7 };
@@ -55,7 +74,7 @@ export default function SupplierMap() {
   const [selected,       setSelected]       = useState(null);
   const [mapReady,       setMapReady]       = useState(false);
 
-  const categories = ['All', 'Modified Starch', 'Dairy', 'Edible Oils'];
+  const categories = ['All', 'Modified Starch', 'Dairy', 'Edible Oils', 'Wheat Flour', 'Gelatin', 'Soy Protein', 'Food Ingredients Distribution'];
   const countries  = ['All', 'Argentina', 'Brazil', 'Uruguay', 'Chile', 'Paraguay', 'Mexico'];
   const sizes      = ['All', 'Large', 'Medium', 'Small'];
 

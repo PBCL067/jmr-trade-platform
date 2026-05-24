@@ -10,7 +10,7 @@ export const SA_IMPORT_INTEL = [
     "latam_pct": 13.3,
     "latam_cif_usd": 23344627.0,
     "gap_signal": "UNDERREPRESENTED",
-    "gap_note": "Latam only 13.3% of SA imports. Significant room to grow.",
+    "gap_note": "Argentina is the 2nd largest global sunflower oil exporter. Bulgaria dominates SA at $114M. Argentina only has 13% share despite being cost-competitive at $0.84/kg FOB vs $1.02/kg CIF average. MERCOSUR preferential tariff (4% vs 10% MFN) gives Argentina a structural advantage. 6 suppliers available.",
     "top_suppliers": [
       {
         "origin": "Bulgaria",
@@ -58,7 +58,11 @@ export const SA_IMPORT_INTEL = [
     ],
     "our_suppliers": [
       "Aceitera General Deheza (AGD)",
-      "Molinos Rio de la Plata"
+      "Molinos Rio de la Plata",
+      "Vicentin SAIC",
+      "Oleaginosa Moreno (Glencore)",
+      "COFCO International Argentina",
+      "Bunge Argentina (Flour)"
     ],
     "year": 2024
   },
@@ -125,7 +129,9 @@ export const SA_IMPORT_INTEL = [
       }
     ],
     "our_suppliers": [
-      "Viterra Argentina"
+      "Viterra Argentina",
+      "COFCO International Argentina",
+      "Bunge Argentina (Flour)"
     ],
     "year": 2024
   },
@@ -192,7 +198,10 @@ export const SA_IMPORT_INTEL = [
       }
     ],
     "our_suppliers": [
-      "Viterra Argentina"
+      "Viterra Argentina",
+      "Vicentin SAIC",
+      "Bunge Argentina (Flour)",
+      "COFCO International Argentina"
     ],
     "year": 2024
   },
@@ -206,7 +215,7 @@ export const SA_IMPORT_INTEL = [
     "latam_pct": 10.6,
     "latam_cif_usd": 5607235.0,
     "gap_signal": "UNDERREPRESENTED",
-    "gap_note": "SA imports $100M of modified starches annually. Comtrade reports all types under HS 350510 \u2014 covers modified corn, cassava and wheat starches combined. Thailand and USA dominate. Zero Latam supply currently. 13 of our suppliers across Argentina, Brazil and Paraguay can compete on price.",
+    "gap_note": "SA imports $100M of modified starches annually. Comtrade reports all types under HS 350510 \u2014 covers modified corn, cassava and wheat starches combined. Thailand and USA dominate. Zero Latam supply currently. 15 of our suppliers across Argentina, Brazil and Paraguay can compete on price.",
     "top_suppliers": [
       {
         "origin": "Thailand",
@@ -265,7 +274,9 @@ export const SA_IMPORT_INTEL = [
       "Fecularia Salto Pilao",
       "Amidos Nevada",
       "Femag (Graef Hnos)",
-      "Almidonera Diesel"
+      "Almidonera Diesel",
+      "COFCO International Argentina",
+      "Bunge Argentina (Flour)"
     ],
     "year": 2024
   },
@@ -333,7 +344,9 @@ export const SA_IMPORT_INTEL = [
     ],
     "our_suppliers": [
       "Ingredion Brazil",
-      "ADM Brasil"
+      "ADM Brasil",
+      "ADM Brasil (Soy Protein)",
+      "IFF (DuPont) Esteio Brazil"
     ],
     "year": 2024
   },
@@ -347,7 +360,7 @@ export const SA_IMPORT_INTEL = [
     "latam_pct": 0.0,
     "latam_cif_usd": 0.0,
     "gap_signal": "UNTAPPED",
-    "gap_note": "Zero Latam supply into SA. Lesotho dominates at $15.4M. Our suppliers can compete.",
+    "gap_note": "Zero Latam supply into SA. Lesotho dominates. Our suppliers can compete.",
     "top_suppliers": [
       {
         "origin": "Lesotho",
@@ -387,7 +400,12 @@ export const SA_IMPORT_INTEL = [
     ],
     "latam_suppliers": [],
     "our_suppliers": [
-      "Molinos Juan Semino"
+      "Molinos Juan Semino",
+      "Molino Canuelas",
+      "Molino Lagomarsino",
+      "Bunge Argentina (Flour)",
+      "COFCO International Argentina",
+      "Molino Chabas"
     ],
     "year": 2024
   },
@@ -449,7 +467,9 @@ export const SA_IMPORT_INTEL = [
     ],
     "our_suppliers": [
       "Aceitera General Deheza (AGD)",
-      "Molinos Rio de la Plata"
+      "Molinos Rio de la Plata",
+      "Vicentin SAIC",
+      "Oleaginosa Moreno (Glencore)"
     ],
     "year": 2024
   },
@@ -522,7 +542,7 @@ export const SA_IMPORT_INTEL = [
     "latam_pct": 0.0,
     "latam_cif_usd": 0.0,
     "gap_signal": "UNTAPPED",
-    "gap_note": "Zero Latam supply into SA. China dominates at $13.7M. Our suppliers can compete.",
+    "gap_note": "Zero Latam supply into SA. China dominates. Our suppliers can compete.",
     "top_suppliers": [
       {
         "origin": "China",
@@ -703,7 +723,9 @@ export const SA_IMPORT_INTEL = [
       "SanCor",
       "Claldy",
       "Itambe",
-      "Colun"
+      "Colun",
+      "Soprole",
+      "Pili (Lacteos Finos del Uruguay)"
     ],
     "year": 2024
   },
@@ -717,7 +739,7 @@ export const SA_IMPORT_INTEL = [
     "latam_pct": 41.9,
     "latam_cif_usd": 4799781.0,
     "gap_signal": "COMPETING",
-    "gap_note": "Latam has 41.9% share. Competing with non-Latam suppliers.",
+    "gap_note": "Brazil is one of the top global bovine gelatin exporters. Latam already has 41.9% share of SA gelatin imports. Gelnex (Darling Ingredients) is one of the world's largest producers. PB Leiner Argentina is the only major Argentine producer. Strong opportunity to grow Latam share.",
     "top_suppliers": [
       {
         "origin": "China",
@@ -775,7 +797,11 @@ export const SA_IMPORT_INTEL = [
         "price_per_kg": 9.7494
       }
     ],
-    "our_suppliers": [],
+    "our_suppliers": [
+      "Gelnex (Darling Ingredients)",
+      "PB Leiner Argentina",
+      "Gelprime Industry"
+    ],
     "year": 2024
   },
   {
@@ -853,7 +879,7 @@ export const SA_IMPORT_INTEL = [
     "latam_pct": 0.0,
     "latam_cif_usd": 0.0,
     "gap_signal": "UNTAPPED",
-    "gap_note": "Zero Latam supply into SA. Netherlands dominates at $1.2M. Our suppliers can compete.",
+    "gap_note": "Zero Latam supply into SA. Netherlands dominates. Our suppliers can compete.",
     "top_suppliers": [
       {
         "origin": "Netherlands",
@@ -893,7 +919,8 @@ export const SA_IMPORT_INTEL = [
     ],
     "latam_suppliers": [],
     "our_suppliers": [
-      "Molinos Juan Semino"
+      "Molinos Juan Semino",
+      "Molino Chabas"
     ],
     "year": 2024
   },
@@ -907,7 +934,7 @@ export const SA_IMPORT_INTEL = [
     "latam_pct": 0.0,
     "latam_cif_usd": 0.0,
     "gap_signal": "UNTAPPED",
-    "gap_note": "Zero Latam supply into SA. Lesotho dominates at $0.1M. Our suppliers can compete.",
+    "gap_note": "Zero Latam supply into SA. Lesotho dominates. Our suppliers can compete.",
     "top_suppliers": [
       {
         "origin": "Lesotho",
@@ -947,7 +974,8 @@ export const SA_IMPORT_INTEL = [
     ],
     "latam_suppliers": [],
     "our_suppliers": [
-      "Molinos Juan Semino"
+      "Molinos Juan Semino",
+      "Molino Canuelas"
     ],
     "year": 2024
   }

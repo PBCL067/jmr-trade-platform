@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SUPPLIERS } from './data/supplierData';
 
-const COUNTRIES  = ['All', 'Argentina', 'Brazil', 'Uruguay', 'Chile', 'Paraguay', 'South Africa'];
+const COUNTRIES  = ['All', 'Argentina', 'Brazil', 'Uruguay', 'Chile', 'Paraguay', 'Mexico', 'South Africa'];
 const CATEGORIES = ['All', 'Modified Starch', 'Dairy'];
 const ROLES      = ['All', 'Supplier', 'Buyer', 'Competitive Intel'];
 const SIZES      = ['All', 'Large', 'Medium', 'Small'];
