@@ -75,7 +75,7 @@ export default function SupplierMap() {
   const [mapReady,       setMapReady]       = useState(false);
 
   const categories = ['All', 'Modified Starch', 'Dairy', 'Edible Oils', 'Wheat Flour', 'Gelatin', 'Soy Protein', 'Food Ingredients Distribution'];
-  const countries  = ['All', 'Argentina', 'Brazil', 'Uruguay', 'Chile', 'Paraguay', 'Mexico', 'Colombia', 'Ecuador', 'Peru'];
+  const countries  = ['All', 'Argentina', 'Brazil', 'Uruguay', 'Chile', 'Paraguay', 'Mexico', 'Colombia', 'Ecuador', 'Peru', 'South Africa'];
   const sizes      = ['All', 'Large', 'Medium', 'Small'];
 
   const filtered = SUPPLIERS.filter(s => {

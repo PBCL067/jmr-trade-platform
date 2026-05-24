@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { SUPPLIERS } from './data/supplierData';
 
 const COUNTRIES  = ['All', 'Argentina', 'Brazil', 'Uruguay', 'Chile', 'Paraguay', 'Mexico', 'Colombia', 'Ecuador', 'Peru', 'South Africa'];
-const CATEGORIES = ['All', 'Modified Starch', 'Dairy'];
-const ROLES      = ['All', 'Supplier', 'Buyer', 'Competitive Intel'];
+const CATEGORIES = ['All', 'Modified Starch', 'Dairy', 'Edible Oils', 'Wheat Flour', 'Gelatin', 'Soy Protein', 'Food Ingredients Distribution'];
+const ROLES      = ['All', 'Manufacturer/Exporter', 'Domestic Producer', 'Buyer/Distributor', 'Buyer / Food Manufacturer', 'Buyer / Dairy Manufacturer'];
 const SIZES      = ['All', 'Large', 'Medium', 'Small'];
 
 const ROLE_COLOR = {
