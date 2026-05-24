@@ -53,6 +53,7 @@ export default function SupplierMap() {
   const [filterCountry,  setFilterCountry]  = useState('All');
   const [filterSize,     setFilterSize]     = useState('All');
   const [selected,       setSelected]       = useState(null);
+  const [mapReady,       setMapReady]       = useState(false);
 
   const categories = ['All', 'Modified Starch', 'Dairy', 'Edible Oils'];
   const countries  = ['All', 'Argentina', 'Brazil', 'Uruguay', 'Chile', 'Paraguay', 'Mexico'];
@@ -93,7 +94,10 @@ export default function SupplierMap() {
       leafletRef.current = map;
 
       // Force resize after mount
-      setTimeout(() => map.invalidateSize(), 100);
+      setTimeout(() => {
+        map.invalidateSize();
+        setMapReady(true);
+      }, 100);
     };
     document.head.appendChild(script);
   }, []);
@@ -136,10 +140,10 @@ export default function SupplierMap() {
       `);
 
       marker.bindPopup(popup);
-      marker.on('click', () => setSelected(s.id));
+      marker.on('click', () => { setSelected(s.id); marker.openPopup(); });
       markersRef.current[s.id] = marker;
     });
-  }, [filtered, selected]);
+  }, [filtered, selected, mapReady]);
 
   // Inject popup styles once
   useEffect(() => {
