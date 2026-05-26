@@ -226,7 +226,33 @@ function ContactForm({ initial, onSave, onCancel }) {
         </div>
         <div>
           <span style={labelStyle}>Company *</span>
-          <input style={inputStyle} value={form.company} onChange={e => set('company', e.target.value)} placeholder="Company name" />
+          <select style={inputStyle} value={form.supplier_id || '__manual__'}
+            onChange={e => {
+              const val = e.target.value;
+              if (val === '__manual__') {
+                set('supplier_id', '');
+              } else {
+                const sup = SUPPLIERS.find(s => s.id === val);
+                if (sup) {
+                  set('supplier_id', val);
+                  set('company', sup.name);
+                  set('country', sup.country);
+                }
+              }
+            }}>
+            <option value="__manual__">{form.company || '— Select supplier or type below —'}</option>
+            {SUPPLIERS
+              .filter(s => !['buyer', 'association', 'intel contact'].some(k => (s.role||'').toLowerCase().includes(k)))
+              .sort((a,b) => (a.name||'').localeCompare(b.name||''))
+              .map(s => <option key={s.id} value={s.id}>{s.name} ({s.country})</option>)
+            }
+            <option value="__manual__">— Other (type manually) —</option>
+          </select>
+          {(!form.supplier_id) && (
+            <input style={{ ...inputStyle, marginTop: 6 }}
+              value={form.company} onChange={e => set('company', e.target.value)}
+              placeholder="Type company name manually..." />
+          )}
         </div>
         <div>
           <span style={labelStyle}>Country</span>
@@ -277,21 +303,6 @@ function ContactForm({ initial, onSave, onCancel }) {
           {SPECIALITIES.slice(1).filter(s => !form.specialities.includes(s)).map(s => (
             <option key={s}>{s}</option>
           ))}
-        </select>
-      </div>
-
-      {/* Linked Supplier */}
-      <div style={{ marginBottom: 12 }}>
-        <span style={labelStyle}>Linked Supplier</span>
-        <select style={inputStyle} value={form.supplier_id || ''} onChange={e => set('supplier_id', e.target.value)}>
-          <option value="">— None —</option>
-          {SUPPLIERS
-            .filter(s => !['buyer', 'association', 'intel contact'].some(k => (s.role||'').toLowerCase().includes(k)))
-            .sort((a,b) => (a.name||'').localeCompare(b.name||''))
-            .map(s => (
-              <option key={s.id} value={s.id}>{s.name} ({s.country})</option>
-            ))
-          }
         </select>
       </div>
 
