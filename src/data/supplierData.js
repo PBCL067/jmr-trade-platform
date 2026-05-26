@@ -836,12 +836,14 @@ export const SUPPLIERS = [
     "nearest_port": "Campos dos Goytacazes",
     "port_distance_km": 300,
     "port_notes": "Guarani, MG to Campos dos Goytacazes \u2014 approx 300km",
-    "contacted": false,
-    "contact_date": null,
-    "contact_method": null,
-    "contact_outcome": null,
-    "next_action": null,
-    "next_action_date": null
+    "contacted": true,
+    "contact_date": "2026-05-26",
+    "contact_method": "Online contact form \u2014 Tate & Lyle website",
+    "contact_outcome": "Inquiry submitted via Tate & Lyle contact form. Contact: Santiago Cieza.",
+    "next_action": "Awaiting response",
+    "next_action_date": "2026-06-02",
+    "contact_name": "Santiago Cieza",
+    "contact_company_email": "Via Tate & Lyle contact form"
   },
   {
     "id": "almex_mexico",
