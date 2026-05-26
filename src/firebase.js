@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs, doc, getDoc } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, doc, getDoc, addDoc, updateDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
 
 const firebaseConfig = {
   // TODO: paste your config values from the Firebase console
@@ -22,4 +22,24 @@ export async function fetchCollection(collectionName) {
 export async function fetchDoc(collectionName, docId) {
   const snap = await getDoc(doc(db, collectionName, docId));
   return snap.exists() ? { id: snap.id, ...snap.data() } : null;
+}
+
+export async function addDocument(collectionName, data) {
+  const ref = await addDoc(collection(db, collectionName), {
+    ...data,
+    created_at: serverTimestamp(),
+    updated_at: serverTimestamp(),
+  });
+  return ref.id;
+}
+
+export async function updateDocument(collectionName, docId, data) {
+  await updateDoc(doc(db, collectionName, docId), {
+    ...data,
+    updated_at: serverTimestamp(),
+  });
+}
+
+export async function deleteDocument(collectionName, docId) {
+  await deleteDoc(doc(db, collectionName, docId));
 }

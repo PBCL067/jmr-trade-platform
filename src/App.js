@@ -4,6 +4,7 @@ import Opportunities from './Opportunities';
 import ProductIntel from './ProductIntel';
 import Signals from './Signals';
 import Suppliers from './Suppliers';
+import Contacts from './Contacts';
 import SupplierMap from './SupplierMap';
 import MarketIntel from './MarketIntel';
 import LandedCost from './LandedCost';
