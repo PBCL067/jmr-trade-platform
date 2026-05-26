@@ -843,7 +843,9 @@ export const SUPPLIERS = [
     "next_action": "Awaiting response",
     "next_action_date": "2026-06-02",
     "contact_name": "Santiago Cieza",
-    "contact_company_email": "Via Tate & Lyle contact form"
+    "contact_company_email": "Via Tate & Lyle contact form",
+    "lat": -21.3167,
+    "lng": -46.7833
   },
   {
     "id": "almex_mexico",
