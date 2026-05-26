@@ -264,12 +264,12 @@ export const SUPPLIERS = [
     "nearest_port": "Paranagua",
     "port_distance_km": 900,
     "port_notes": "Sete Quedas to Paranagua \u2014 over 900km via BR-163/BR-277",
-    "contacted": false,
-    "contact_date": null,
-    "contact_method": null,
-    "contact_outcome": null,
-    "next_action": null,
-    "next_action_date": null
+    "contacted": true,
+    "contact_date": "2026-05-26",
+    "contact_method": "Email \u2014 sac@amidosnevada.com.br",
+    "contact_outcome": "Inquiry sent \u2014 E1422 corn starch for SA market, 1 FCL/month.",
+    "next_action": "Awaiting response",
+    "next_action_date": "2026-06-02"
   },
   {
     "id": "alur_uruguay",
