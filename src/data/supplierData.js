@@ -798,7 +798,7 @@ export const SUPPLIERS = [
     "export_agent_phone": "+54 3329 439720",
     "contacted": true,
     "contact_date": "2026-05-26",
-    "contact_outcome": "Confirmed wheat-only producer. No corn/maize starch capability.",
+    "contact_outcome": "Confirmed wheat-only producer. No corn or maize starch capability.",
     "contact_method": "WhatsApp",
     "next_action": "No fit \u2014 wheat only",
     "next_action_date": null,
@@ -2191,11 +2191,11 @@ export const SUPPLIERS = [
     "port": "Buenos Aires",
     "port_distance_km": 120,
     "principal_supplier": "Molinos Juan Semino S.A.",
-    "contacted": false,
-    "contact_date": null,
-    "contact_method": null,
-    "contact_outcome": null,
-    "next_action": null,
-    "next_action_date": null
+    "contacted": true,
+    "contact_date": "2026-05-26",
+    "contact_method": "Online contact form",
+    "contact_outcome": "Inquiry sent \u2014 E1422 corn starch sourcing for SA market.",
+    "next_action": "Awaiting response",
+    "next_action_date": "2026-06-02"
   }
 ];
