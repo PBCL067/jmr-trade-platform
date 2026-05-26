@@ -1090,12 +1090,12 @@ export const SUPPLIERS = [
     "nearest_port": "Asuncion / Paranagua",
     "port_distance_km": 0,
     "port_notes": "Paraguay \u2014 river barge to Paranagua or Buenos Aires",
-    "contacted": false,
-    "contact_date": null,
-    "contact_method": null,
-    "contact_outcome": null,
-    "next_action": null,
-    "next_action_date": null
+    "contacted": true,
+    "contact_date": "2026-05-26",
+    "contact_method": "Email \u2014 ventas",
+    "contact_outcome": "Inquiry sent \u2014 E1422 corn starch for SA market.",
+    "next_action": "Awaiting response",
+    "next_action_date": "2026-06-02"
   },
   {
     "id": "almidonera_diesel",
