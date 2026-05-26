@@ -2198,9 +2198,9 @@ export const SUPPLIERS = [
     "contacted": true,
     "contact_date": "2026-05-26",
     "contact_method": "Online contact form",
-    "contact_outcome": "Inquiry sent \u2014 E1422 corn starch sourcing for SA market.",
-    "next_action": "Awaiting response",
-    "next_action_date": "2026-06-02",
+    "contact_outcome": "Responded 2026-05-26. Modified starch is cassava (mandioca) based only \u2014 not corn. No fit for current E1422 corn inquiry. Spec sheet received and filed.",
+    "next_action": "No fit \u2014 cassava only. Keep on file for future cassava E1422 inquiries.",
+    "next_action_date": null,
     "lat": -33.6791,
     "lng": -59.6658
   }
