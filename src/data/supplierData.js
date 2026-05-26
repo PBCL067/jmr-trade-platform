@@ -160,12 +160,12 @@ export const SUPPLIERS = [
     "nearest_port": "Santos",
     "port_distance_km": 400,
     "port_notes": "Palmital to Santos",
-    "contacted": false,
-    "contact_date": null,
-    "contact_method": null,
-    "contact_outcome": null,
-    "next_action": null,
-    "next_action_date": null
+    "contacted": true,
+    "contact_date": "2026-05-26",
+    "contact_method": "Email \u2014 export@tereos.com",
+    "contact_outcome": "Inquiry sent \u2014 E1422 waxy corn starch for SA market, 1 FCL/month.",
+    "next_action": "Awaiting response",
+    "next_action_date": "2026-06-02"
   },
   {
     "id": "arcor_argentina",
