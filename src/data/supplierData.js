@@ -12,10 +12,16 @@ export const SUPPLIERS = [
       "Native Starch",
       "Corn Starch",
       "Tapioca Starch",
-      "Specialty Starches"
+      "Specialty Starches",
+      "E1422 Acetylated Distarch Adipate (COLFLO\u00ae 67)",
+      "E1442 Hydroxypropyl Distarch Phosphate (NATIONAL\u2122 465)",
+      "Waxy Corn Starch",
+      "Pregelatinised Starch",
+      "Glucose Syrup",
+      "Maltodextrin"
     ],
     "website": "ingredion.com/sa/es-ar",
-    "notes": "Priority 1 target. Global food ingredient company with full certifications. Argentina plant at Baradero. Exports globally.",
+    "notes": "Priority 1 target. Global food ingredient company, Argentina plant at Baradero, Buenos Aires. Exports globally with full certifications (ISO, FSSC22000). Confirmed E1422 product: COLFLO\u00ae 67 (acetylated distarch adipate, waxy corn base) \u2014 excellent freeze/thaw stability, used in fruit fillings, frozen meat pies, gravies, dairy. Also produces E1442 (NATIONAL\u2122 465). KEY FIRST CALL for corn-based E1422 in Argentina. Contact via ingredion.com/sa/es-ar export team.",
     "verified": true,
     "export_experience": true,
     "food_grade": true,
