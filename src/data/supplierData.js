@@ -643,7 +643,7 @@ export const SUPPLIERS = [
       "Injection Starch"
     ],
     "website": "semino.com.ar",
-    "notes": "Founded 1865 \u2014 the only producer of Wheat Starch and Vital Wheat Gluten in Latin America. Six-generation family company. Plant in Carcarana, Santa Fe. International sales via F&F Ingredients. Attends Gulfood annually \u2014 actively targeting Africa and Middle East markets.",
+    "notes": "Priority 1. ONLY Latin American producer of wheat starch and vital wheat gluten. Export exclusively via F&F Ingredients S.A. (strategic alliance since 2012) \u2014 do NOT contact Semino directly for export. F&F contact: info@ffingredients.com.ar | +54 3329 439720 | ffingredients.com.ar | San Pedro, Buenos Aires. F&F exports to 50+ countries.",
     "verified": true,
     "export_experience": true,
     "food_grade": true,
@@ -659,7 +659,11 @@ export const SUPPLIERS = [
     ],
     "nearest_port": "Rosario",
     "port_distance_km": 110,
-    "port_notes": "Carcarana, Santa Fe \u2014 very close to Rosario"
+    "port_notes": "Carcarana, Santa Fe \u2014 very close to Rosario",
+    "export_agent": "F&F Ingredients S.A.",
+    "export_agent_website": "ffingredients.com.ar",
+    "export_agent_email": "info@ffingredients.com.ar",
+    "export_agent_phone": "+54 3329 439720"
   },
   {
     "id": "tate_lyle_gemacom_brazil",
@@ -1786,5 +1790,39 @@ export const SUPPLIERS = [
     "parent_company": "Viterra / Glencore",
     "port": "Rosario",
     "port_distance_km": 10
+  },
+  {
+    "id": "ff_ingredients_argentina",
+    "name": "F&F Ingredients S.A.",
+    "country": "Argentina",
+    "country_code": "AR",
+    "city": "San Pedro, Buenos Aires Province",
+    "role": "Export Agent / Distributor",
+    "product_category": "Food Ingredients Distribution",
+    "products": [
+      "Wheat Starch",
+      "Vital Wheat Gluten",
+      "Modified Wheat Starch",
+      "Corn Starch",
+      "Glucose Syrup",
+      "Maltodextrin",
+      "Wheat Flour",
+      "Corn Flour",
+      "Textured Vegetable Protein (TVP)",
+      "Concentrated Vegetable Protein (CVP)"
+    ],
+    "website": "ffingredients.com.ar",
+    "email": "info@ffingredients.com.ar",
+    "phone": "+54 3329 439720",
+    "notes": "Exclusive international export agent for Molinos Juan Semino S.A. since 2012. Family business founded 2009, based in San Pedro, BA \u2014 between Buenos Aires and Rosario, direct access to port terminals and customs. Exports to 50+ countries. KEY CONTACT for all Semino wheat starch and gluten export inquiries. Also distributes broader ingredient portfolio (starches, syrups, proteins). CEO: Nestor A. Casal.",
+    "verified": true,
+    "export_experience": true,
+    "food_grade": true,
+    "priority": 1,
+    "size": "Small",
+    "parent_company": "Independent",
+    "port": "Buenos Aires",
+    "port_distance_km": 120,
+    "principal_supplier": "Molinos Juan Semino S.A."
   }
 ];
