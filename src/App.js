@@ -20,6 +20,7 @@ const NAV = [
   { id: 'suppliers',     label: 'Suppliers',     icon: '\u25ce' },
   { id: 'map',          label: 'Supplier Map',  icon: '\u25b3' },
   { id: 'learn',         label: 'Learn',         icon: '\u25d4' },
+  { id: 'contacts',      label: 'Contacts',      icon: '\u25a1' },
 ];
 
 export default function App() {
@@ -55,6 +56,7 @@ export default function App() {
       case 'map':           return <SupplierMap />;
       case 'market':        return <MarketIntel />;
       case 'learn':         return <Learn />;
+      case 'contacts':      return <Contacts />;
       default:              return <Opportunities />;
     }
   };
