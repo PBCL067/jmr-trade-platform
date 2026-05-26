@@ -2196,6 +2196,8 @@ export const SUPPLIERS = [
     "contact_method": "Online contact form",
     "contact_outcome": "Inquiry sent \u2014 E1422 corn starch sourcing for SA market.",
     "next_action": "Awaiting response",
-    "next_action_date": "2026-06-02"
+    "next_action_date": "2026-06-02",
+    "lat": -33.6791,
+    "lng": -59.6658
   }
 ];

@@ -3,6 +3,7 @@ import { SUPPLIERS } from './data/supplierData';
 
 const SUPPLIER_COORDS = {
   "ingredion_argentina":      { lat: -33.802183, lng: -59.504723 },
+  "ff_ingredients_argentina":  { lat: -33.6791,   lng: -59.6658   },
   "arcor_argentina":          { lat: -31.430416, lng: -64.185821 },
   "molinos_argentina":        { lat: -34.469212, lng: -58.565254 },
   "aceitera_argentina":       { lat: -32.753836, lng: -63.788122 },
