@@ -649,7 +649,7 @@ export const SUPPLIERS = [
       "Injection Starch"
     ],
     "website": "semino.com.ar",
-    "notes": "Priority 1. ONLY Latin American producer of wheat starch and vital wheat gluten. Export exclusively via F&F Ingredients S.A. (strategic alliance since 2012) \u2014 do NOT contact Semino directly for export. F&F contact: info@ffingredients.com.ar | +54 3329 439720 | ffingredients.com.ar | San Pedro, Buenos Aires. F&F exports to 50+ countries.",
+    "notes": "Priority 1. ONLY Latin American producer of wheat starch and vital wheat gluten. Export exclusively via F&F Ingredients S.A. (strategic alliance since 2012) \u2014 do NOT contact Semino directly for export. F&F contact: info@ffingredients.com.ar | +54 3329 439720 | ffingredients.com.ar | San Pedro, Buenos Aires. F&F exports to 50+ countries. CONFIRMED 2026-05-26: Wheat products only \u2014 does NOT produce corn or maize starch. Do not approach for corn E1422 inquiries.",
     "verified": true,
     "export_experience": true,
     "food_grade": true,
@@ -669,7 +669,10 @@ export const SUPPLIERS = [
     "export_agent": "F&F Ingredients S.A.",
     "export_agent_website": "ffingredients.com.ar",
     "export_agent_email": "info@ffingredients.com.ar",
-    "export_agent_phone": "+54 3329 439720"
+    "export_agent_phone": "+54 3329 439720",
+    "contacted": true,
+    "contact_date": "2026-05-26",
+    "contact_outcome": "Confirmed wheat-only producer. No corn/maize starch capability."
   },
   {
     "id": "tate_lyle_gemacom_brazil",
