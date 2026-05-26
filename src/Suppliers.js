@@ -45,9 +45,9 @@ function getContactStatus(s) {
   if (!s.contacted) return 'Not Contacted';
   const outcome = (s.contact_outcome || '').toLowerCase();
   const next    = (s.next_action    || '').toLowerCase();
-  if (next.includes('no fit') || outcome.includes('no fit') || outcome.includes('only') || outcome.includes('cannot')) return 'No Fit';
-  if (next.includes('await') || next.includes('waiting') || next.includes('pending')) return 'Awaiting Response';
-  if (next.includes('qualif') || outcome.includes('qualif') || outcome.includes('confirmed')) return 'Qualified';
+  if (next.includes('no fit') || outcome.includes('no fit') || outcome.includes('wheat only') || outcome.includes('cassava only')) return 'No Fit';
+  if (next.includes('qualif') || outcome.includes('qualif')) return 'Qualified';
+  if (next.includes('await') || next.includes('waiting') || next.includes('pending') || next.includes('response')) return 'Awaiting Response';
   return 'Contacted';
 }
 

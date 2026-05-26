@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { SUPPLIERS } from './data/supplierData';
 
 const SUPPLIER_COORDS = {
+  "horizonte_amidos_brazil":  { lat: -24.5585,   lng: -54.0553   },
   "ingredion_argentina":      { lat: -33.802183, lng: -59.504723 },
   "ff_ingredients_argentina":  { lat: -33.6791,   lng: -59.6658   },
   "arcor_argentina":          { lat: -31.430416, lng: -64.185821 },
