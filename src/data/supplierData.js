@@ -1082,7 +1082,7 @@ export const SUPPLIERS = [
       "Animal Nutrition Starch"
     ],
     "website": "fspsa.com.py",
-    "notes": "Claims to be Paraguay's largest starch exporter. Actual manufacturer of corn starch and cassava starch. Has a quality and food safety policy \u2014 certifications to be confirmed. Active exporter with direct WhatsApp quote line. Paraguay qualifies for MERCOSUR preferential tariff into SA (4% on Sunflower Oil, 2.64% on Soybean Meal, FREE on starch). Priority contact for starch sourcing.",
+    "notes": "Priority 1 Paraguay cassava and corn starch producer. CONFIRMED 2026-05-26: produces natural (native) maize and cassava starch only. No modified starch capability, no E1422. Contact: Niltinho Jacobsen (President). Catalogues on file: Catalogo Maiz FSPSA 2021, Catalogo Mandioca FSPSA 2021. C:\\Users\\mcall\\JMR Global\\",
     "verified": false,
     "export_experience": true,
     "food_grade": true,
@@ -1097,9 +1097,9 @@ export const SUPPLIERS = [
     "contacted": true,
     "contact_date": "2026-05-26",
     "contact_method": "Email \u2014 ventas",
-    "contact_outcome": "Inquiry sent \u2014 E1422 corn starch for SA market.",
-    "next_action": "Awaiting response",
-    "next_action_date": "2026-06-02"
+    "contact_outcome": "Responded 2026-05-26. Natural corn and cassava starch only \u2014 no modified starch, no E1422. Catalogues received and filed.",
+    "next_action": "No fit \u2014 natural starch only",
+    "next_action_date": null
   },
   {
     "id": "almidonera_diesel",
