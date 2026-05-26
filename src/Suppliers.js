@@ -5,7 +5,7 @@ const COUNTRIES  = ['All', 'Argentina', 'Brazil', 'Uruguay', 'Chile', 'Paraguay'
 const CATEGORIES = ['All', 'Modified Starch', 'Dairy', 'Edible Oils', 'Wheat Flour', 'Gelatin', 'Soy Protein', 'Food Ingredients Distribution'];
 const ROLES      = ['All', 'Manufacturer/Exporter', 'Domestic Producer', 'Buyer/Distributor', 'Buyer / Food Manufacturer', 'Buyer / Dairy Manufacturer'];
 const SIZES      = ['All', 'Large', 'Medium', 'Small'];
-const CONTACT_STATUSES = ['All', 'Not Contacted', 'Contacted', 'Awaiting Response', 'Qualified', 'No Fit'];
+const CONTACT_STATUSES = ['All', 'Not Contacted', 'Awaiting Response', 'Qualified', 'No Fit'];
 
 const ROLE_COLOR = {
   'Manufacturer/Exporter':          '#3b82f6',
@@ -35,7 +35,6 @@ const SIZE_COLOR = { Large: '#e8b84b', Medium: '#4a9eda', Small: '#2ecc71' };
 
 const CONTACT_STATUS_COLOR = {
   'Not Contacted':     '#4a5a70',
-  'Contacted':         '#3b82f6',
   'Awaiting Response': '#e8b84b',
   'Qualified':         '#2ecc71',
   'No Fit':            '#e74c3c',
@@ -47,8 +46,7 @@ function getContactStatus(s) {
   const next    = (s.next_action    || '').toLowerCase();
   if (next.includes('no fit') || outcome.includes('no fit') || outcome.includes('wheat only') || outcome.includes('cassava only')) return 'No Fit';
   if (next.includes('qualif') || outcome.includes('qualif')) return 'Qualified';
-  if (next.includes('await') || next.includes('waiting') || next.includes('pending') || next.includes('response')) return 'Awaiting Response';
-  return 'Contacted';
+  return 'Awaiting Response';
 }
 
 function ContactBadge({ s }) {
