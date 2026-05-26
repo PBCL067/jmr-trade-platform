@@ -2185,7 +2185,7 @@ export const SUPPLIERS = [
     "website": "ffingredients.com.ar",
     "email": "info@ffingredients.com.ar",
     "phone": "+54 3329 439720",
-    "notes": "Exclusive international export agent for Molinos Juan Semino S.A. since 2012. Family business founded 2009, based in San Pedro, BA \u2014 between Buenos Aires and Rosario, direct access to port terminals and customs. Exports to 50+ countries. KEY CONTACT for all Semino wheat starch and gluten export inquiries. Also distributes broader ingredient portfolio (starches, syrups, proteins). CEO: Nestor A. Casal.",
+    "notes": "Exclusive international export agent for Molinos Juan Semino S.A. since 2012. Family business founded 2009, San Pedro, BA. Exports to 50+ countries. KEY CONTACT for Semino wheat starch and gluten export inquiries. Also distributes Brazilian modified tapioca starch (cassava E1422, non-GMO, origin Brazil). Spec on file: FF_Modified_Tapioca_Starch_ES-A-00754_v01. Contact: Soledad Casal \u2014 info@ffingredients.com.ar | +54 3329 439720.",
     "verified": true,
     "export_experience": true,
     "food_grade": true,
@@ -2202,6 +2202,7 @@ export const SUPPLIERS = [
     "next_action": "No fit \u2014 cassava only. Keep on file for future cassava E1422 inquiries.",
     "next_action_date": null,
     "lat": -33.6791,
-    "lng": -59.6658
+    "lng": -59.6658,
+    "contact_name": "Soledad Casal"
   }
 ];
