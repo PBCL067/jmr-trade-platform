@@ -5,6 +5,7 @@ const COUNTRIES  = ['All', 'Argentina', 'Brazil', 'Uruguay', 'Chile', 'Paraguay'
 const CATEGORIES = ['All', 'Modified Starch', 'Dairy', 'Edible Oils', 'Wheat Flour', 'Gelatin', 'Soy Protein', 'Food Ingredients Distribution'];
 const ROLES      = ['All', 'Manufacturer/Exporter', 'Domestic Producer', 'Buyer/Distributor', 'Buyer / Food Manufacturer', 'Buyer / Dairy Manufacturer'];
 const SIZES      = ['All', 'Large', 'Medium', 'Small'];
+const CONTACT_STATUSES = ['All', 'Not Contacted', 'Contacted', 'Awaiting Response', 'Qualified', 'No Fit'];
 
 const ROLE_COLOR = {
   'Manufacturer/Exporter':          '#3b82f6',
@@ -32,12 +33,43 @@ const ROLE_TYPE = {
 
 const SIZE_COLOR = { Large: '#e8b84b', Medium: '#4a9eda', Small: '#2ecc71' };
 
+const CONTACT_STATUS_COLOR = {
+  'Not Contacted':     '#4a5a70',
+  'Contacted':         '#3b82f6',
+  'Awaiting Response': '#e8b84b',
+  'Qualified':         '#2ecc71',
+  'No Fit':            '#e74c3c',
+};
+
+function getContactStatus(s) {
+  if (!s.contacted) return 'Not Contacted';
+  const outcome = (s.contact_outcome || '').toLowerCase();
+  const next    = (s.next_action    || '').toLowerCase();
+  if (next.includes('no fit') || outcome.includes('no fit') || outcome.includes('only') || outcome.includes('cannot')) return 'No Fit';
+  if (next.includes('await') || next.includes('waiting') || next.includes('pending')) return 'Awaiting Response';
+  if (next.includes('qualif') || outcome.includes('qualif') || outcome.includes('confirmed')) return 'Qualified';
+  return 'Contacted';
+}
+
+function ContactBadge({ s }) {
+  const status = getContactStatus(s);
+  const color  = CONTACT_STATUS_COLOR[status];
+  return (
+    <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color,
+      background: color + '18', border: '1px solid ' + color + '40',
+      padding: '2px 7px', borderRadius: 3 }}>
+      {status.toUpperCase()}
+    </span>
+  );
+}
+
 function SupplierCard({ s }) {
   const role     = s.role || 'Supplier';
   const color    = ROLE_COLOR[role] || '#4a5a70';
   const roleType = ROLE_TYPE[role] || 'Supplier';
   const products = Array.isArray(s.products) ? s.products : [];
   const hasWarning = s.notes && s.notes.startsWith('WARNING');
+  const contactStatus = getContactStatus(s);
 
   return (
     <div className="card" style={{ borderLeft: '3px solid ' + color }}>
@@ -69,6 +101,7 @@ function SupplierCard({ s }) {
               background: 'rgba(74,90,112,0.1)', border: '1px solid rgba(74,90,112,0.2)',
               padding: '2px 7px', borderRadius: 3 }}>INTEL</span>
           )}
+          <ContactBadge s={s} />
         </div>
       </div>
 
@@ -124,9 +157,60 @@ function SupplierCard({ s }) {
           </div>
         )}
         {s.contact_approach && (
-          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 0', fontSize: 12 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 0', borderBottom: '1px solid var(--border)', fontSize: 12 }}>
             <span style={{ color: 'var(--text-muted)' }}>Contact</span>
             <span style={{ color: 'var(--text-secondary)', textAlign: 'right', maxWidth: '65%' }}>{s.contact_approach}</span>
+          </div>
+        )}
+
+        {/* Contact Log Section */}
+        {s.contacted && (
+          <div style={{ marginTop: 10, padding: '10px 12px',
+            background: CONTACT_STATUS_COLOR[contactStatus] + '0a',
+            border: '1px solid ' + CONTACT_STATUS_COLOR[contactStatus] + '30',
+            borderRadius: 4 }}>
+            <div style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: 'var(--text-muted)',
+              letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 6 }}>
+              Contact Log
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px 12px' }}>
+              {s.contact_date && (
+                <>
+                  <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>Date</span>
+                  <span style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-primary)' }}>{s.contact_date}</span>
+                </>
+              )}
+              {s.contact_method && (
+                <>
+                  <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>Method</span>
+                  <span style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-primary)' }}>{s.contact_method}</span>
+                </>
+              )}
+              {s.contact_outcome && (
+                <>
+                  <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>Outcome</span>
+                  <span style={{ fontSize: 11, color: 'var(--text-secondary)', gridColumn: 'span 1' }}>{s.contact_outcome}</span>
+                </>
+              )}
+              {s.next_action && (
+                <>
+                  <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>Next Action</span>
+                  <span style={{ fontSize: 11, color: CONTACT_STATUS_COLOR[contactStatus] }}>{s.next_action}</span>
+                </>
+              )}
+              {s.next_action_date && (
+                <>
+                  <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>Follow Up</span>
+                  <span style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-primary)' }}>{s.next_action_date}</span>
+                </>
+              )}
+              {s.export_agent_whatsapp && (
+                <>
+                  <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>WhatsApp</span>
+                  <span style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: '#2ecc71' }}>{s.export_agent_whatsapp}</span>
+                </>
+              )}
+            </div>
           </div>
         )}
       </div>
@@ -144,11 +228,12 @@ function SupplierCard({ s }) {
 }
 
 export default function Suppliers() {
-  const [country,  setCountry]  = useState('All');
-  const [category, setCategory] = useState('All');
-  const [role,     setRole]     = useState('All');
-  const [size,     setSize]     = useState('All');
-  const [search,   setSearch]   = useState('');
+  const [country,       setCountry]       = useState('All');
+  const [category,      setCategory]      = useState('All');
+  const [role,          setRole]          = useState('All');
+  const [size,          setSize]          = useState('All');
+  const [contactStatus, setContactStatus] = useState('All');
+  const [search,        setSearch]        = useState('');
 
   const filtered = SUPPLIERS.filter(function(s) {
     if (country  !== 'All' && s.country !== country) return false;
@@ -161,6 +246,9 @@ export default function Suppliers() {
     if (role !== 'All') {
       const rt = ROLE_TYPE[s.role] || 'Supplier';
       if (rt !== role) return false;
+    }
+    if (contactStatus !== 'All') {
+      if (getContactStatus(s) !== contactStatus) return false;
     }
     if (search) {
       const q = search.toLowerCase();
@@ -179,6 +267,12 @@ export default function Suppliers() {
   const buyerCards    = filtered.filter(s => (ROLE_TYPE[s.role]||'') === 'Buyer');
   const intelCards    = filtered.filter(s => (ROLE_TYPE[s.role]||'') === 'Competitive Intel');
 
+  // Contact status summary counts
+  const statusCounts = CONTACT_STATUSES.slice(1).reduce((acc, st) => {
+    acc[st] = SUPPLIERS.filter(s => getContactStatus(s) === st).length;
+    return acc;
+  }, {});
+
   const selectStyle = {
     background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 4,
     color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: 12,
@@ -191,7 +285,28 @@ export default function Suppliers() {
 
   return (
     <div>
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr', gap: 8, marginBottom: 16, alignItems: 'end' }}>
+      {/* Contact Status Summary Bar */}
+      <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
+        {CONTACT_STATUSES.slice(1).map(st => {
+          const color = CONTACT_STATUS_COLOR[st];
+          const isActive = contactStatus === st;
+          return (
+            <div key={st} onClick={() => setContactStatus(contactStatus === st ? 'All' : st)}
+              className="card" style={{ padding: '8px 14px', cursor: 'pointer', flex: '1 1 auto',
+                minWidth: 100, textAlign: 'center',
+                borderColor: isActive ? color : color + '30',
+                background: isActive ? color + '12' : undefined }}>
+              <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700,
+                fontSize: 22, color }}>{statusCounts[st]}</div>
+              <div style={{ fontSize: 10, fontFamily: 'var(--font-mono)',
+                color: 'var(--text-muted)', marginTop: 2 }}>{st.toUpperCase()}</div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Filters */}
+      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr 1fr', gap: 8, marginBottom: 16, alignItems: 'end' }}>
         <div>
           <span style={labelStyle}>Search</span>
           <input value={search} onChange={e => setSearch(e.target.value)}
@@ -222,7 +337,14 @@ export default function Suppliers() {
             {ROLES.map(r => <option key={r}>{r}</option>)}
           </select>
         </div>
+        <div>
+          <span style={labelStyle}>Contact Status</span>
+          <select value={contactStatus} onChange={e => setContactStatus(e.target.value)} style={selectStyle}>
+            {CONTACT_STATUSES.map(s => <option key={s}>{s}</option>)}
+          </select>
+        </div>
       </div>
+
       <div style={{ marginBottom: 16, fontSize: 12, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
         {filtered.length} of {SUPPLIERS.length} suppliers
       </div>

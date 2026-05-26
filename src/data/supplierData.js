@@ -39,7 +39,13 @@ export const SUPPLIERS = [
     "fobPriceRange": "$0.65-0.75/kg FOB",
     "nearest_port": "Rosario",
     "port_distance_km": 200,
-    "port_notes": "Baradero to Rosario via RN9"
+    "port_notes": "Baradero to Rosario via RN9",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "ingredion_brazil",
@@ -75,7 +81,13 @@ export const SUPPLIERS = [
     "fobPriceRange": "$0.70-0.80/kg FOB",
     "nearest_port": "Santos",
     "port_distance_km": 242,
-    "port_notes": "Mogi Guacu to Santos via Anhanguera/Imigrantes \u2014 242km"
+    "port_notes": "Mogi Guacu to Santos via Anhanguera/Imigrantes \u2014 242km",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "adm_brasil",
@@ -108,7 +120,13 @@ export const SUPPLIERS = [
     "fobPriceRange": "$0.70-0.80/kg FOB",
     "nearest_port": "Santos",
     "port_distance_km": 70,
-    "port_notes": "Sao Paulo to Santos"
+    "port_notes": "Sao Paulo to Santos",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "tereos_brazil",
@@ -141,7 +159,13 @@ export const SUPPLIERS = [
     ],
     "nearest_port": "Santos",
     "port_distance_km": 400,
-    "port_notes": "Palmital to Santos"
+    "port_notes": "Palmital to Santos",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "arcor_argentina",
@@ -168,7 +192,13 @@ export const SUPPLIERS = [
     "contact_approach": "Via export division",
     "nearest_port": "Rosario",
     "port_distance_km": 400,
-    "port_notes": "Cordoba to Rosario via A008"
+    "port_notes": "Cordoba to Rosario via A008",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "roquette_argentina",
@@ -201,7 +231,13 @@ export const SUPPLIERS = [
     "fobPriceRange": "$0.80-1.00/kg FOB",
     "nearest_port": "Rosario",
     "port_distance_km": 300,
-    "port_notes": "Estimated \u2014 confirm plant location"
+    "port_notes": "Estimated \u2014 confirm plant location",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "amidos_nevada_brazil",
@@ -227,7 +263,13 @@ export const SUPPLIERS = [
     "parent_company": "Independent",
     "nearest_port": "Paranagua",
     "port_distance_km": 900,
-    "port_notes": "Sete Quedas to Paranagua \u2014 over 900km via BR-163/BR-277"
+    "port_notes": "Sete Quedas to Paranagua \u2014 over 900km via BR-163/BR-277",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "alur_uruguay",
@@ -253,7 +295,13 @@ export const SUPPLIERS = [
     "parent_company": "ANCAP (Uruguay state)",
     "nearest_port": "Montevideo",
     "port_distance_km": 380,
-    "port_notes": "Paysandu to Montevideo \u2014 long haul across Uruguay"
+    "port_notes": "Paysandu to Montevideo \u2014 long haul across Uruguay",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "ingrain_sa",
@@ -278,7 +326,13 @@ export const SUPPLIERS = [
     "size": "Large",
     "annual_capacity_mt": ">50,000",
     "parent_company": "Barloworld",
-    "market_share_pct": 89
+    "market_share_pct": 89,
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "conaprole_uruguay",
@@ -314,7 +368,13 @@ export const SUPPLIERS = [
     ],
     "nearest_port": "Montevideo",
     "port_distance_km": 50,
-    "port_notes": "Montevideo port \u2014 very close"
+    "port_notes": "Montevideo port \u2014 very close",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "mastellone_argentina",
@@ -350,7 +410,13 @@ export const SUPPLIERS = [
     ],
     "nearest_port": "Buenos Aires",
     "port_distance_km": 60,
-    "port_notes": "General Rodriguez, Buenos Aires province"
+    "port_notes": "General Rodriguez, Buenos Aires province",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "colun_chile",
@@ -383,7 +449,13 @@ export const SUPPLIERS = [
     ],
     "nearest_port": "Puerto Montt",
     "port_distance_km": 100,
-    "port_notes": "La Union to Puerto Montt \u2014 southern Chile"
+    "port_notes": "La Union to Puerto Montt \u2014 southern Chile",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "sancor_argentina",
@@ -412,7 +484,13 @@ export const SUPPLIERS = [
     "fobPriceRange": "$3.40-3.60/kg FOB",
     "nearest_port": "Rosario",
     "port_distance_km": 140,
-    "port_notes": "Sunchales, Santa Fe to Rosario"
+    "port_notes": "Sunchales, Santa Fe to Rosario",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "itambe_brazil",
@@ -440,7 +518,13 @@ export const SUPPLIERS = [
     "contact_approach": "Via itambe.com.br",
     "nearest_port": "Rio de Janeiro",
     "port_distance_km": 500,
-    "port_notes": "Belo Horizonte to Rio de Janeiro \u2014 just under 500km via BR-040"
+    "port_notes": "Belo Horizonte to Rio de Janeiro \u2014 just under 500km via BR-040",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "claldy_uruguay",
@@ -466,7 +550,13 @@ export const SUPPLIERS = [
     "parent_company": "Private",
     "nearest_port": "Montevideo",
     "port_distance_km": 30,
-    "port_notes": "Montevideo \u2014 close to port"
+    "port_notes": "Montevideo \u2014 close to port",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "pili_uruguay",
@@ -492,7 +582,13 @@ export const SUPPLIERS = [
     "parent_company": "Private",
     "nearest_port": "Montevideo",
     "port_distance_km": 350,
-    "port_notes": "Young, Rio Negro to Montevideo"
+    "port_notes": "Young, Rio Negro to Montevideo",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "soprole_chile",
@@ -519,7 +615,13 @@ export const SUPPLIERS = [
     "parent_company": "Fonterra (New Zealand)",
     "nearest_port": "San Antonio",
     "port_distance_km": 90,
-    "port_notes": "Santiago to San Antonio port"
+    "port_notes": "Santiago to San Antonio port",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "bragan_solevo_sa",
@@ -549,7 +651,13 @@ export const SUPPLIERS = [
     ],
     "iso_certified": true,
     "iso_standard": "ISO 9001",
-    "distribution": "Sub-Saharan Africa"
+    "distribution": "Sub-Saharan Africa",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "tiger_brands_sa",
@@ -570,7 +678,13 @@ export const SUPPLIERS = [
     "food_grade": true,
     "priority": 2,
     "parent_company": "JSE-listed",
-    "contact_approach": "Via procurement division"
+    "contact_approach": "Via procurement division",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "clover_sa",
@@ -592,7 +706,13 @@ export const SUPPLIERS = [
     "food_grade": true,
     "priority": 2,
     "parent_company": "Milco SA (Pty) Ltd",
-    "contact_approach": "Via procurement division"
+    "contact_approach": "Via procurement division",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "lorenz_brazil",
@@ -626,7 +746,13 @@ export const SUPPLIERS = [
     "fobPriceRange": "$0.70-0.90/kg FOB",
     "nearest_port": "Paranagua",
     "port_distance_km": 605,
-    "port_notes": "Cianorte, Parana to Paranagua \u2014 605km via BR-369/BR-277"
+    "port_notes": "Cianorte, Parana to Paranagua \u2014 605km via BR-369/BR-277",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "semino_argentina",
@@ -672,7 +798,11 @@ export const SUPPLIERS = [
     "export_agent_phone": "+54 3329 439720",
     "contacted": true,
     "contact_date": "2026-05-26",
-    "contact_outcome": "Confirmed wheat-only producer. No corn/maize starch capability."
+    "contact_outcome": "Confirmed wheat-only producer. No corn/maize starch capability.",
+    "contact_method": "WhatsApp",
+    "next_action": "No fit \u2014 wheat only",
+    "next_action_date": null,
+    "export_agent_whatsapp": "+54 9 3413 62-7298"
   },
   {
     "id": "tate_lyle_gemacom_brazil",
@@ -705,7 +835,13 @@ export const SUPPLIERS = [
     ],
     "nearest_port": "Campos dos Goytacazes",
     "port_distance_km": 300,
-    "port_notes": "Guarani, MG to Campos dos Goytacazes \u2014 approx 300km"
+    "port_notes": "Guarani, MG to Campos dos Goytacazes \u2014 approx 300km",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "almex_mexico",
@@ -743,7 +879,13 @@ export const SUPPLIERS = [
     ],
     "nearest_port": "Manzanillo",
     "port_distance_km": 350,
-    "port_notes": "Guadalajara to Manzanillo \u2014 main Pacific export port"
+    "port_notes": "Guadalajara to Manzanillo \u2014 main Pacific export port",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "vertrauen_argentina",
@@ -774,7 +916,13 @@ export const SUPPLIERS = [
     "contact_approach": "Via vertrauensrl.com.ar/contacto \u2014 +54 (3564) 530066",
     "nearest_port": "Rosario",
     "port_distance_km": 470,
-    "port_notes": "San Francisco, Cordoba to Rosario"
+    "port_notes": "San Francisco, Cordoba to Rosario",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "ciso_paraguay",
@@ -804,7 +952,13 @@ export const SUPPLIERS = [
     "contact_approach": "ventas@cisosrl.com.py | +595 994 852271",
     "nearest_port": "Asuncion",
     "port_distance_km": 10,
-    "port_notes": "Asuncion \u2014 close to river port"
+    "port_notes": "Asuncion \u2014 close to river port",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "insuquim_paraguay",
@@ -827,7 +981,13 @@ export const SUPPLIERS = [
     "priority": 3,
     "size": "Small",
     "parent_company": "Independent",
-    "contact_approach": "insuquim@insuquim.com.py | +595 21 671 752"
+    "contact_approach": "insuquim@insuquim.com.py | +595 21 671 752",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "lf_almidones_paraguay",
@@ -852,7 +1012,13 @@ export const SUPPLIERS = [
     "contact_approach": "Direct contact needed \u2014 no website found. Search via Paraguay Chamber of Industry.",
     "nearest_port": "Asuncion / Paranagua",
     "port_distance_km": 0,
-    "port_notes": "Caaguazu \u2014 river barge option via Paraguay-Parana waterway"
+    "port_notes": "Caaguazu \u2014 river barge option via Paraguay-Parana waterway",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "mathiesen_group",
@@ -890,7 +1056,13 @@ export const SUPPLIERS = [
       "FSSC 22000",
       "Kosher",
       "Halal"
-    ]
+    ],
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "fecularia_salto_pilao",
@@ -917,7 +1089,13 @@ export const SUPPLIERS = [
     "contact_approach": "ventas@fspsa.com.py | WhatsApp +595 983 953-025",
     "nearest_port": "Asuncion / Paranagua",
     "port_distance_km": 0,
-    "port_notes": "Paraguay \u2014 river barge to Paranagua or Buenos Aires"
+    "port_notes": "Paraguay \u2014 river barge to Paranagua or Buenos Aires",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "almidonera_diesel",
@@ -942,7 +1120,13 @@ export const SUPPLIERS = [
     "contact_approach": "info@almidoneradiesel.com.ar | WhatsApp +54 9 3743 475002",
     "nearest_port": "Puerto de Posadas (river) via Rosario",
     "port_distance_km": 130,
-    "port_notes": "Puerto de Posadas (~130km) is a river port on the Parana. Goods travel by barge down to Rosario or Buenos Aires for ocean export \u2014 add ~800km barge leg and 5-7 days transit to landed cost calculation."
+    "port_notes": "Puerto de Posadas (~130km) is a river port on the Parana. Goods travel by barge down to Rosario or Buenos Aires for ocean export \u2014 add ~800km barge leg and 5-7 days transit to landed cost calculation.",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "femag_argentina",
@@ -973,7 +1157,13 @@ export const SUPPLIERS = [
     ],
     "nearest_port": "Puerto de Posadas (river) via Rosario",
     "port_distance_km": 130,
-    "port_notes": "Puerto de Posadas (~130km) is a river port on the Parana. Goods travel by barge down to Rosario or Buenos Aires for ocean export \u2014 add ~800km barge leg and 5-7 days transit to landed cost calculation."
+    "port_notes": "Puerto de Posadas (~130km) is a river port on the Parana. Goods travel by barge down to Rosario or Buenos Aires for ocean export \u2014 add ~800km barge leg and 5-7 days transit to landed cost calculation.",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "cafagda",
@@ -999,7 +1189,13 @@ export const SUPPLIERS = [
     "priority": 2,
     "size": "Large",
     "parent_company": "Industry Association",
-    "contact_approach": "cafagda@cafagda.com.ar"
+    "contact_approach": "cafagda@cafagda.com.ar",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "glucovil_argentina",
@@ -1035,7 +1231,13 @@ export const SUPPLIERS = [
     "contact_approach": "info@glucovil.com.ar | +54 11 4378-1750 | Sarmiento 459 5th Floor, CABA",
     "nearest_port": "Rosario",
     "port_distance_km": 550,
-    "port_notes": "Villa Mercedes, San Luis to Rosario via RN8 \u2014 approx 550km"
+    "port_notes": "Villa Mercedes, San Luis to Rosario via RN8 \u2014 approx 550km",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "molino_canuelas",
@@ -1062,7 +1264,13 @@ export const SUPPLIERS = [
     "contact_approach": "molinocanuelas.com/contacto | Buenos Aires HQ",
     "nearest_port": "Buenos Aires",
     "port_distance_km": 60,
-    "port_notes": "Canuelas to Buenos Aires port ~60km"
+    "port_notes": "Canuelas to Buenos Aires port ~60km",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "molino_lagomarsino",
@@ -1087,7 +1295,13 @@ export const SUPPLIERS = [
     "contact_approach": "lagomarsino.com.ar",
     "nearest_port": "Buenos Aires",
     "port_distance_km": 80,
-    "port_notes": "Buenos Aires province to port ~80km"
+    "port_notes": "Buenos Aires province to port ~80km",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "bunge_argentina_flour",
@@ -1116,7 +1330,13 @@ export const SUPPLIERS = [
     "contact_approach": "bunge.com/contact | Rosario office",
     "nearest_port": "Rosario",
     "port_distance_km": 10,
-    "port_notes": "Rosario-based \u2014 direct port access"
+    "port_notes": "Rosario-based \u2014 direct port access",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "vicentin_argentina",
@@ -1148,7 +1368,13 @@ export const SUPPLIERS = [
     "port_notes": "Own terminal in San Lorenzo \u2014 direct port access",
     "certifications": [
       "ISO 9001"
-    ]
+    ],
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "oleaginosa_moreno",
@@ -1175,7 +1401,13 @@ export const SUPPLIERS = [
     "contact_approach": "glencore.com | Buenos Aires office",
     "nearest_port": "Bahia Blanca",
     "port_distance_km": 20,
-    "port_notes": "Bahia Blanca plant \u2014 direct port access, good Atlantic routing"
+    "port_notes": "Bahia Blanca plant \u2014 direct port access, good Atlantic routing",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "cofco_argentina",
@@ -1204,7 +1436,13 @@ export const SUPPLIERS = [
     "contact_approach": "cofcointernational.com | Rosario office",
     "nearest_port": "Rosario",
     "port_distance_km": 5,
-    "port_notes": "Rosario-based \u2014 direct port access"
+    "port_notes": "Rosario-based \u2014 direct port access",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "gelnex_brazil",
@@ -1235,7 +1473,13 @@ export const SUPPLIERS = [
       "ISO 9001",
       "Halal",
       "Kosher"
-    ]
+    ],
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "pb_leiner_argentina",
@@ -1266,7 +1510,13 @@ export const SUPPLIERS = [
       "ISO 9001",
       "Halal",
       "Kosher"
-    ]
+    ],
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "gelprime_brazil",
@@ -1291,7 +1541,13 @@ export const SUPPLIERS = [
     "contact_approach": "gelprime.com.br",
     "nearest_port": "Paranagua",
     "port_distance_km": 120,
-    "port_notes": "Ibipora, Parana to Paranagua ~120km"
+    "port_notes": "Ibipora, Parana to Paranagua ~120km",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "adm_brasil_protein",
@@ -1325,7 +1581,13 @@ export const SUPPLIERS = [
       "Non-GMO",
       "Halal",
       "Kosher"
-    ]
+    ],
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "iff_brazil_protein",
@@ -1358,7 +1620,13 @@ export const SUPPLIERS = [
       "ProTerra Non-GM",
       "Halal",
       "Kosher"
-    ]
+    ],
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "molino_chabas",
@@ -1385,7 +1653,13 @@ export const SUPPLIERS = [
     "contact_approach": "Direct contact needed \u2014 no website found",
     "nearest_port": "Rosario",
     "port_distance_km": 150,
-    "port_notes": "Chabas, Santa Fe to Rosario ~150km"
+    "port_notes": "Chabas, Santa Fe to Rosario ~150km",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "gruma_mexico",
@@ -1419,7 +1693,13 @@ export const SUPPLIERS = [
       "FSSC 22000",
       "Halal",
       "Kosher"
-    ]
+    ],
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "minsa_mexico",
@@ -1445,7 +1725,13 @@ export const SUPPLIERS = [
     "contact_approach": "minsa.com.mx",
     "nearest_port": "Veracruz",
     "port_distance_km": 400,
-    "port_notes": "Mexico City to Veracruz ~400km"
+    "port_notes": "Mexico City to Veracruz ~400km",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "ingredion_colombia",
@@ -1481,7 +1767,13 @@ export const SUPPLIERS = [
       "FSSC 22000",
       "Halal",
       "Kosher"
-    ]
+    ],
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "ingredion_ecuador",
@@ -1513,7 +1805,13 @@ export const SUPPLIERS = [
     "certifications": [
       "ISO 9001",
       "FSSC 22000"
-    ]
+    ],
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "ingredion_peru",
@@ -1545,7 +1843,13 @@ export const SUPPLIERS = [
     "certifications": [
       "ISO 9001",
       "FSSC 22000"
-    ]
+    ],
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "ingredion_chile",
@@ -1580,7 +1884,13 @@ export const SUPPLIERS = [
       "FSSC 22000",
       "Halal",
       "Kosher"
-    ]
+    ],
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "gruma_centroamerica",
@@ -1606,7 +1916,13 @@ export const SUPPLIERS = [
     "contact_approach": "gruma.com | Central America division",
     "nearest_port": "Puerto Limon",
     "port_distance_km": 160,
-    "port_notes": "San Jose, Costa Rica to Puerto Limon ~160km"
+    "port_notes": "San Jose, Costa Rica to Puerto Limon ~160km",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "imsa_mexico",
@@ -1634,7 +1950,13 @@ export const SUPPLIERS = [
     "contact_approach": "imsa.com.mx | Mexico",
     "nearest_port": "Veracruz",
     "port_distance_km": 400,
-    "port_notes": "Estimated \u2014 confirm plant location"
+    "port_notes": "Estimated \u2014 confirm plant location",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "gluten_almidones_mexico",
@@ -1664,7 +1986,13 @@ export const SUPPLIERS = [
     "certifications": [
       "ISO 9001",
       "FSSC 22000"
-    ]
+    ],
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "almidones_sucre_colombia",
@@ -1689,7 +2017,13 @@ export const SUPPLIERS = [
     "contact_approach": "Contact via Ingredion Colombia | Sincelejo, Sucre",
     "nearest_port": "Barranquilla",
     "port_distance_km": 200,
-    "port_notes": "Sincelejo to Barranquilla Caribbean port ~200km"
+    "port_notes": "Sincelejo to Barranquilla Caribbean port ~200km",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "lactolanda_chile",
@@ -1716,7 +2050,13 @@ export const SUPPLIERS = [
     "contact_approach": "lactolanda.cl | Los Angeles, Bio Bio Chile",
     "nearest_port": "San Vicente (Talcahuano)",
     "port_distance_km": 110,
-    "port_notes": "Los Angeles to San Vicente port ~110km"
+    "port_notes": "Los Angeles to San Vicente port ~110km",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "agd_argentina",
@@ -1744,7 +2084,13 @@ export const SUPPLIERS = [
     "fob_price_usd_per_kg": 0.84,
     "annual_capacity_mt": 500000,
     "port": "Rosario",
-    "port_distance_km": 180
+    "port_distance_km": 180,
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "molinos_rio_argentina",
@@ -1772,7 +2118,13 @@ export const SUPPLIERS = [
     "fob_price_usd_per_kg": 0.84,
     "annual_capacity_mt": 300000,
     "port": "Rosario",
-    "port_distance_km": 50
+    "port_distance_km": 50,
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "viterra_argentina",
@@ -1798,7 +2150,13 @@ export const SUPPLIERS = [
     "size": "Large",
     "parent_company": "Viterra / Glencore",
     "port": "Rosario",
-    "port_distance_km": 10
+    "port_distance_km": 10,
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   },
   {
     "id": "ff_ingredients_argentina",
@@ -1832,6 +2190,12 @@ export const SUPPLIERS = [
     "parent_company": "Independent",
     "port": "Buenos Aires",
     "port_distance_km": 120,
-    "principal_supplier": "Molinos Juan Semino S.A."
+    "principal_supplier": "Molinos Juan Semino S.A.",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   }
 ];
