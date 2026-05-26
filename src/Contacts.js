@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fetchCollection, addDocument, updateDocument, deleteDocument } from './firebase';
+import { SUPPLIERS } from './data/supplierData';
 
 const SPECIALITIES = [
   'All',
@@ -35,12 +36,14 @@ const EMPTY_FORM = {
   last_contacted: '', contact_method: '',
   status: 'Active',
   notes: '',
+  supplier_id: '',
 };
 
 // Seed contacts from today's outreach
 const SEED_CONTACTS = [
   {
     name: 'Fausto Nibale',
+    supplier_id: 'ff_ingredients_argentina',
     title: 'Commercial Manager',
     company: 'F&F Ingredients S.A.',
     country: 'Argentina',
@@ -55,6 +58,7 @@ const SEED_CONTACTS = [
   },
   {
     name: 'Santiago Cieza',
+    supplier_id: 'tate_lyle_gemacom_brazil',
     title: 'Sales Representative',
     company: 'Tate & Lyle / Gemacom Tech',
     country: 'Argentina',
@@ -119,6 +123,20 @@ function ContactCard({ contact, onEdit }) {
           {contact.specialities.map(sp => <Tag key={sp} label={sp} />)}
         </div>
       )}
+
+      {/* Linked supplier */}
+      {contact.supplier_id && (() => {
+        const linked = SUPPLIERS.find(s => s.id === contact.supplier_id);
+        return linked ? (
+          <div style={{ marginTop: 8, display: 'inline-flex', alignItems: 'center', gap: 6,
+            fontSize: 11, fontFamily: 'var(--font-mono)',
+            color: '#e8b84b', background: 'rgba(232,184,75,0.1)',
+            border: '1px solid rgba(232,184,75,0.3)',
+            padding: '3px 10px', borderRadius: 3 }}>
+            ◈ {linked.name} · {linked.country}
+          </div>
+        ) : null;
+      })()}
 
       {/* Contact details */}
       <div style={{ marginTop: 10, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px 16px' }}>
@@ -259,6 +277,21 @@ function ContactForm({ initial, onSave, onCancel }) {
           {SPECIALITIES.slice(1).filter(s => !form.specialities.includes(s)).map(s => (
             <option key={s}>{s}</option>
           ))}
+        </select>
+      </div>
+
+      {/* Linked Supplier */}
+      <div style={{ marginBottom: 12 }}>
+        <span style={labelStyle}>Linked Supplier</span>
+        <select style={inputStyle} value={form.supplier_id || ''} onChange={e => set('supplier_id', e.target.value)}>
+          <option value="">— None —</option>
+          {SUPPLIERS
+            .filter(s => !['buyer', 'association', 'intel contact'].some(k => (s.role||'').toLowerCase().includes(k)))
+            .sort((a,b) => (a.name||'').localeCompare(b.name||''))
+            .map(s => (
+              <option key={s.id} value={s.id}>{s.name} ({s.country})</option>
+            ))
+          }
         </select>
       </div>
 
