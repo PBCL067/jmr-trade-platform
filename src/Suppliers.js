@@ -265,9 +265,9 @@ export default function Suppliers() {
   const buyerCards    = filtered.filter(s => (ROLE_TYPE[s.role]||'') === 'Buyer');
   const intelCards    = filtered.filter(s => (ROLE_TYPE[s.role]||'') === 'Competitive Intel');
 
-  // Contact status summary counts
+  // Contact status summary counts — reflects active filters
   const statusCounts = CONTACT_STATUSES.slice(1).reduce((acc, st) => {
-    acc[st] = SUPPLIERS.filter(s => getContactStatus(s) === st).length;
+    acc[st] = filtered.filter(s => getContactStatus(s) === st).length;
     return acc;
   }, {});
 
