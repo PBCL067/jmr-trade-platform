@@ -3,7 +3,7 @@ import { SUPPLIERS } from './data/supplierData';
 
 const SUPPLIER_COORDS = {
   "horizonte_amidos_brazil":  { lat: -24.5585,   lng: -54.0553   },
-  "indemil_brazil":           { lat: -15.7801,   lng: -47.9292   },
+  "indemil_brazil":           { lat: -23.0742,   lng: -52.4653   },
   "barentz_south_africa":     { lat: -26.2041,   lng:  28.0473   },
   "ingredion_argentina":      { lat: -33.802183, lng: -59.504723 },
   "agd_argentina":             { lat: -32.7538,   lng: -63.7881   },
