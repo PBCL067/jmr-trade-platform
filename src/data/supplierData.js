@@ -269,7 +269,9 @@ export const SUPPLIERS = [
     "contact_method": "Email \u2014 sac@amidosnevada.com.br",
     "contact_outcome": "Inquiry sent \u2014 E1422 corn starch for SA market, 1 FCL/month.",
     "next_action": "Awaiting response",
-    "next_action_date": "2026-06-02"
+    "next_action_date": "2026-06-02",
+    "lat": -23.8687,
+    "lng": -54.0834
   },
   {
     "id": "alur_uruguay",
@@ -2094,7 +2096,9 @@ export const SUPPLIERS = [
     "contact_method": null,
     "contact_outcome": null,
     "next_action": null,
-    "next_action_date": null
+    "next_action_date": null,
+    "lat": -32.7538,
+    "lng": -63.7881
   },
   {
     "id": "molinos_rio_argentina",
@@ -2128,7 +2132,9 @@ export const SUPPLIERS = [
     "contact_method": null,
     "contact_outcome": null,
     "next_action": null,
-    "next_action_date": null
+    "next_action_date": null,
+    "lat": -34.4692,
+    "lng": -58.5652
   },
   {
     "id": "viterra_argentina",
@@ -2160,7 +2166,9 @@ export const SUPPLIERS = [
     "contact_method": null,
     "contact_outcome": null,
     "next_action": null,
-    "next_action_date": null
+    "next_action_date": null,
+    "lat": -32.9442,
+    "lng": -60.6505
   },
   {
     "id": "ff_ingredients_argentina",
