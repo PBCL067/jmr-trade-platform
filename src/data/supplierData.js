@@ -193,12 +193,12 @@ export const SUPPLIERS = [
     "nearest_port": "Rosario",
     "port_distance_km": 400,
     "port_notes": "Cordoba to Rosario via A008",
-    "contacted": false,
-    "contact_date": null,
-    "contact_method": null,
-    "contact_outcome": null,
-    "next_action": null,
-    "next_action_date": null
+    "contacted": true,
+    "contact_date": "2026-05-26",
+    "contact_method": "Email \u2014 ventasar01@ardion.com.ar",
+    "contact_outcome": "Inquiry sent to Ingrecor/Arcor Agronegocios re E1422 corn starch for SA market. Aware of competitor status \u2014 approaching Agronegocios B2B division only.",
+    "next_action": "Awaiting response",
+    "next_action_date": "2026-06-02"
   },
   {
     "id": "roquette_argentina",
