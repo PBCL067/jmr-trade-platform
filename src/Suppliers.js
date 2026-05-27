@@ -225,6 +225,131 @@ function SupplierCard({ s }) {
   );
 }
 
+
+function generateWeeklyReport(suppliers) {
+  const today = new Date();
+  const weekAgo = new Date(today - 7 * 24 * 60 * 60 * 1000);
+  const fmtDate = (d) => d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+
+  const contacted = suppliers.filter(s => s.contacted && s.contact_date >= weekAgo.toISOString().slice(0,10));
+  const awaiting  = suppliers.filter(s => getContactStatus(s) === 'Awaiting Response');
+  const qualified = suppliers.filter(s => getContactStatus(s) === 'Qualified');
+  const nofit     = suppliers.filter(s => getContactStatus(s) === 'No Fit');
+
+  const rows = (list, showOutcome = false) => list.map(s => `
+    <tr>
+      <td>${s.name}</td>
+      <td>${s.country}</td>
+      <td>${s.product_category || ''}</td>
+      <td>${s.contact_date || ''}</td>
+      <td>${s.contact_method || ''}</td>
+      ${showOutcome ? `<td>${s.contact_outcome || ''}</td>` : ''}
+      <td>${s.next_action || ''}</td>
+      <td>${s.next_action_date || ''}</td>
+    </tr>`).join('');
+
+  const tableStyle = `border-collapse:collapse;width:100%;margin-bottom:24px;font-size:11px`;
+  const thStyle    = `background:#1a3a5c;color:#fff;padding:6px 10px;text-align:left;font-weight:600`;
+  const tdStyle    = `padding:6px 10px;border-bottom:1px solid #e0e0e0;vertical-align:top`;
+  const h2Style    = `color:#1a3a5c;margin:24px 0 8px;font-size:14px;border-bottom:2px solid #1a3a5c;padding-bottom:4px`;
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <title>JMR Global — Weekly Supplier Outreach Report</title>
+      <style>
+        body { font-family: Arial, sans-serif; color: #333; margin: 40px; font-size: 12px; }
+        h1 { color: #1a3a5c; font-size: 20px; margin-bottom: 4px; }
+        .subtitle { color: #666; font-size: 12px; margin-bottom: 32px; }
+        .summary { display: flex; gap: 16px; margin-bottom: 32px; }
+        .summary-box { border: 2px solid; padding: 12px 20px; border-radius: 4px; text-align: center; min-width: 100px; }
+        .num { font-size: 28px; font-weight: 700; }
+        .lbl { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
+        table { ${tableStyle} }
+        th { ${thStyle} }
+        td { ${tdStyle} }
+        tr:hover td { background: #f9f9f9; }
+        .footer { margin-top: 40px; font-size: 10px; color: #999; border-top: 1px solid #eee; padding-top: 12px; }
+        @media print { body { margin: 20px; } }
+      </style>
+    </head>
+    <body>
+      <h1>JMR Global — Weekly Supplier Outreach Report</h1>
+      <div class="subtitle">Generated: ${fmtDate(today)} &nbsp;|&nbsp; Period: ${fmtDate(weekAgo)} to ${fmtDate(today)} &nbsp;|&nbsp; Prepared by: Matt Callcott-Stevens</div>
+
+      <div class="summary">
+        <div class="summary-box" style="border-color:#3b82f6;color:#3b82f6">
+          <div class="num">${contacted.length}</div><div class="lbl">Contacted This Week</div>
+        </div>
+        <div class="summary-box" style="border-color:#e8b84b;color:#e8b84b">
+          <div class="num">${awaiting.length}</div><div class="lbl">Awaiting Response</div>
+        </div>
+        <div class="summary-box" style="border-color:#2ecc71;color:#2ecc71">
+          <div class="num">${qualified.length}</div><div class="lbl">Qualified</div>
+        </div>
+        <div class="summary-box" style="border-color:#e74c3c;color:#e74c3c">
+          <div class="num">${nofit.length}</div><div class="lbl">No Fit</div>
+        </div>
+        <div class="summary-box" style="border-color:#4a5a70;color:#4a5a70">
+          <div class="num">${suppliers.filter(s => !s.contacted).length}</div><div class="lbl">Not Yet Contacted</div>
+        </div>
+      </div>
+
+      <h2 style="${h2Style}">Contacted This Week (${contacted.length})</h2>
+      ${contacted.length > 0 ? `
+      <table>
+        <thead><tr>
+          <th>Supplier</th><th>Country</th><th>Category</th>
+          <th>Date</th><th>Method</th><th>Outcome</th><th>Next Action</th><th>Follow Up</th>
+        </tr></thead>
+        <tbody>${rows(contacted, true)}</tbody>
+      </table>` : '<p style="color:#999;font-style:italic">No contacts made this week.</p>'}
+
+      <h2 style="${h2Style}">Awaiting Response (${awaiting.length})</h2>
+      ${awaiting.length > 0 ? `
+      <table>
+        <thead><tr>
+          <th>Supplier</th><th>Country</th><th>Category</th>
+          <th>Date</th><th>Method</th><th>Next Action</th><th>Follow Up</th>
+        </tr></thead>
+        <tbody>${rows(awaiting)}</tbody>
+      </table>` : '<p style="color:#999;font-style:italic">None awaiting response.</p>'}
+
+      ${qualified.length > 0 ? `
+      <h2 style="${h2Style}">Qualified Leads (${qualified.length})</h2>
+      <table>
+        <thead><tr>
+          <th>Supplier</th><th>Country</th><th>Category</th>
+          <th>Date</th><th>Method</th><th>Outcome</th><th>Next Action</th><th>Follow Up</th>
+        </tr></thead>
+        <tbody>${rows(qualified, true)}</tbody>
+      </table>` : ''}
+
+      <h2 style="${h2Style}">No Fit (${nofit.length})</h2>
+      ${nofit.length > 0 ? `
+      <table>
+        <thead><tr>
+          <th>Supplier</th><th>Country</th><th>Category</th>
+          <th>Date</th><th>Method</th><th>Outcome</th><th>Next Action</th><th>Follow Up</th>
+        </tr></thead>
+        <tbody>${rows(nofit, true)}</tbody>
+      </table>` : '<p style="color:#999;font-style:italic">None.</p>'}
+
+      <div class="footer">
+        JMR Global Trade Intelligence Platform &nbsp;|&nbsp; ${fmtDate(today)} &nbsp;|&nbsp; Confidential
+      </div>
+    </body>
+    </html>`;
+
+  const win = window.open('', '_blank');
+  win.document.write(html);
+  win.document.close();
+  win.focus();
+  setTimeout(() => win.print(), 500);
+}
+
 export default function Suppliers() {
   const [country,       setCountry]       = useState('All');
   const [category,      setCategory]      = useState('All');
@@ -343,8 +468,16 @@ export default function Suppliers() {
         </div>
       </div>
 
-      <div style={{ marginBottom: 16, fontSize: 12, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-        {filtered.length} of {SUPPLIERS.length} suppliers
+      <div style={{ marginBottom: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <span style={{ fontSize: 12, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+          {filtered.length} of {SUPPLIERS.length} suppliers
+        </span>
+        <button onClick={() => generateWeeklyReport(SUPPLIERS)}
+          style={{ background: '#1a3a5c', border: 'none', borderRadius: 4,
+            color: '#fff', fontFamily: 'var(--font-mono)', fontSize: 11,
+            padding: '6px 14px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}>
+          ⬇ Weekly Report PDF
+        </button>
       </div>
 
       {supplierCards.length > 0 && (
