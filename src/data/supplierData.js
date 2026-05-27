@@ -1226,7 +1226,7 @@ export const SUPPLIERS = [
       "Gluten Meal"
     ],
     "website": "glucovil.com.ar",
-    "notes": "Full corn wet milling plant in Villa Mercedes, San Luis. CAFAGDA member. Produces complete range of corn derivatives: native and modified starches (cationic, hydrolysed, oxidised), glucose syrups (Fructose 42/55), maltodextrin, refined corn oil, and animal feed byproducts. Sophisticated industrial operation with multiple product lines. Export capability to be confirmed \u2014 headquarters in Buenos Aires suggests commercial export operation.",
+    "notes": "Full corn wet milling plant in Villa Mercedes, San Luis. CAFAGDA member. Produces native and modified starches, glucose syrups, fructose, maltodextrin, corn oil. DO NOT APPROACH \u2014 Cargill owns 30% stake (strategic association since 2008). Ledesma holds 70%. Cargill connection makes this a competitor conflict.",
     "verified": true,
     "export_experience": false,
     "food_grade": true,
