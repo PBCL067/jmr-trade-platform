@@ -2342,5 +2342,43 @@ export const SUPPLIERS = [
     "next_action_date": "2026-06-02",
     "contact_name": null,
     "contact_title": null
+  },
+  {
+    "id": "nomadi_argentina",
+    "name": "Nomadi SRL",
+    "country": "Argentina",
+    "country_code": "AR",
+    "city": "General Roca, C\u00f3rdoba (Plant) / Buenos Aires (Trade Office)",
+    "role": "Manufacturer/Exporter",
+    "product_category": "Wheat Flour",
+    "products": [
+      "Corn Flour (Harina de Ma\u00edz)",
+      "Native Corn Starch",
+      "Corn Semolina",
+      "Popcorn Corn (Non-GMO)",
+      "Wheat Flour"
+    ],
+    "website": "nomadi.com.ar",
+    "email": "info@nomadi.com.ar",
+    "phone": "+54 11 4547 3412",
+    "notes": "Argentine corn flour and starch manufacturer/exporter, founded 2005. Plant in General Roca, C\u00f3rdoba. Trade office Buenos Aires. No modified starch \u2014 native corn starch and corn flour only. STRONG AFRICA EXPORT EXPERIENCE: already exports to Angola and DRC. Participates in Anuga and SIAL international fairs. Key contact: Fabi\u00e1n Sguiglia (Gerente Comercio Exterior). Relevant for Corn Flour UNTAPPED SA market opportunity ($0.2M, zero Latam supply).",
+    "verified": false,
+    "export_experience": true,
+    "food_grade": true,
+    "priority": 2,
+    "size": "Medium",
+    "parent_company": null,
+    "port": "Buenos Aires",
+    "port_distance_km": 700,
+    "lat": -32.1854,
+    "lng": -64.437,
+    "contact_name": "Fabi\u00e1n Sguiglia",
+    "contact_title": "Gerente Comercio Exterior",
+    "contacted": false,
+    "contact_date": null,
+    "contact_method": null,
+    "contact_outcome": null,
+    "next_action": null,
+    "next_action_date": null
   }
 ];
