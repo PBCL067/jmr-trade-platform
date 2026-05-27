@@ -2298,5 +2298,41 @@ export const SUPPLIERS = [
     "next_action_date": "2026-06-02",
     "contact_name": "Florencia",
     "contact_title": null
+  },
+  {
+    "id": "glutal_argentina",
+    "name": "Glutal S.A.",
+    "country": "Argentina",
+    "country_code": "AR",
+    "city": "Buenos Aires Province",
+    "role": "Manufacturer/Exporter",
+    "product_category": "Modified Starch",
+    "products": [
+      "Modified Corn Starch (Almidon YG)",
+      "Modified Corn Starch for Dairy",
+      "Native Corn Starch",
+      "Wheat Starch",
+      "Wheat Gluten"
+    ],
+    "website": "glutal.com.ar",
+    "notes": "Argentine modified corn starch manufacturer, established company. KEY PRODUCT: Almidon YG \u2014 chemically modified corn starch specifically developed for dairy applications (yoghurt, desserts, thermal stability). Gluten free. Contains sulphites \u2014 flag to client for labelling. Application match is very strong for current E1422 dairy inquiry. Confirm if Almidon YG is E1422 (acetylated distarch adipate) and obtain Brabender viscosity data. Contact via WhatsApp +54 9 11 4204504.",
+    "verified": false,
+    "export_experience": null,
+    "food_grade": true,
+    "priority": 1,
+    "size": "Medium",
+    "parent_company": null,
+    "port": "Buenos Aires",
+    "port_distance_km": 50,
+    "lat": -34.6037,
+    "lng": -58.3816,
+    "contacted": true,
+    "contact_date": "2026-05-26",
+    "contact_method": "WhatsApp",
+    "contact_outcome": "Inquiry sent re Almidon YG \u2014 E1422 confirmation and dairy application for SA market.",
+    "next_action": "Awaiting response",
+    "next_action_date": "2026-06-02",
+    "contact_name": null,
+    "contact_title": null
   }
 ];
