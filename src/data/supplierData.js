@@ -556,11 +556,13 @@ export const SUPPLIERS = [
     "contacted": true,
     "contact_date": "2026-05-28",
     "contact_method": "WhatsApp",
-    "contact_outcome": "Inquiry sent \u2014 FCMP Medium Heat for SA market, 25 MT x 3 times/year (75 MT/year).",
-    "next_action": "Awaiting response",
-    "next_action_date": "2026-06-04",
+    "contact_outcome": "Responded 2026-05-28. Referred to Markus Klaassen (Exportaci\u00f3n y Comercio Exterior) \u2014 mklaassen@claldy.com.uy.",
+    "next_action": "Contact Markus Klaassen via email",
+    "next_action_date": "2026-05-28",
     "whatsapp": "+598 99 686 605",
-    "phone": "+598 99 686 605"
+    "phone": "+598 99 686 605",
+    "contact_name": "Markus Klaassen",
+    "contact_title": "Exportaci\u00f3n y Comercio Exterior"
   },
   {
     "id": "pili_uruguay",
