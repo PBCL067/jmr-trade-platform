@@ -6,7 +6,7 @@ const firebaseConfig = {
   apiKey: "REPLACE_ME",
   authDomain: "jmr-global-abcce.firebaseapp.com",
   projectId: "jmr-global-abcce",
-  storageBucket: "jmr-global-abcce.appspot.com",
+  storageBucket: "jmr-global-abcce.firebasestorage.app",
   messagingSenderId: "REPLACE_ME",
   appId: "REPLACE_ME"
 };
