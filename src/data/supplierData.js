@@ -558,7 +558,9 @@ export const SUPPLIERS = [
     "contact_method": "WhatsApp",
     "contact_outcome": "Inquiry sent \u2014 FCMP Medium Heat for SA market, 25 MT x 3 times/year (75 MT/year).",
     "next_action": "Awaiting response",
-    "next_action_date": "2026-06-04"
+    "next_action_date": "2026-06-04",
+    "whatsapp": "+598 99 686 605",
+    "phone": "+598 99 686 605"
   },
   {
     "id": "pili_uruguay",
