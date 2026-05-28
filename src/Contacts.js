@@ -377,7 +377,6 @@ export default function Contacts() {
   function handleEdit(contact) {
     setEditContact(contact);
     setShowForm(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   const filtered = contacts.filter(c => {
