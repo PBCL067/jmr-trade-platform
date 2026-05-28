@@ -2253,7 +2253,7 @@ export const SUPPLIERS = [
     "contact_date": "2026-05-28",
     "contact_method": "Referral \u2014 Head of Development",
     "contact_outcome": "Active conversation via WhatsApp. Confirmed they produce E1422. Has SA distributor with exclusivity on some starches \u2014 need to confirm if E1422 is included. Agreed on ex-works/FOB export model \u2014 JMR Global as buyer, Horizonte invoices JMR. TDS and CoA requested. FOB Paranagu\u00e1 preferred. Price and lead time requested.",
-    "next_action": "Awaiting TDS, CoA and FOB price",
+    "next_action": "Qualified \u2014 awaiting TDS, CoA and FOB price",
     "next_action_date": "2026-06-04",
     "contact_name": null,
     "contact_title": "Head of Development"
