@@ -2305,9 +2305,9 @@ export const SUPPLIERS = [
     "contacted": true,
     "contact_date": "2026-05-26",
     "contact_method": "WhatsApp +54 9 11 3685-2251",
-    "contact_outcome": "Responded 2026-05-26. Provided full product list. Modified corn starch available but GMO \u2014 awaiting client confirmation on GMO acceptability. Broad ingredient portfolio on file: Listado de productos El Bahiense 2025.",
-    "next_action": "Awaiting client GMO confirmation",
-    "next_action_date": "2026-06-02",
+    "contact_outcome": "Responded 2026-05-26. Provided full product list. Client confirmed GMO acceptable. However Snow Flake 068901 viscosity (250-350 BU) too low \u2014 client requires 700-900 BU at pH 6.0. No fit for current E1422 inquiry on viscosity grounds.",
+    "next_action": "No fit \u2014 viscosity too low for current inquiry",
+    "next_action_date": null,
     "contact_name": "Florencia",
     "contact_title": null
   },
