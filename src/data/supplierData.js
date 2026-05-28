@@ -267,9 +267,9 @@ export const SUPPLIERS = [
     "contacted": true,
     "contact_date": "2026-05-26",
     "contact_method": "Email \u2014 sac@amidosnevada.com.br",
-    "contact_outcome": "Inquiry sent \u2014 E1422 corn starch for SA market, 1 FCL/month.",
-    "next_action": "Awaiting response",
-    "next_action_date": "2026-06-02",
+    "contact_outcome": "Confirmed modified corn starch producer but acidified, oxidised and hydrolysed grades only. No E1422 (acetylated distarch adipate) in portfolio. Primarily industrial/technical applications. No fit for current dairy E1422 inquiry.",
+    "next_action": "No fit \u2014 no E1422 in portfolio",
+    "next_action_date": null,
     "lat": -23.8687,
     "lng": -54.0834
   },
