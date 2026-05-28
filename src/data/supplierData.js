@@ -553,12 +553,12 @@ export const SUPPLIERS = [
     "nearest_port": "Montevideo",
     "port_distance_km": 30,
     "port_notes": "Montevideo \u2014 close to port",
-    "contacted": false,
-    "contact_date": null,
-    "contact_method": null,
-    "contact_outcome": null,
-    "next_action": null,
-    "next_action_date": null
+    "contacted": true,
+    "contact_date": "2026-05-28",
+    "contact_method": "WhatsApp",
+    "contact_outcome": "Inquiry sent \u2014 FCMP Medium Heat for SA market, 25 MT x 3 times/year (75 MT/year).",
+    "next_action": "Awaiting response",
+    "next_action_date": "2026-06-04"
   },
   {
     "id": "pili_uruguay",
