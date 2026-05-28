@@ -125,18 +125,15 @@ function ContactCard({ contact, onEdit }) {
       )}
 
       {/* Linked supplier */}
-      {contact.supplier_id && (() => {
-        const linked = SUPPLIERS.find(s => s.id === contact.supplier_id);
-        return linked ? (
-          <div style={{ marginTop: 8, display: 'inline-flex', alignItems: 'center', gap: 6,
-            fontSize: 11, fontFamily: 'var(--font-mono)',
-            color: '#e8b84b', background: 'rgba(232,184,75,0.1)',
-            border: '1px solid rgba(232,184,75,0.3)',
-            padding: '3px 10px', borderRadius: 3 }}>
-            ◈ {linked.name} · {linked.country}
-          </div>
-        ) : null;
-      })()}
+      {contact.supplier_id && SUPPLIERS.find(s => s.id === contact.supplier_id) && (
+        <div style={{ marginTop: 8, display: 'inline-flex', alignItems: 'center', gap: 6,
+          fontSize: 11, fontFamily: 'var(--font-mono)',
+          color: '#e8b84b', background: 'rgba(232,184,75,0.1)',
+          border: '1px solid rgba(232,184,75,0.3)',
+          padding: '3px 10px', borderRadius: 3 }}>
+          ◈ {SUPPLIERS.find(s => s.id === contact.supplier_id).name} · {SUPPLIERS.find(s => s.id === contact.supplier_id).country}
+        </div>
+      )}
 
       {/* Contact details */}
       <div style={{ marginTop: 10, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px 16px' }}>
