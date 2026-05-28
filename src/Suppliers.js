@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { SUPPLIERS } from './data/supplierData';
+import { uploadSpec, getSupplierSpecs } from './firebase';
 
 const COUNTRIES  = ['All', 'Argentina', 'Brazil', 'Uruguay', 'Chile', 'Paraguay', 'Mexico', 'Colombia', 'Ecuador', 'Peru', 'South Africa'];
 const CATEGORIES = ['All', 'Modified Starch', 'Dairy', 'Edible Oils', 'Wheat Flour', 'Gelatin', 'Soy Protein', 'Food Ingredients Distribution'];
@@ -62,6 +63,37 @@ function ContactBadge({ s }) {
 }
 
 function SupplierCard({ s }) {
+  const [specs, setSpecs] = React.useState([]);
+  const [specsLoaded, setSpecsLoaded] = React.useState(false);
+  const [uploading, setUploading] = React.useState(false);
+  const [showSpecs, setShowSpecs] = React.useState(false);
+  const fileInputRef = React.useRef();
+
+  async function loadSpecs() {
+    if (specsLoaded) return;
+    const data = await getSupplierSpecs(s.id);
+    setSpecs(data);
+    setSpecsLoaded(true);
+  }
+
+  async function handleUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    setUploading(true);
+    try {
+      const spec = await uploadSpec(s.id, file);
+      setSpecs(prev => [...prev, spec]);
+    } catch(err) {
+      alert('Upload failed: ' + err.message);
+    }
+    setUploading(false);
+  }
+
+  function toggleSpecs() {
+    if (!showSpecs) loadSpecs();
+    setShowSpecs(!showSpecs);
+  }
+
   const role     = s.role || 'Supplier';
   const color    = ROLE_COLOR[role] || '#4a5a70';
   const roleType = ROLE_TYPE[role] || 'Supplier';
@@ -221,6 +253,42 @@ function SupplierCard({ s }) {
       {!hasWarning && s.notes && (
         <div style={{ marginTop: 8, fontSize: 12, color: 'var(--text-muted)', fontStyle: 'italic', lineHeight: 1.5 }}>{s.notes}</div>
       )}
+
+      {/* Specs section */}
+      <div style={{ marginTop: 10, borderTop: '1px solid var(--border)', paddingTop: 8 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <button onClick={toggleSpecs}
+            style={{ background: 'none', border: 'none', color: 'var(--text-muted)',
+              fontFamily: 'var(--font-mono)', fontSize: 10, cursor: 'pointer',
+              padding: 0, letterSpacing: '0.08em' }}>
+            {showSpecs ? '▾' : '▸'} PRODUCT SPECS {specsLoaded ? `(${specs.length})` : ''}
+          </button>
+          <button onClick={() => fileInputRef.current.click()} disabled={uploading}
+            style={{ background: 'none', border: '1px solid var(--border)', borderRadius: 3,
+              color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontSize: 10,
+              padding: '2px 8px', cursor: 'pointer', opacity: uploading ? 0.5 : 1 }}>
+            {uploading ? 'uploading...' : '+ upload spec'}
+          </button>
+          <input ref={fileInputRef} type="file" accept=".pdf,.doc,.docx,.xlsx"
+            style={{ display: 'none' }} onChange={handleUpload} />
+        </div>
+        {showSpecs && (
+          <div style={{ marginTop: 8 }}>
+            {specs.length === 0 ? (
+              <div style={{ fontSize: 11, color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                No specs uploaded yet
+              </div>
+            ) : specs.map(spec => (
+              <a key={spec.path} href={spec.url} target="_blank" rel="noreferrer"
+                style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4,
+                  fontSize: 11, color: 'var(--blue)', fontFamily: 'var(--font-mono)',
+                  textDecoration: 'none' }}>
+                📄 {spec.name}
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -1,8 +1,8 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, getDocs, doc, getDoc, addDoc, updateDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL, listAll } from 'firebase/storage';
 
 const firebaseConfig = {
-  // TODO: paste your config values from the Firebase console
   apiKey: "REPLACE_ME",
   authDomain: "jmr-global-abcce.firebaseapp.com",
   projectId: "jmr-global-abcce",
@@ -13,6 +13,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
+export const storage = getStorage(app);
 
 export async function fetchCollection(collectionName) {
   const snap = await getDocs(collection(db, collectionName));
@@ -42,4 +43,29 @@ export async function updateDocument(collectionName, docId, data) {
 
 export async function deleteDocument(collectionName, docId) {
   await deleteDoc(doc(db, collectionName, docId));
+}
+
+export async function uploadSpec(supplierId, file) {
+  const path = `specs/${supplierId}/${file.name}`;
+  const storageRef = ref(storage, path);
+  await uploadBytes(storageRef, file);
+  const url = await getDownloadURL(storageRef);
+  return { url, path, name: file.name };
+}
+
+export async function getSupplierSpecs(supplierId) {
+  try {
+    const folderRef = ref(storage, `specs/${supplierId}`);
+    const result = await listAll(folderRef);
+    const specs = await Promise.all(
+      result.items.map(async (item) => ({
+        name: item.name,
+        path: item.fullPath,
+        url: await getDownloadURL(item),
+      }))
+    );
+    return specs;
+  } catch {
+    return [];
+  }
 }
