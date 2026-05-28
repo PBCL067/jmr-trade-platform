@@ -83,8 +83,10 @@ function SupplierCard({ s }) {
     try {
       const spec = await uploadSpec(s.id, file);
       setSpecs(prev => [...prev, spec]);
+      alert('Upload successful: ' + file.name);
     } catch(err) {
-      alert('Upload failed: ' + err.message);
+      console.error('Upload error full:', err);
+      alert('Upload failed: ' + (err.code || '') + ' ' + (err.message || JSON.stringify(err)));
     }
     setUploading(false);
   }
