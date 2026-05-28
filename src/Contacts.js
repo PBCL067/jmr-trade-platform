@@ -440,10 +440,10 @@ export default function Contacts() {
         </div>
       </div>
 
-      {/* Form */}
-      {showForm && (
+      {/* Form — for new contacts only (no editContact) */}
+      {showForm && !editContact && (
         <ContactForm
-          initial={editContact}
+          initial={null}
           onSave={handleSave}
           onCancel={() => { setShowForm(false); setEditContact(null); }}
         />
@@ -498,7 +498,20 @@ export default function Contacts() {
           fontFamily: 'var(--font-mono)', fontSize: 12 }}>No contacts match your filters</div>
       ) : (
         <div className="card-grid card-grid--2">
-          {filtered.map(c => <ContactCard key={c.id} contact={c} onEdit={handleEdit} />)}
+          {filtered.map(c => (
+            <React.Fragment key={c.id}>
+              {showForm && editContact?.id === c.id && (
+                <div style={{ gridColumn: '1 / -1' }}>
+                  <ContactForm
+                    initial={editContact}
+                    onSave={handleSave}
+                    onCancel={() => { setShowForm(false); setEditContact(null); }}
+                  />
+                </div>
+              )}
+              <ContactCard contact={c} onEdit={handleEdit} />
+            </React.Fragment>
+          ))}
         </div>
       )}
     </div>
