@@ -63,10 +63,11 @@ function ContactBadge({ s }) {
 }
 
 function SupplierCard({ s }) {
-  const [specs, setSpecs] = React.useState([]);
+  const [expanded,    setExpanded]    = React.useState(false);
+  const [specs,       setSpecs]       = React.useState([]);
   const [specsLoaded, setSpecsLoaded] = React.useState(false);
-  const [uploading, setUploading] = React.useState(false);
-  const [showSpecs, setShowSpecs] = React.useState(false);
+  const [uploading,   setUploading]   = React.useState(false);
+  const [showSpecs,   setShowSpecs]   = React.useState(false);
   const fileInputRef = React.useRef();
 
   async function loadSpecs() {
@@ -111,6 +112,12 @@ function SupplierCard({ s }) {
           <div className="card-sub">{s.city || s.country} &nbsp;&middot;&nbsp; {role}</div>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4, flexShrink: 0 }}>
+          <div style={{ display: 'flex', gap: 4, marginBottom: 2 }}>
+            <button onClick={() => setExpanded(!expanded)}
+              style={{ background: 'none', border: '1px solid var(--border)', borderRadius: 4,
+                color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontSize: 10,
+                padding: '3px 8px', cursor: 'pointer' }}>{expanded ? 'less' : 'more'}</button>
+          </div>
           {s.size && (
             <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)',
               color: SIZE_COLOR[s.size] || '#4a5a70',
@@ -254,6 +261,15 @@ function SupplierCard({ s }) {
       )}
       {!hasWarning && s.notes && (
         <div style={{ marginTop: 8, fontSize: 12, color: 'var(--text-muted)', fontStyle: 'italic', lineHeight: 1.5 }}>{s.notes}</div>
+      )}
+
+      {/* Expanded detail */}
+      {expanded && (
+        <div style={{ marginTop: 10, padding: '10px 12px',
+          background: 'var(--bg-hover)', border: '1px solid var(--border)',
+          borderRadius: 4, fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+          {s.notes || 'No additional details.'}
+        </div>
       )}
 
       {/* Specs section */}
