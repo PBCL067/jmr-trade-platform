@@ -2341,9 +2341,9 @@ export const SUPPLIERS = [
     "contacted": true,
     "contact_date": "2026-05-29",
     "contact_method": "WhatsApp then Email \u2014 leandro@glutal.com.ar",
-    "contact_outcome": "WhatsApp was billing dept only \u2014 referred to Leandro at ventas@glutal.com.ar. Email sent 2026-05-29 with E1422 spec and volume requirements. Plant in Esperanza, Santa Fe. Direct sales by pallet 900-1000kg FOB factory.",
-    "next_action": "Awaiting response from Leandro",
-    "next_action_date": "2026-06-05",
+    "contact_outcome": "Leandro Kemerer responded \u2014 Glutal does not export. Domestic Argentine market only. No fit for SA inquiry.",
+    "next_action": "No fit \u2014 domestic sales only, no export capability",
+    "next_action_date": null,
     "contact_name": "Leandro",
     "contact_title": "Ventas"
   },
