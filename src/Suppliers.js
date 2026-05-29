@@ -423,6 +423,29 @@ function generateWeeklyReport(suppliers) {
         <tbody>${rows(nofit, true)}</tbody>
       </table>` : '<p style="color:#999;font-style:italic">None.</p>'}
 
+      ${(() => {
+        const withDocs = suppliers.filter(s => s.docs_received && s.docs_received.length > 0);
+        if (withDocs.length === 0) return '';
+        return `
+        <h2 style="${h2Style}">Documentation Received (${withDocs.length} suppliers)</h2>
+        <table>
+          <thead><tr>
+            <th>Supplier</th><th>Country</th><th>Type</th><th>Date</th><th>Filename</th><th>Notes</th>
+          </tr></thead>
+          <tbody>
+            ${withDocs.map(s => s.docs_received.map(d => `
+              <tr>
+                <td>${s.name}</td>
+                <td>${s.country}</td>
+                <td>${d.type || ''}</td>
+                <td>${d.date || ''}</td>
+                <td style="font-family:monospace;font-size:10px">${d.filename || ''}</td>
+                <td>${d.notes || ''}</td>
+              </tr>`).join('')).join('')}
+          </tbody>
+        </table>`;
+      })()}
+
       <div class="footer">
         JMR Global Trade Intelligence Platform &nbsp;|&nbsp; ${fmtDate(today)} &nbsp;|&nbsp; Confidential
       </div>
