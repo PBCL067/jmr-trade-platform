@@ -46,7 +46,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -34.6037,
+    "lng": -58.3816
   },
   {
     "id": "ingredion_brazil",
@@ -89,7 +91,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -23.5505,
+    "lng": -46.6333
   },
   {
     "id": "adm_brasil",
@@ -129,7 +133,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -23.5505,
+    "lng": -46.6333
   },
   {
     "id": "tereos_brazil",
@@ -169,7 +175,9 @@ export const SUPPLIERS = [
     "contact_outcome": "Inquiry sent \u2014 E1422 waxy corn starch for SA market, 1 FCL/month.",
     "next_action": "Awaiting response",
     "next_action_date": "2026-06-02",
-    "docs_received": []
+    "docs_received": [],
+    "lat": -21.1767,
+    "lng": -47.8208
   },
   {
     "id": "arcor_argentina",
@@ -203,7 +211,9 @@ export const SUPPLIERS = [
     "contact_outcome": "Inquiry sent to Ingrecor/Arcor Agronegocios re E1422 corn starch for SA market. Aware of competitor status \u2014 approaching Agronegocios B2B division only.",
     "next_action": "Awaiting response",
     "next_action_date": "2026-06-02",
-    "docs_received": []
+    "docs_received": [],
+    "lat": -31.4135,
+    "lng": -64.1811
   },
   {
     "id": "roquette_argentina",
@@ -243,7 +253,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -37.2591,
+    "lng": -59.8654
   },
   {
     "id": "amidos_nevada_brazil",
@@ -311,7 +323,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -30.9053,
+    "lng": -55.5497
   },
   {
     "id": "ingrain_sa",
@@ -343,7 +357,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -33.9249,
+    "lng": 18.4241
   },
   {
     "id": "conaprole_uruguay",
@@ -386,7 +402,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -34.9011,
+    "lng": -56.1645
   },
   {
     "id": "mastellone_argentina",
@@ -429,7 +447,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -34.4692,
+    "lng": -58.5652
   },
   {
     "id": "colun_chile",
@@ -469,7 +489,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -40.574,
+    "lng": -73.1366
   },
   {
     "id": "sancor_argentina",
@@ -505,7 +527,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -33.741,
+    "lng": -61.564
   },
   {
     "id": "itambe_brazil",
@@ -540,7 +564,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -19.9191,
+    "lng": -43.9386
   },
   {
     "id": "claldy_uruguay",
@@ -577,7 +603,9 @@ export const SUPPLIERS = [
     "phone": "+598 99 686 605",
     "contact_name": "Markus Klaassen",
     "contact_title": "Exportaci\u00f3n y Comercio Exterior",
-    "docs_received": []
+    "docs_received": [],
+    "lat": -34.9011,
+    "lng": -56.1645
   },
   {
     "id": "pili_uruguay",
@@ -610,7 +638,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -34.9011,
+    "lng": -56.1645
   },
   {
     "id": "soprole_chile",
@@ -644,7 +674,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -33.4489,
+    "lng": -70.6693
   },
   {
     "id": "bragan_solevo_sa",
@@ -681,7 +713,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -26.2041,
+    "lng": 28.0473
   },
   {
     "id": "tiger_brands_sa",
@@ -709,7 +743,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -26.2041,
+    "lng": 28.0473
   },
   {
     "id": "clover_sa",
@@ -738,7 +774,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -25.7479,
+    "lng": 28.2293
   },
   {
     "id": "lorenz_brazil",
@@ -779,7 +817,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -23.5505,
+    "lng": -46.6333
   },
   {
     "id": "semino_argentina",
@@ -830,7 +870,9 @@ export const SUPPLIERS = [
     "next_action": "No fit \u2014 wheat only",
     "next_action_date": null,
     "export_agent_whatsapp": "+54 9 3413 62-7298",
-    "docs_received": []
+    "docs_received": [],
+    "lat": -33.6791,
+    "lng": -59.7956
   },
   {
     "id": "tate_lyle_gemacom_brazil",
@@ -919,7 +961,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -19.4326,
+    "lng": -99.1332
   },
   {
     "id": "vertrauen_argentina",
@@ -957,7 +1001,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -34.6037,
+    "lng": -58.3816
   },
   {
     "id": "ciso_paraguay",
@@ -994,7 +1040,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -25.2867,
+    "lng": -57.647
   },
   {
     "id": "insuquim_paraguay",
@@ -1024,7 +1072,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -25.2867,
+    "lng": -57.647
   },
   {
     "id": "lf_almidones_paraguay",
@@ -1056,7 +1106,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -25.2867,
+    "lng": -57.647
   },
   {
     "id": "mathiesen_group",
@@ -1101,7 +1153,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -34.6037,
+    "lng": -58.3816
   },
   {
     "id": "fecularia_salto_pilao",
@@ -1148,7 +1202,9 @@ export const SUPPLIERS = [
         "filename": "Catalogo_Mandioca_FSPSA_2021.pdf",
         "notes": "Native cassava starch only \u2014 no modified starch."
       }
-    ]
+    ],
+    "lat": -23.3922,
+    "lng": -57.9308
   },
   {
     "id": "almidonera_diesel",
@@ -1180,7 +1236,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -34.6037,
+    "lng": -58.3816
   },
   {
     "id": "femag_argentina",
@@ -1218,7 +1276,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -34.6037,
+    "lng": -58.3816
   },
   {
     "id": "cafagda",
@@ -1251,7 +1311,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -34.6037,
+    "lng": -58.3816
   },
   {
     "id": "glucovil_argentina",
@@ -1294,7 +1356,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -33.6754,
+    "lng": -65.4592
   },
   {
     "id": "molino_canuelas",
@@ -1328,7 +1392,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -35.0516,
+    "lng": -58.7622
   },
   {
     "id": "molino_lagomarsino",
@@ -1360,7 +1426,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -34.6037,
+    "lng": -58.3816
   },
   {
     "id": "bunge_argentina_flour",
@@ -1396,7 +1464,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -32.9442,
+    "lng": -60.6505
   },
   {
     "id": "vicentin_argentina",
@@ -1435,7 +1505,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -28.4696,
+    "lng": -59.0604
   },
   {
     "id": "oleaginosa_moreno",
@@ -1469,7 +1541,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -32.9442,
+    "lng": -60.6505
   },
   {
     "id": "cofco_argentina",
@@ -1505,7 +1579,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -32.9442,
+    "lng": -60.6505
   },
   {
     "id": "gelnex_brazil",
@@ -1543,7 +1619,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -27.5954,
+    "lng": -48.548
   },
   {
     "id": "pb_leiner_argentina",
@@ -1581,7 +1659,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -34.6037,
+    "lng": -58.3816
   },
   {
     "id": "gelprime_brazil",
@@ -1613,7 +1693,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -23.5505,
+    "lng": -46.6333
   },
   {
     "id": "adm_brasil_protein",
@@ -1654,7 +1736,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -20.4697,
+    "lng": -54.6201
   },
   {
     "id": "iff_brazil_protein",
@@ -1694,7 +1778,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -29.691,
+    "lng": -51.1384
   },
   {
     "id": "molino_chabas",
@@ -1728,7 +1814,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -33.2515,
+    "lng": -61.3594
   },
   {
     "id": "gruma_mexico",
@@ -1769,7 +1857,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -25.6866,
+    "lng": -100.3161
   },
   {
     "id": "minsa_mexico",
@@ -1802,7 +1892,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -19.4326,
+    "lng": -99.1332
   },
   {
     "id": "ingredion_colombia",
@@ -1845,7 +1937,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": 4.711,
+    "lng": -74.0721
   },
   {
     "id": "ingredion_ecuador",
@@ -1884,7 +1978,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -0.2295,
+    "lng": -78.5243
   },
   {
     "id": "ingredion_peru",
@@ -1923,7 +2019,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -12.0464,
+    "lng": -77.0428
   },
   {
     "id": "ingredion_chile",
@@ -1965,7 +2063,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -33.4489,
+    "lng": -70.6693
   },
   {
     "id": "gruma_centroamerica",
@@ -1998,7 +2098,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": 14.0723,
+    "lng": -87.1921
   },
   {
     "id": "imsa_mexico",
@@ -2033,7 +2135,9 @@ export const SUPPLIERS = [
     "contact_outcome": "Inquiry sent \u2014 E1422 waxy corn starch for SA market, 1 FCL/month.",
     "next_action": "Awaiting response",
     "next_action_date": "2026-06-02",
-    "docs_received": []
+    "docs_received": [],
+    "lat": -19.4326,
+    "lng": -99.1332
   },
   {
     "id": "gluten_almidones_mexico",
@@ -2070,7 +2174,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -19.4326,
+    "lng": -99.1332
   },
   {
     "id": "almidones_sucre_colombia",
@@ -2102,7 +2208,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": 2.4448,
+    "lng": -76.6147
   },
   {
     "id": "lactolanda_chile",
@@ -2136,7 +2244,9 @@ export const SUPPLIERS = [
     "contact_outcome": null,
     "next_action": null,
     "next_action_date": null,
-    "docs_received": []
+    "docs_received": [],
+    "lat": -33.4489,
+    "lng": -70.6693
   },
   {
     "id": "agd_argentina",
