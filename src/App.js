@@ -9,6 +9,7 @@ import SupplierMap from './SupplierMap';
 import MarketIntel from './MarketIntel';
 import LandedCost from './LandedCost';
 import Learn from './Learn';
+import Research from './Research';
 import './App.css';
 
 const NAV = [
