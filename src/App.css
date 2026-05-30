@@ -364,10 +364,6 @@ body {
   color: var(--gold);
 }
 .tt-bubble {
-  position: absolute;
-  bottom: calc(100% + 8px);
-  left: 50%;
-  transform: translateX(-50%);
   background: #ffffff;
   color: #1a2333;
   font-family: var(--font-body);
@@ -376,10 +372,13 @@ body {
   line-height: 1.5;
   padding: 9px 12px;
   border-radius: 5px;
-  width: 230px;
+  width: 260px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.35);
-  z-index: 999;
+  z-index: 9999;
   pointer-events: none;
+  text-transform: none;
+  letter-spacing: normal;
+  white-space: normal;
 }
 .tt-bubble::after {
   content: '';

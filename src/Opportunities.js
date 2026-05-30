@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Tooltip from './Tooltip';
 import { TRADE_FLOWS, AFRICA_PROCESSING, TRADE_GAPS } from './data/opportunityData';
 import IngredientFlow from './IngredientFlow';
 
@@ -185,8 +186,8 @@ function Screener() {
           <table className="data-table">
             <thead>
               <tr>
-                <th>Product</th><th>To</th><th>Layer</th>
-                <th>FOB Value</th><th>Volume (MT)</th><th>$/kg</th><th>Processor?</th>
+                <th>Product</th><th>To</th><th>Layer<Tooltip text="L1 = raw commodity (e.g. raw corn, soybeans). L2 = processed by-product (e.g. soybean meal, corn starch). L2 flows are higher value and more relevant to JMR." /></th>
+                <th>FOB Value<Tooltip text="Free On Board value — total trade value at the export port, before freight and insurance. Source: UN Comtrade." /></th><th>Volume (MT)</th><th>$/kg</th><th>Processor?<Tooltip text="YES means the importing country re-exports processed by-products — they are an active food manufacturer, not just a consumer. Higher value opportunity." /></th>
               </tr>
             </thead>
             <tbody>

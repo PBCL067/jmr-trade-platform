@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Tooltip from './Tooltip';
 import { fetchCollection } from './firebase';
 
 const SIGNAL_COLOR = { BUY: '#2ecc71', SELL: '#e74c3c', NEUTRAL: '#e8b84b' };
@@ -64,7 +65,7 @@ function SignalDetail({ name, data }) {
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 16 }}>
         <div>
-          <div className="section-label" style={{ marginBottom: 10 }}>Signal Components</div>
+          <div className="section-label" style={{ marginBottom: 10 }}>Signal Components<Tooltip text="Momentum: short-term price direction. Trend: medium-term direction. Seasonal: typical price behaviour at this time of year. 5yr Rank: how expensive vs history." /></div>
           {[
             ['Momentum',     data.momentum_score],
             ['Trend',        data.trend_score],
@@ -80,7 +81,7 @@ function SignalDetail({ name, data }) {
           })}
         </div>
         <div>
-          <div className="section-label" style={{ marginBottom: 10 }}>Price position (5yr range)</div>
+          <div className="section-label" style={{ marginBottom: 10 }}>Price position (5yr range)<Tooltip text="Percentile rank of today's price within the last 5 years of data. 10th = near historic low, 90th = near historic high." /></div>
           <div style={{ padding: '14px 16px', background: 'var(--bg-hover)', borderRadius: 6, marginBottom: 12 }}>
             <div style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 6, fontFamily: 'var(--font-mono)' }}>PERCENTILE RANK</div>
             <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 32, color }}>
@@ -161,7 +162,7 @@ export default function Signals() {
           <thead>
             <tr>
               <th>Commodity</th><th>Signal</th><th>Price</th>
-              <th style={{ minWidth: 160 }}>Score</th><th>3m</th><th>12m</th><th>5yr rank</th>
+              <th style={{ minWidth: 160 }}>Score<Tooltip text="Combined signal score from -2 to +2. Above +0.5 = BUY, below -0.5 = SELL. Combines momentum, trend, seasonal, and 5yr rank components." /></th><th>3m<Tooltip text="Price change over the last 3 months. Green = rising, red = falling." /></th><th>12m<Tooltip text="Price change over the last 12 months." /></th><th>5yr rank<Tooltip text="Where today's price sits within the last 5 years. Below 30% = historically cheap (green). Above 70% = historically expensive (red)." /></th>
             </tr>
           </thead>
           <tbody>

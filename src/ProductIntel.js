@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Tooltip from './Tooltip';
 import { TARIFFS } from './data/tariffData';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell } from 'recharts';
 
@@ -295,7 +296,7 @@ export default function ProductIntel() {
           <div className="section-label" style={{ marginBottom: 16 }}>Who supplies South Africa today</div>
           <table className="data-table">
             <thead>
-              <tr><th>Supplier</th><th>Volume MT</th><th>CIF $/kg</th><th>Share</th></tr>
+              <tr><th>Supplier</th><th>Volume MT<Tooltip text="Metric tonnes South Africa imported from this country in 2024. Source: UN Comtrade." /></th><th>CIF $/kg<Tooltip text="Cost + Insurance + Freight per kg — the price paid by SA importers inclusive of shipping to port." /></th><th>Share<Tooltip text="This supplier's share of total SA imports for this product." /></th></tr>
             </thead>
             <tbody>
               {p.sa_suppliers.map(row => (
@@ -323,7 +324,7 @@ export default function ProductIntel() {
 
         {/* Global FOB chart */}
         <div className="card">
-          <div className="section-label" style={{ marginBottom: 16 }}>Global FOB price comparison ($/kg)</div>
+          <div className="section-label" style={{ marginBottom: 16 }}>Global FOB price comparison ($/kg)<Tooltip text="FOB = Free On Board export price at origin port. Lower is cheaper for the buyer before adding freight. Green bar = Argentina." /></div>
           <ResponsiveContainer width="100%" height={220}>
             <BarChart data={p.global_exporters} layout="vertical" margin={{ left: 20 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#1e2d42" horizontal={false} />
@@ -350,7 +351,7 @@ export default function ProductIntel() {
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
           <table className="data-table">
-            <thead><tr><th>Buyer Country</th><th>Volume MT</th><th>FOB $/kg</th></tr></thead>
+            <thead><tr><th>Buyer Country</th><th>Volume MT<Tooltip text="How much Argentina currently exports to this country. ZERO means untapped — Argentina produces it but doesn't sell there yet." /></th><th>FOB $/kg<Tooltip text="Argentina's export price per kg. UNTAPPED means no trade exists yet between Argentina and this destination." /></th></tr></thead>
             <tbody>
               {p.arg_buyers.map(row => (
                 <tr key={row.importer}
