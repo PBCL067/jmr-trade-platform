@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Tooltip from './Tooltip';
 import { TARIFFS, getTariffUsd, MERCOSUR_COUNTRIES } from './data/tariffData';
 
 const PRODUCTS = {
@@ -217,8 +218,8 @@ function SupplierTable({ suppliers, saMarket, tariffUsd, title, tariffNote, hsCo
       <table className="data-table">
         <thead>
           <tr>
-            <th>Supplier</th><th>FOB $/kg</th><th>Freight</th>
-            <th>Tariff</th><th>Landed</th><th>vs Market</th><th>Status</th>
+            <th>Supplier</th><th>FOB $/kg<Tooltip text="Free On Board — the supplier's export price before freight, insurance and tariffs are added." /></th><th>Freight<Tooltip text="Estimated sea freight cost per kg from origin port to Durban. Includes basic ocean freight only — does not include port handling or inland trucking." /></th>
+            <th>Tariff<Tooltip text="SA import duty per kg. MFN = Most Favoured Nation rate applied to all countries. MERCOSUR countries (Argentina, Brazil, Uruguay, Paraguay) get a preferential rate on some products." /></th><th>Landed<Tooltip text="Total cost to land the product in Durban: FOB + Freight + Insurance (0.5% of FOB) + Tariff." /></th><th>vs Market<Tooltip text="Landed cost vs the current SA market price. Positive = room for margin. Negative = not competitive at current prices." /></th><th>Status<Tooltip text="VIABLE: margin above $0.05/kg. MARGINAL: positive but thin. NOT VIABLE: landed cost exceeds SA market price." /></th>
           </tr>
         </thead>
         <tbody>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Tooltip from './Tooltip';
 import { SA_IMPORT_INTEL } from './data/productIntelData';
 
 const GAP_COLOR = {
@@ -86,11 +87,11 @@ export default function MarketIntel() {
           <thead>
             <tr>
               <th>Product</th>
-              <th>SA Market (CIF)</th>
-              <th>Avg CIF $/kg</th>
-              <th>Latam Share</th>
-              <th>Our Suppliers</th>
-              <th>Signal</th>
+              <th>SA Market (CIF)<Tooltip text="Total value of South Africa's annual imports of this product, CIF = Cost + Insurance + Freight to SA port." /></th>
+              <th>Avg CIF $/kg<Tooltip text="Average price per kg paid by SA importers, inclusive of freight and insurance. Useful as a market price benchmark." /></th>
+              <th>Latam Share<Tooltip text="What percentage of SA's imports of this product currently come from Latin America (Argentina, Brazil, Uruguay, Chile, Paraguay, Bolivia, Colombia, Ecuador, Peru, Mexico)." /></th>
+              <th>Our Suppliers<Tooltip text="How many suppliers in our database can supply this product. Green = we have coverage. Click a row to see which suppliers." /></th>
+              <th>Signal<Tooltip text="UNTAPPED: zero Latam supply into SA today. UNDERREPRESENTED: Latam supplies less than 25% of SA demand. COMPETING: Latam already has meaningful share. LATAM DOMINANT: Latam is the primary supplier." /></th>
             </tr>
           </thead>
           <tbody>
