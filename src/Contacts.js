@@ -346,6 +346,14 @@ export default function Contacts() {
     setLoading(true);
     try {
       const data = await fetchCollection('contacts');
+      // Normalise specialities — REST API adds as string, form expects array
+      data.forEach(c => {
+        if (typeof c.specialities === 'string') {
+          c.specialities = c.specialities ? [c.specialities] : [];
+        } else if (!Array.isArray(c.specialities)) {
+          c.specialities = [];
+        }
+      });
       if (data.length === 0 && !seeded) {
         // Seed initial contacts
         for (const c of SEED_CONTACTS) {
