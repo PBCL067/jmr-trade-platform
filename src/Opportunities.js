@@ -8,20 +8,21 @@ const AFRICA = [...new Set(TRADE_FLOWS.map(r => r.importer))].sort();
 
 const DEALS = [
   {
-    id: 'starch', status: 'PIPELINE', title: 'Modified Starch',
-    route: 'Argentina → South Africa', hs: 'HS 3505',
-    buyer: 'Bragan / Solevo (interested)', supplier: 'Ingredion Argentina (to confirm)',
-    fob: 0.61, landed: 0.80, market: 1.09, advantage: 0.29,
+    id: 'starch', status: 'PIPELINE', title: 'Modified Waxy Corn Starch E1422',
+    route: 'Brazil → South Africa', hs: 'HS 3505',
+    buyer: 'Bragan / Solevo (interested)', supplier: 'Horizonte Amidos (SuperCorp CFW)',
+    fob: 0.91, landed: 1.05, market: 1.09, advantage: 0.04,
     sa_market_mt: 57799, sa_market_usd_m: 65.9,
     current_sa_suppliers: 'Thailand, Netherlands, Brazil',
     arg_exports_to_sa: 0,
-    notes: 'Buyer is interested. Supplier not yet confirmed. Argentina is the lowest-cost global exporter at $0.69/kg FOB. Landing at $0.80/kg undercuts all current SA suppliers.',
+    notes: 'Supplier confirmed: Horizonte Amidos, Paraná Brazil. Product: SuperCorp CFW — Modified Waxy Corn Starch E1422, Non-GMO. Price: $910/MT Ex Works (est. FOB Paranaguá ~$950/MT). Viscosity 760-960 BU, Acetyl min 1.45%, pH 4.5-6.5, moisture max 14%. TDS and specs sent to buyer 2026-06-02. Awaiting buyer feedback.',
     nextSteps: [
-      'Contact Ingredion Argentina export team (ingredion.com/sa/es-ar)',
-      'Get SACU-Mercosur tariff rate for HS 3505 from SARS',
-      'Confirm food grade certification and MOQ with Ingredion',
-      'Get freight quote Buenos Aires → Durban (20ft FCL)',
-      'Present landed cost analysis to Bragan/Solevo contact',
+      'Await buyer feedback on SuperCorp CFW specs',
+      'Get FOB Paranaguá price from Jordani (currently Ex Works $910/MT)',
+      'Get freight quote Paranaguá → Durban (20ft FCL)',
+      'Confirm HS 3505 tariff rate with SARS',
+      'Request CoA from recent batch from Horizonte',
+      'Request Halal certification status from Horizonte',
     ],
   },
   {
