@@ -14,7 +14,8 @@ const DEALS = [
     fob: 0.91, landed: 1.05, market: 1.09, advantage: 0.04,
     sa_market_mt: 57799, sa_market_usd_m: 65.9,
     current_sa_suppliers: 'Thailand, Netherlands, Brazil',
-    arg_exports_to_sa: 0,
+    arg_exports_to_sa: -1,
+    fob_label: 'Brazil Ex Works',
     notes: 'Supplier confirmed: Horizonte Amidos, Paraná Brazil. Product: SuperCorp CFW — Modified Waxy Corn Starch E1422, Non-GMO. Price: $910/MT Ex Works (est. FOB Paranaguá ~$950/MT). Viscosity 760-960 BU, Acetyl min 1.45%, pH 4.5-6.5, moisture max 14%. TDS and specs sent to buyer 2026-06-02. Awaiting buyer feedback.',
     nextSteps: [
       'Await buyer feedback on SuperCorp CFW specs',
@@ -81,7 +82,7 @@ function DealCard({ deal }) {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
         <div>
           <div className="section-label" style={{ marginBottom: 10 }}>Price Stack (USD/kg)</div>
-          {[['Argentina FOB', deal.fob, false], ['Est. Landed SA', deal.landed, false],
+          {[[deal.fob_label || 'Argentina FOB', deal.fob, false], ['Est. Landed SA', deal.landed, false],
             ['SA Market Price', deal.market, true], ['Our Advantage', deal.advantage, true]]
             .filter(r => r[1] != null).map(([label, val, highlight]) => (
             <div key={label} style={{ display: 'flex', justifyContent: 'space-between',
@@ -104,7 +105,7 @@ function DealCard({ deal }) {
           </div>
           <div style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 4 }}>Current SA suppliers</div>
           <div style={{ fontSize: 13, color: 'var(--text-secondary)' }}>{deal.current_sa_suppliers}</div>
-          {deal.arg_exports_to_sa === 0 && (
+          {deal.arg_exports_to_sa === 0 && deal.arg_exports_to_sa !== -1 && (
             <div style={{ marginTop: 8, padding: '6px 10px', background: 'rgba(232,184,75,0.08)',
               border: '1px solid rgba(232,184,75,0.2)', borderRadius: 4, fontSize: 12, color: '#e8b84b', fontFamily: 'var(--font-mono)' }}>
               ARG EXPORTS TO SA: ZERO — UNTAPPED
