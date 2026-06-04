@@ -2707,5 +2707,26 @@ export const SUPPLIERS = [
     "contact_name": "Mariaines Marrazzo",
     "contact_title": null,
     "docs_received": []
+  },
+  {
+    "id": "group_benci_mexico",
+    "name": "Grupo Benci",
+    "country": "Mexico",
+    "city": "Mexico City",
+    "website": "www.group-benci.com",
+    "email": "importaciones@group-benci.com",
+    "phone": "+52 55 2237 5040",
+    "whatsapp": "+52 55 4518 2452",
+    "products": [
+      "Modified Starch E1422"
+    ],
+    "contacted": true,
+    "contact_date": "2026-06-04",
+    "contact_method": "Email",
+    "contact_outcome": "Cold outreach sent - Modified Corn Starch E1422, 1 x 20ft FCL/month, Durban. Awaiting response.",
+    "next_action": "Follow up if no response by Wednesday",
+    "next_action_date": "2026-06-11",
+    "notes": "Mexican starch supplier. Email: importaciones@group-benci.com, WhatsApp: +52 55 4518 2452",
+    "status": "Contacted"
   }
 ];
