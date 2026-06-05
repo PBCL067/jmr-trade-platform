@@ -2721,9 +2721,9 @@ export const SUPPLIERS = [
       "Modified Starch E1422"
     ],
     "contacted": true,
-    "contact_date": "2026-06-04",
+    "contact_date": "2026-06-05",
     "contact_method": "Email",
-    "contact_outcome": "Cold outreach sent - Modified Corn Starch E1422, 1 x 20ft FCL/month, Durban. Awaiting response.",
+    "contact_outcome": "Cold outreach sent to importaciones@group-benci.com - Modified Corn Starch E1422, 1 x 20ft FCL/month, Durban. Awaiting response.",
     "next_action": "Follow up if no response by Wednesday",
     "next_action_date": "2026-06-11",
     "notes": "Mexican starch supplier. Email: importaciones@group-benci.com, WhatsApp: +52 55 4518 2452",
