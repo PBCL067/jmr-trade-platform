@@ -450,7 +450,7 @@ export const SUPPLIERS = [
     "docs_received": [],
     "lat": -34.4692,
     "lng": -58.5652,
-    "status": "Warm"
+    "status": "Qualified"
   },
   {
     "id": "colun_chile",
@@ -821,7 +821,7 @@ export const SUPPLIERS = [
     "docs_received": [],
     "lat": -23.5505,
     "lng": -46.6333,
-    "status": "Warm"
+    "status": "Qualified"
   },
   {
     "id": "semino_argentina",
@@ -2455,7 +2455,7 @@ export const SUPPLIERS = [
     "contact_name": null,
     "contact_title": "Head of Development",
     "docs_received": [],
-    "status": "Warm"
+    "status": "Qualified"
   },
   {
     "id": "el_bahiense_argentina",
