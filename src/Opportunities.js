@@ -3,41 +3,8 @@ import Tooltip from './Tooltip';
 import { TRADE_FLOWS, AFRICA_PROCESSING, TRADE_GAPS } from './data/opportunityData';
 import IngredientFlow from './IngredientFlow';
 
-const LATAM = ['Argentina','Brazil','Uruguay','Chile','Colombia','Peru','Ecuador','Paraguay','Bolivia','Mexico'  {
-    id: 'lecithin', status: 'RESEARCH', title: 'Soya Lecithin',
-    route: 'Argentina → South Africa', hs: 'HS 292390',
-    buyer: 'Bragan / Solevo (potential)', supplier: 'TBC - Argentina',
-    fob: null, landed: null, market: null, advantage: null,
-    sa_market_mt: null, sa_market_usd_m: 20.3,
-    current_sa_suppliers: 'China (84%), India (4.5%), USA (4.3%)',
-    arg_exports_to_sa: 0,
-    notes: 'SA imports $20.3M of soya lecithin annually - 84% from China, zero from Mercosur. Argentina is the world's largest soya lecithin producer (byproduct of Rosario soy crush corridor) yet has zero SA presence. Classic displacement opportunity. Bragan already carries soya lecithin. Source: UN Comtrade 2023.',
-    nextSteps: [
-      'Identify top Argentine soya lecithin exporters (Bunge, AGD, Molinos, Vicentin)',
-      'Get FOB Buenos Aires / Rosario indicative pricing',
-      'Confirm HS 292390 SACU-Mercosur tariff rate with SARS',
-      'Contact Bragan to gauge interest and current supplier pricing',
-      'Run landed cost analysis vs Chinese supplier price',
-    ],
-  },
-  {
-    id: 'soyoil', status: 'RESEARCH', title: 'Refined Soybean Oil',
-    route: 'Argentina / Brazil → South Africa', hs: 'HS 150790',
-    buyer: 'TBC', supplier: 'TBC - Argentina / Brazil',
-    fob: null, landed: null, market: null, advantage: null,
-    sa_market_mt: null, sa_market_usd_m: 23.1,
-    current_sa_suppliers: 'Netherlands (79%), Brazil (21%)',
-    arg_exports_to_sa: 0,
-    notes: 'SA imports $23.1M refined soybean oil - Netherlands dominates at 79% likely re-exporting Argentine/Brazilian origin oil. Brazil already at 21% direct. Opportunity to displace Dutch middleman and supply direct from Argentina or Brazil. Bragan carries soya lecithin and functional fats - likely buys soybean oil too. Source: UN Comtrade 2023.',
-    nextSteps: [
-      'Identify Argentine/Brazilian refined soybean oil exporters',
-      'Establish Netherlands landed cost vs direct Mercosur landed cost',
-      'Confirm HS 150790 SACU-Mercosur tariff rate with SARS',
-      'Identify SA industrial buyers of refined soybean oil',
-      'Check if Bragan carries refined soybean oil',
-    ],
-  },
-];
+const LATAM = ['Argentina','Brazil','Uruguay','Chile','Colombia','Peru','Ecuador','Paraguay','Bolivia','Mexico'];
+
 const AFRICA = [...new Set(TRADE_FLOWS.map(r => r.importer))].sort();
 
 const DEALS = [
@@ -89,6 +56,40 @@ const DEALS = [
       'Map existing Argentine sunflower oil exporters to SA',
       'Identify SA industrial buyers (food manufacturers)',
       'Assess tariff position under SACU-Mercosur',
+    ],
+  },
+  {
+    id: 'lecithin', status: 'RESEARCH', title: 'Soya Lecithin',
+    route: 'Argentina → South Africa', hs: 'HS 292390',
+    buyer: 'Bragan / Solevo (potential)', supplier: 'TBC - Argentina',
+    fob: null, landed: null, market: null, advantage: null,
+    sa_market_mt: null, sa_market_usd_m: 20.3,
+    current_sa_suppliers: 'China (84%), India (4.5%), USA (4.3%)',
+    arg_exports_to_sa: 0,
+    notes: 'SA imports $20.3M of soya lecithin annually - 84% from China, zero from Mercosur. Argentina is the world largest soya lecithin producer (byproduct of Rosario soy crush corridor) yet has zero SA presence. Classic displacement opportunity. Bragan already carries soya lecithin. Source: UN Comtrade 2023.',
+    nextSteps: [
+      'Identify top Argentine soya lecithin exporters (Bunge, AGD, Molinos)',
+      'Get FOB Buenos Aires / Rosario indicative pricing',
+      'Confirm HS 292390 SACU-Mercosur tariff rate with SARS',
+      'Contact Bragan to gauge interest and current supplier pricing',
+      'Run landed cost analysis vs Chinese supplier price',
+    ],
+  },
+  {
+    id: 'soyoil', status: 'RESEARCH', title: 'Refined Soybean Oil',
+    route: 'Argentina / Brazil → South Africa', hs: 'HS 150790',
+    buyer: 'TBC', supplier: 'TBC - Argentina / Brazil',
+    fob: null, landed: null, market: null, advantage: null,
+    sa_market_mt: null, sa_market_usd_m: 23.1,
+    current_sa_suppliers: 'Netherlands (79%), Brazil (21%)',
+    arg_exports_to_sa: 0,
+    notes: 'SA imports $23.1M refined soybean oil - Netherlands dominates at 79% likely re-exporting Argentine/Brazilian origin oil. Brazil already at 21% direct. Opportunity to displace Dutch middleman and supply direct from Argentina or Brazil.',
+    nextSteps: [
+      'Identify Argentine/Brazilian refined soybean oil exporters',
+      'Establish Netherlands landed cost vs direct Mercosur landed cost',
+      'Confirm HS 150790 SACU-Mercosur tariff rate with SARS',
+      'Identify SA industrial buyers of refined soybean oil',
+      'Check if Bragan carries refined soybean oil',
     ],
   },
 ];
