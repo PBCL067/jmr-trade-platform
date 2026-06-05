@@ -449,7 +449,8 @@ export const SUPPLIERS = [
     "next_action_date": "2026-06-11",
     "docs_received": [],
     "lat": -34.4692,
-    "lng": -58.5652
+    "lng": -58.5652,
+    "status": "Warm"
   },
   {
     "id": "colun_chile",
@@ -819,7 +820,8 @@ export const SUPPLIERS = [
     "next_action_date": "2026-06-11",
     "docs_received": [],
     "lat": -23.5505,
-    "lng": -46.6333
+    "lng": -46.6333,
+    "status": "Warm"
   },
   {
     "id": "semino_argentina",
@@ -2452,7 +2454,8 @@ export const SUPPLIERS = [
     "next_action_date": "2026-06-11",
     "contact_name": null,
     "contact_title": "Head of Development",
-    "docs_received": []
+    "docs_received": [],
+    "status": "Warm"
   },
   {
     "id": "el_bahiense_argentina",
