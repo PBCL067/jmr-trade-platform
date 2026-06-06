@@ -60,7 +60,6 @@ const REPORTS = [
       { file: 'wheat_enduse_breakdown_v2.png',  label: 'Wheat End Use Breakdown',         caption: 'Global wheat end use — bread, pasta, feed, starch, ethanol and other industrial uses.' },
     ],
   },
-,
   {
     id: 'sars',
     title: 'SARS Import Trends',
