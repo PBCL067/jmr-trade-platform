@@ -134,7 +134,7 @@ function DealCard({ deal }) {
           <div style={{ padding: '10px 14px', background: 'var(--bg-hover)', borderRadius: 4, marginBottom: 8 }}>
             <div style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginBottom: 4 }}>MARKET SIZE</div>
             <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 22 }}>
-              {deal.sa_market_mt.toLocaleString()} MT/yr
+              {deal.sa_market_mt ? deal.sa_market_mt.toLocaleString() + ' MT/yr' : 'Market sizing TBC'}
             </div>
             {deal.sa_market_usd_m && <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2 }}>${deal.sa_market_usd_m}M market value</div>}
           </div>
