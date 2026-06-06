@@ -282,5 +282,60 @@ export const INGREDIENT_FLOWS = [
       "SA industrial bakeries",
       "Nigeria (no domestic wheat)"
     ]
+  },
+  {
+    "ingredient": "Soya Lecithin",
+    "description": "Natural phospholipid emulsifier (E322) extracted as byproduct of soybean oil processing. Acts as emulsifier, viscosity modifier, wetting agent and release agent. Argentina is world's largest producer \u2014 zero currently reaches South Africa.",
+    "supplied_by": [
+      "AGD (Aceitera General Deheza) \u2014 Argentina",
+      "Bunge Argentina (Lecithin division)",
+      "Meridional Ventures SA \u2014 Argentina",
+      "Molinos Agro SA \u2014 Argentina"
+    ],
+    "used_in": [
+      {
+        "sector": "Confectionery",
+        "application": "Chocolate manufacturing \u2014 reduces cocoa butter viscosity, prevents fat bloom, improves moulding flow. Used at 0.3\u20130.5% of batch weight. Every chocolate bar, coating and chocolate beverage requires it."
+      },
+      {
+        "sector": "Bakery",
+        "application": "Industrial bread, buns, cakes and biscuits \u2014 improves dough machinability, crumb softness, loaf volume and shelf life. Used at 0.1\u20130.3% of flour weight. SA's largest food category by volume."
+      },
+      {
+        "sector": "Dairy",
+        "application": "Margarine and spreads \u2014 primary emulsifier preventing water-in-oil separation. Used at 0.1\u20130.2%. Also used in processed cheese, dairy creamers, UHT milk and infant formula fat emulsification."
+      },
+      {
+        "sector": "Instant Food",
+        "application": "Instant soups, gravies, sauces and noodles \u2014 wetting and dispersing agent that speeds reconstitution of powdered ingredients in water. Critical functional role in instant product lines."
+      },
+      {
+        "sector": "Sauces & Dressings",
+        "application": "Mayonnaise and salad dressings \u2014 oil-in-water emulsification, prevents separation. Used alongside egg yolk lecithin in premium formulations."
+      },
+      {
+        "sector": "Meat Processing",
+        "application": "Processed meat and poultry \u2014 release agent in moulds, emulsification of fat and water in frankfurters, polony and viennas. Reduces cooking loss."
+      },
+      {
+        "sector": "Industrial",
+        "application": "Animal feed (technical grade) \u2014 palatability enhancer and energy source in aquafeed, poultry and pig feed. Also used in paints, cosmetics and pharmaceutical drug delivery systems."
+      }
+    ],
+    "african_buyers": [
+      "Mondelez SA (Cadbury Port Elizabeth) \u2014 chocolate",
+      "Tiger Brands (Beacon, Albany bread) \u2014 chocolate + bakery",
+      "Premier Foods \u2014 bakery and confectionery",
+      "Nestl\u00e9 SA \u2014 chocolate, infant formula, instant soups",
+      "Unilever SA (Flora, Rama, Knorr) \u2014 margarine + sauces",
+      "Clover / Lactalis SA \u2014 dairy and margarine",
+      "RCL Foods (Molatek) \u2014 animal feed technical grade",
+      "Dufil Prima (Indomie Nigeria) \u2014 instant noodles",
+      "Dangote Foods Nigeria \u2014 bread and cooking fats",
+      "Bidco Africa Kenya \u2014 margarine and edible fats",
+      "Barry Callebaut Ghana \u2014 cocoa and chocolate processing",
+      "Americana Group Egypt \u2014 bakery and confectionery",
+      "Bragan / Solevo SA \u2014 ingredient distributor to all above"
+    ]
   }
 ];
