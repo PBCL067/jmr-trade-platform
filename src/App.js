@@ -10,6 +10,7 @@ import MarketIntel from './MarketIntel';
 import LandedCost from './LandedCost';
 import Learn from './Learn';
 import Research from './Research';
+import Buyers from './Buyers';
 import './App.css';
 
 const NAV = [
@@ -22,6 +23,7 @@ const NAV = [
   { id: 'map',          label: 'Supplier Map',  icon: '\u25b3' },
   { id: 'learn',         label: 'Learn',         icon: '\u25d4' },
   { id: 'contacts',      label: 'Contacts',      icon: '\u25a1' },
+  { id: 'buyers',        label: 'Buyers',        icon: '\u25d6' },
   { id: 'research',     label: 'Research',      icon: '\u25c8' },
 ];
 
@@ -60,6 +62,7 @@ export default function App() {
       case 'learn':         return <Learn />;
       case 'contacts':      return <Contacts />;
       case 'research':     return <Research />;
+      case 'buyers':        return <Buyers />;
       default:              return <Opportunities />;
     }
   };
