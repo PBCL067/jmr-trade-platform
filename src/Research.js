@@ -86,7 +86,8 @@ const REPORTS = [
         ],
       },
     ],
-  }];
+  },
+];
 
 export default function Research() {
   const [activeReport, setActiveReport] = useState('macro');
