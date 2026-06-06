@@ -139,7 +139,7 @@ function DealCard({ deal }) {
             {deal.sa_market_usd_m && <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2 }}>${deal.sa_market_usd_m}M market value</div>}
           </div>
           <div style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 4 }}>Current SA suppliers</div>
-          <div style={{ fontSize: 13, color: 'var(--text-secondary)' }}>{deal.current_sa_suppliers}</div>
+          <div style={{ fontSize: 13, color: 'var(--text-secondary)' }}>{deal.current_sa_suppliers || '—'}</div>
           {deal.arg_exports_to_sa === 0 && deal.arg_exports_to_sa !== -1 && (
             <div style={{ marginTop: 8, padding: '6px 10px', background: 'rgba(232,184,75,0.08)',
               border: '1px solid rgba(232,184,75,0.2)', borderRadius: 4, fontSize: 12, color: '#e8b84b', fontFamily: 'var(--font-mono)' }}>
@@ -158,10 +158,10 @@ function DealCard({ deal }) {
           <div style={{ color: 'var(--text-primary)', fontWeight: 500 }}>{deal.supplier}</div>
         </div>
       </div>
-      <div style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.7, padding: '10px 14px', background: 'var(--bg-hover)', borderRadius: 4, marginBottom: 14 }}>{deal.notes}</div>
+      <div style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.7, padding: '10px 14px', background: 'var(--bg-hover)', borderRadius: 4, marginBottom: 14 }}>{deal.notes || ''}</div>
       <div className="section-label" style={{ marginBottom: 8 }}>Next Steps</div>
       <ol style={{ paddingLeft: 18 }}>
-        {deal.nextSteps.map((step, i) => (
+        {(deal.nextSteps || []).map((step, i) => (
           <li key={i} style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 8, lineHeight: 1.6 }}>{step}</li>
         ))}
       </ol>
