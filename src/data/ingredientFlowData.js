@@ -337,5 +337,310 @@ export const INGREDIENT_FLOWS = [
       "Americana Group Egypt \u2014 bakery and confectionery",
       "Bragan / Solevo SA \u2014 ingredient distributor to all above"
     ]
+  },
+  {
+    "ingredient": "Tartaric Acid",
+    "description": "Natural organic acid produced as byproduct of wine fermentation. Argentina is the world's #1 producer \u2014 Mendoza and San Juan wine regions generate vast quantities. SA imports from Europe. E334.",
+    "supplied_by": [
+      "Derivados V\u00ednicos SA \u2014 Argentina (Mendoza)",
+      "Argentar SA \u2014 Argentina",
+      "Lagar SA \u2014 Argentina",
+      "Brazilian wine producers"
+    ],
+    "used_in": [
+      {
+        "sector": "Beverages",
+        "application": "Wine stabilisation, tartness adjustment in soft drinks and fruit juices, acidity regulator in sports drinks"
+      },
+      {
+        "sector": "Bakery",
+        "application": "Leavening agent in baking powder, cream of tartar substitute, acidity regulator in dough"
+      },
+      {
+        "sector": "Confectionery",
+        "application": "Sour agent in hard candies and gummies, tartness modifier in fruit chews"
+      },
+      {
+        "sector": "Sauces & Dressings",
+        "application": "Acidity regulator in dressings, pH control in condiments and fruit-based sauces"
+      }
+    ],
+    "african_buyers": [
+      "SA beverage manufacturers (Pioneer Foods, Tiger Brands beverages)",
+      "Bragan Ingredients \u2014 confirmed distributor",
+      "Confectionery producers (Mondelez, Nestl\u00e9 SA)",
+      "Industrial bakeries"
+    ]
+  },
+  {
+    "ingredient": "Cream of Tartar",
+    "description": "Potassium hydrogen tartrate \u2014 refined from tartaric acid, itself a wine fermentation byproduct. Argentina dominates global supply. Used as leavening acid and stabiliser. E336.",
+    "supplied_by": [
+      "Derivados V\u00ednicos SA \u2014 Argentina",
+      "Argentar SA \u2014 Argentina",
+      "Argentine wine processing cooperatives \u2014 Mendoza/San Juan"
+    ],
+    "used_in": [
+      {
+        "sector": "Bakery",
+        "application": "Leavening acid in baking powder and self-raising flour. Stabilises egg white foam in meringues, souffl\u00e9s and angel food cake. Critical in industrial cake and biscuit production."
+      },
+      {
+        "sector": "Confectionery",
+        "application": "Prevents sugar crystallisation in fondant, fudge, toffee and boiled sweets. Produces finer, creamier texture in candy."
+      },
+      {
+        "sector": "Dairy",
+        "application": "Whipping cream stabiliser, prevents cream from deflating in industrial dessert production."
+      }
+    ],
+    "african_buyers": [
+      "Bragan Ingredients \u2014 confirmed distributor",
+      "Industrial bakeries (Tiger Brands, Premier Foods, RCL Foods)",
+      "Confectionery manufacturers",
+      "Retail baking supply (Checkers, Pick n Pay own-label)"
+    ]
+  },
+  {
+    "ingredient": "Soya Protein Concentrate (SPC)",
+    "description": "Soy protein at 65-70% concentration, produced by removing soluble carbohydrates from defatted soy flour. Argentina and Brazil are world leaders in soy processing. Used extensively in meat extension, dairy alternatives and animal feed.",
+    "supplied_by": [
+      "Bunge Argentina \u2014 major SPC producer",
+      "AGD (Aceitera General Deheza) \u2014 Argentina",
+      "Devansoy Argentina",
+      "Solbar Argentina",
+      "Cargill Brazil",
+      "Bunge Brazil"
+    ],
+    "used_in": [
+      {
+        "sector": "Meat Processing",
+        "application": "Meat extension in polony, viennas, burger patties and processed meats. Improves water binding, texture and yield. Used at 2-5% of meat weight. Tiger Brands Enterprise is a key buyer."
+      },
+      {
+        "sector": "Meat Analogues",
+        "application": "Primary protein source in plant-based meat products, veggie burgers and meat-free sausages. Growing SA market."
+      },
+      {
+        "sector": "Dairy",
+        "application": "Protein fortification in dairy beverages, yoghurt and nutritional drinks. Base for some dairy alternatives."
+      },
+      {
+        "sector": "Nutritional and Health",
+        "application": "Protein supplements, meal replacement powders, sports nutrition bars. Major ingredient in SA gym nutrition brands."
+      },
+      {
+        "sector": "Industrial",
+        "application": "Animal feed protein supplement \u2014 aquafeed, poultry and pig rations. Technical grade."
+      }
+    ],
+    "african_buyers": [
+      "Tiger Brands (Enterprise meats) \u2014 meat extension",
+      "RCL Foods \u2014 processed meats and poultry",
+      "Bragan Ingredients \u2014 confirmed distributor (SPC and SPI)",
+      "USN, Biogen, Evox \u2014 sports nutrition",
+      "Dis-Chem house brand nutritional products"
+    ]
+  },
+  {
+    "ingredient": "Soya Protein Isolate (SPI)",
+    "description": "Highest concentration soy protein at 90%+, produced by removing both fat and carbohydrates. Higher value than SPC. Argentina and Brazil are major exporters. Clean label, high functionality.",
+    "supplied_by": [
+      "Bunge Argentina",
+      "Solbar Argentina \u2014 specialist SPI producer",
+      "Devansoy Argentina",
+      "Bunge Brazil",
+      "Cargill Brazil"
+    ],
+    "used_in": [
+      {
+        "sector": "Nutritional and Health",
+        "application": "Premium protein supplements, clear protein drinks, infant formula protein base. High solubility and neutral flavour."
+      },
+      {
+        "sector": "Meat Analogues",
+        "application": "Textured vegetable protein (TVP) base, high-moisture meat analogue extrusion. Growing demand as SA consumers shift to flexitarian diets."
+      },
+      {
+        "sector": "Dairy",
+        "application": "Dairy alternative beverages (soy milk), high-protein yoghurt alternatives, infant formula."
+      },
+      {
+        "sector": "Bakery",
+        "application": "Protein enrichment of bread and high-protein baked goods. Improves water absorption and dough stability."
+      },
+      {
+        "sector": "Meat Processing",
+        "application": "Premium meat binder and emulsifier in fine-cut emulsion products."
+      }
+    ],
+    "african_buyers": [
+      "Bragan Ingredients \u2014 confirmed distributor",
+      "USN, Biogen, Evox, Nutritech \u2014 sports nutrition SA",
+      "Nestl\u00e9 SA \u2014 infant formula and nutritional products",
+      "Plant-based food manufacturers",
+      "Aspen Pharmacare \u2014 nutritional products"
+    ]
+  },
+  {
+    "ingredient": "Maltodextrin",
+    "description": "Partially hydrolysed starch, DE 10-20, produced by corn wet milling. Argentina and Brazil are major corn producers with Ingredion operating large plants in both countries. SA imports from Europe and Asia.",
+    "supplied_by": [
+      "Ingredion Argentina (formerly National Starch)",
+      "Ingredion Brazil",
+      "AGD \u2014 Argentina",
+      "Cargill Brazil",
+      "Arcor \u2014 Argentina"
+    ],
+    "used_in": [
+      {
+        "sector": "Beverages",
+        "application": "Spray drying carrier for flavours, colours and vitamin premixes. Instant beverage powder base. Sports drink carbohydrate source."
+      },
+      {
+        "sector": "Dairy",
+        "application": "Bulking agent and carrier in creamer formulations. Texture modifier in ice cream and frozen desserts."
+      },
+      {
+        "sector": "Instant Food",
+        "application": "Carrier for instant soup, gravy and sauce powders. Improves reconstitution and flow properties. Major volume ingredient."
+      },
+      {
+        "sector": "Nutritional and Health",
+        "application": "Fast-release carbohydrate in sports gels and energy drinks. Encapsulation carrier for sensitive ingredients."
+      },
+      {
+        "sector": "Bakery",
+        "application": "Moisture retention, browning control, texture modifier in baked goods and cake mixes."
+      }
+    ],
+    "african_buyers": [
+      "Bragan Ingredients \u2014 confirmed distributor (Maltodextrin 10DE, 20DE, 30DE)",
+      "Tiger Brands \u2014 instant soups and gravies (Royco)",
+      "Nestl\u00e9 SA \u2014 Maggi powders and beverages",
+      "Sports nutrition brands (USN, Biogen)",
+      "Industrial food manufacturers broadly"
+    ]
+  },
+  {
+    "ingredient": "Dextrose Monohydrate",
+    "description": "Purified glucose from corn wet milling. Argentina and Brazil major producers. Bragan carries it. Wide use across bakery, confectionery, meat and brewing. Lower sweetness than sucrose.",
+    "supplied_by": [
+      "Ingredion Argentina",
+      "Ingredion Brazil",
+      "Cargill Brazil",
+      "Arcor \u2014 Argentina",
+      "AGD \u2014 Argentina"
+    ],
+    "used_in": [
+      {
+        "sector": "Bakery",
+        "application": "Fermentation sugar for yeast, browning via Maillard reaction, humectant in bread and rolls. Preferred over sucrose in many industrial bread formulations."
+      },
+      {
+        "sector": "Meat Processing",
+        "application": "Curing sugar in ham, bacon and biltong. Feeds fermentation in fermented/cured meats, produces lactic acid and colour development."
+      },
+      {
+        "sector": "Confectionery",
+        "application": "Prevents crystallisation in sweets and chocolates. Controls sweetness profile. Reduces hygroscopicity."
+      },
+      {
+        "sector": "Brewing & Beverages",
+        "application": "Fermentable sugar adjunct in beer and cider. Fully fermentable unlike maltose from malt."
+      },
+      {
+        "sector": "Nutritional and Health",
+        "application": "Fast-release carbohydrate in IV solutions, sports nutrition and oral rehydration salts."
+      }
+    ],
+    "african_buyers": [
+      "Bragan Ingredients \u2014 confirmed distributor",
+      "Tiger Brands \u2014 bakery and meat divisions",
+      "RCL Foods \u2014 meat processing",
+      "SA breweries and cider producers",
+      "Pharmaceutical manufacturers (Aspen, Adcock)"
+    ]
+  },
+  {
+    "ingredient": "Sodium Caseinate",
+    "description": "Soluble form of milk protein (casein) produced by treating acid casein with sodium hydroxide. Argentina and Uruguay are major casein producers \u2014 byproduct of cheese making. High emulsifying and water-binding functionality.",
+    "supplied_by": [
+      "Milkaut SA \u2014 Argentina (major casein producer)",
+      "SanCor \u2014 Argentina",
+      "Conaprole \u2014 Uruguay",
+      "L\u00e1cteos del Uruguay",
+      "La Seren\u00edsima (Mastellone) \u2014 Argentina"
+    ],
+    "used_in": [
+      {
+        "sector": "Meat Processing",
+        "application": "Emulsifier and water binder in processed meats \u2014 polony, viennas, ham. Improves slice ability, texture and yield. Replaces more expensive meat protein."
+      },
+      {
+        "sector": "Dairy",
+        "application": "Protein enrichment in coffee whiteners, creamers, dairy desserts and processed cheese. Improves texture and mouthfeel."
+      },
+      {
+        "sector": "Nutritional and Health",
+        "application": "Slow-digesting protein in sports nutrition \u2014 casein protein powders, meal replacement formulations and clinical nutrition."
+      },
+      {
+        "sector": "Bakery",
+        "application": "Protein enrichment, improves crust colour and water absorption in bread and high-protein bakery."
+      },
+      {
+        "sector": "Instant Food",
+        "application": "Protein source in instant soups and meal solutions."
+      }
+    ],
+    "african_buyers": [
+      "Bragan Ingredients \u2014 confirmed distributor",
+      "Tiger Brands Enterprise \u2014 processed meats",
+      "RCL Foods \u2014 meat and poultry processing",
+      "Clover / Lactalis SA \u2014 dairy creamers and desserts",
+      "Sports nutrition brands (USN, Biogen)"
+    ]
+  },
+  {
+    "ingredient": "Skimmed Milk Powder (SMP)",
+    "description": "Spray-dried skim milk with fat reduced to <1.5%. Uruguay, Argentina and Brazil are all major exporters. Same supply corridor as FCMP already being pursued. Bragan carries it.",
+    "supplied_by": [
+      "Conaprole \u2014 Uruguay (FSSC 22000, Halal, Kosher)",
+      "Mastellone \u2014 Argentina",
+      "SanCor \u2014 Argentina",
+      "Itamb\u00e9 \u2014 Brazil",
+      "Lactalis Argentina"
+    ],
+    "used_in": [
+      {
+        "sector": "Dairy",
+        "application": "Recombined milk and UHT milk base. Yoghurt protein enrichment. Ice cream stabilisation and body. Processed cheese manufacture."
+      },
+      {
+        "sector": "Bakery",
+        "application": "Protein and lactose source in bread, buns and pastries. Improves browning, softness and shelf life. Used in biscuit and cake formulations."
+      },
+      {
+        "sector": "Confectionery",
+        "application": "Milk chocolate and white chocolate manufacturing. Toffee and caramel production. Provides milk solids and lactose."
+      },
+      {
+        "sector": "Instant Food",
+        "application": "Instant soup, porridge and beverage base. Reconstituted milk for food service."
+      },
+      {
+        "sector": "Nutritional and Health",
+        "application": "Infant formula ingredient. Nutritional beverage and meal replacement powder base."
+      }
+    ],
+    "african_buyers": [
+      "Bragan Ingredients \u2014 confirmed distributor",
+      "Clover / Lactalis SA \u2014 recombined dairy",
+      "Mondelez SA \u2014 chocolate manufacturing",
+      "Tiger Brands \u2014 bakery and confectionery",
+      "Nestl\u00e9 SA \u2014 infant formula and beverages",
+      "Nigerian dairy processors (Fan Milk, Promasidor)"
+    ]
   }
 ];

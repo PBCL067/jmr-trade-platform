@@ -3,7 +3,8 @@ import { INGREDIENT_FLOWS } from './data/ingredientFlowData';
 
 const SECTORS = ['All', 'Bakery', 'Dairy', 'Frozen Food', 'Meat Processing',
                  'Confectionery', 'Instant Food', 'Sauces & Dressings',
-                 'Brewing & Beverages', 'Meat Analogues', 'Industrial'];
+                 'Brewing & Beverages', 'Meat Analogues', 'Industrial',
+                 'Beverages', 'Nutritional and Health'];
 
 const SECTOR_COLOR = {
   'Bakery':              '#e8b84b',
@@ -16,6 +17,8 @@ const SECTOR_COLOR = {
   'Brewing & Beverages': '#06b6d4',
   'Meat Analogues':      '#84cc16',
   'Industrial':          '#4a5a70',
+  'Beverages':           '#06b6d4',
+  'Nutritional and Health': '#84cc16',
 };
 
 export default function IngredientFlow() {
