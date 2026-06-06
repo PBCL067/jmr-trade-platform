@@ -6,7 +6,7 @@ export const SUPPLIERS = [
     "country_code": "AR",
     "city": "Baradero, Buenos Aires Province",
     "role": "Manufacturer/Exporter",
-    "product_category": "Modified Starch",
+    "product_category": "Tapioca Starch",
     "products": [
       "Modified Starch",
       "Native Starch",
@@ -786,7 +786,7 @@ export const SUPPLIERS = [
     "country_code": "BR",
     "city": "Cianorte, Parana",
     "role": "Manufacturer/Exporter",
-    "product_category": "Modified Starch",
+    "product_category": "Tapioca Starch",
     "products": [
       "Cassava Modified Starch",
       "Hydroxypropyl Starch",
@@ -883,7 +883,7 @@ export const SUPPLIERS = [
     "country_code": "BR",
     "city": "Guarani, Minas Gerais",
     "role": "Manufacturer/Exporter",
-    "product_category": "Modified Starch",
+    "product_category": "Tapioca Starch",
     "products": [
       "Modified Tapioca Starch",
       "Modified Corn Starch",
@@ -927,7 +927,7 @@ export const SUPPLIERS = [
     "country_code": "MX",
     "city": "Guadalajara, Jalisco",
     "role": "Manufacturer/Exporter",
-    "product_category": "Modified Starch",
+    "product_category": "Tapioca Starch",
     "products": [
       "Modified Corn Starch",
       "Native Corn Starch",
@@ -1085,7 +1085,7 @@ export const SUPPLIERS = [
     "country_code": "PY",
     "city": "Departamento de Caaguazu, Paraguay",
     "role": "Manufacturer/Exporter",
-    "product_category": "Modified Starch",
+    "product_category": "Tapioca Starch",
     "products": [
       "Cassava Starch",
       "Modified Cassava Starch"
@@ -1166,7 +1166,7 @@ export const SUPPLIERS = [
     "country_code": "PY",
     "city": "Paraguay",
     "role": "Manufacturer/Exporter",
-    "product_category": "Modified Starch",
+    "product_category": "Tapioca Starch",
     "products": [
       "Corn Starch",
       "Cassava Starch (Fecula de Mandioca)",
@@ -1215,7 +1215,7 @@ export const SUPPLIERS = [
     "country_code": "AR",
     "city": "Puerto Rico, Misiones",
     "role": "Manufacturer/Exporter",
-    "product_category": "Modified Starch",
+    "product_category": "Tapioca Starch",
     "products": [
       "Cassava Starch (Fecula de Mandioca)",
       "Cassava Flour"
@@ -1249,7 +1249,7 @@ export const SUPPLIERS = [
     "country_code": "AR",
     "city": "Misiones, Argentina",
     "role": "Manufacturer/Exporter",
-    "product_category": "Modified Starch",
+    "product_category": "Tapioca Starch",
     "products": [
       "Native Cassava Starch",
       "Modified Cassava Starch (E1422)",
@@ -2187,7 +2187,7 @@ export const SUPPLIERS = [
     "country_code": "CO",
     "city": "Sincelejo, Sucre",
     "role": "Manufacturer/Exporter",
-    "product_category": "Modified Starch",
+    "product_category": "Tapioca Starch",
     "products": [
       "Native Cassava Starch (Bitter/Industrial)",
       "Cassava Starch Derivatives"
@@ -2257,7 +2257,7 @@ export const SUPPLIERS = [
     "country_code": "AR",
     "city": "General Deheza, Cordoba",
     "role": "Manufacturer/Exporter",
-    "product_category": "Edible Oils",
+    "product_category": "Soya Lecithin",
     "products": [
       "Crude Sunflower Oil",
       "Refined Sunflower Oil",
@@ -2366,7 +2366,7 @@ export const SUPPLIERS = [
     "country_code": "AR",
     "city": "San Pedro, Buenos Aires Province",
     "role": "Export Agent / Distributor",
-    "product_category": "Food Ingredients Distribution",
+    "product_category": "Tapioca Starch",
     "products": [
       "Modified Tapioca Starch (E1422)",
       "Wheat Starch",
@@ -2419,7 +2419,7 @@ export const SUPPLIERS = [
     "country_code": "BR",
     "city": "Marechal C\u00e2ndido Rondon, Paran\u00e1",
     "role": "Manufacturer/Exporter",
-    "product_category": "Modified Starch",
+    "product_category": "Tapioca Starch",
     "products": [
       "Modified Corn Starch",
       "Modified Cassava Starch",
@@ -2603,7 +2603,7 @@ export const SUPPLIERS = [
     "country_code": "BR",
     "city": "Paranava\u00ed, Paran\u00e1",
     "role": "Manufacturer/Exporter",
-    "product_category": "Modified Starch",
+    "product_category": "Tapioca Starch",
     "products": [
       "Modified Corn Starch",
       "Modified Cassava Starch",

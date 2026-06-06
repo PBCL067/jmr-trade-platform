@@ -3,7 +3,7 @@ import { SUPPLIERS } from './data/supplierData';
 import { uploadSpec, getSupplierSpecs } from './firebase';
 
 const COUNTRIES  = ['All', 'Argentina', 'Brazil', 'Uruguay', 'Chile', 'Paraguay', 'Mexico', 'Colombia', 'Ecuador', 'Peru', 'South Africa'];
-const CATEGORIES = ['All', 'Modified Starch', 'Dairy', 'Edible Oils', 'Wheat Flour', 'Gelatin', 'Soy Protein', 'Food Ingredients Distribution'];
+const CATEGORIES = ['All', 'Modified Starch', 'Dairy', 'Edible Oils', 'Wheat Flour', 'Gelatin', 'Soy Protein', 'Soya Lecithin', 'Milk Protein Concentrate', 'Tapioca Starch', 'Oleochemicals', 'Food Ingredients Distribution'];
 const ROLES      = ['All', 'Manufacturer/Exporter', 'Domestic Producer', 'Buyer/Distributor', 'Buyer / Food Manufacturer', 'Buyer / Dairy Manufacturer'];
 const SIZES      = ['All', 'Large', 'Medium', 'Small'];
 const CONTACT_STATUSES = ['All', 'Not Contacted', 'Awaiting Response', 'Qualified', 'No Fit'];
