@@ -60,7 +60,33 @@ const REPORTS = [
       { file: 'wheat_enduse_breakdown_v2.png',  label: 'Wheat End Use Breakdown',         caption: 'Global wheat end use — bread, pasta, feed, starch, ethanol and other industrial uses.' },
     ],
   },
-];
+,
+  {
+    id: 'sars',
+    title: 'SARS Import Trends',
+    description: 'SA import trends from Mercosur by commodity section. Source: SARS Cumulative Bilateral Trade 2023-2026. Note: 2026 = Jan-Apr annualised.',
+    charts: [],
+    tables: [
+      {
+        label: 'SA Imports from Mercosur 2023-2026',
+        caption: 'Source: SARS Bilateral Trade Reports. 2026 annualised (Jan-Apr x3). Values in ZAR billions.',
+        headers: ['Commodity Section', '2023', '2024', '2025', '2026 (ann)', 'Trend'],
+        rows: [
+          ['Dairy / MPC', 'R5.34B', 'R6.08B', 'R5.29B', 'R6.57B', '+24% ↑'],
+          ['Starches', 'R2.30B', 'R4.77B', 'R4.11B', 'R4.72B', '+15% ↑'],
+          ['Oils', 'R0.84B', 'R0.73B', 'R1.54B', 'R1.39B', '-10% ↓'],
+          ['Prepared Foods / Mod Starch', 'R1.84B', 'R2.61B', 'R2.61B', 'R1.10B', 'Watch ⚠'],
+          ['Chemicals / Lecithin', 'R1.98B', 'R1.98B', 'R2.05B', 'R2.35B', '+15% ↑'],
+        ],
+        insights: [
+          'Starch imports from Mercosur nearly doubled 2023-2025 (+79%) — validates modified starch opportunity.',
+          'Dairy accelerating sharply in 2026 (+24% annualised) — FCMP timing is perfect.',
+          'Lecithin market growing steadily but Mercosur share of actual lecithin near zero — displacement play vs China.',
+          'Argentina dominates oils (85% of 2025) — limited JMR add-value in sunflower oil.',
+        ],
+      },
+    ],
+  }];
 
 export default function Research() {
   const [activeReport, setActiveReport] = useState('macro');
