@@ -205,6 +205,54 @@ export default function Research() {
         </div>
       )}
 
+      {/* Tables */}
+      {report.tables && report.tables.map((table, ti) => (
+        <div key={ti} className="card" style={{ marginTop: 20, padding: 0, overflow: 'hidden' }}>
+          <div style={{ padding: '14px 18px', borderBottom: '1px solid var(--border)' }}>
+            <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 15 }}>{table.label}</div>
+            <div style={{ fontSize: 12, color: 'var(--text-secondary)', marginTop: 3 }}>{table.caption}</div>
+          </div>
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+              <thead>
+                <tr style={{ background: 'var(--bg-hover)' }}>
+                  {table.headers.map((h, i) => (
+                    <th key={i} style={{ padding: '10px 14px', textAlign: i === 0 ? 'left' : 'right',
+                      fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: '0.06em',
+                      color: 'var(--text-muted)', borderBottom: '1px solid var(--border)' }}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {table.rows.map((row, ri) => (
+                  <tr key={ri} style={{ borderBottom: '1px solid var(--border)' }}>
+                    {row.map((cell, ci) => (
+                      <td key={ci} style={{ padding: '10px 14px', textAlign: ci === 0 ? 'left' : 'right',
+                        fontFamily: ci === 0 ? 'inherit' : 'var(--font-mono)',
+                        color: cell.includes('↑') ? '#2ecc71' : cell.includes('↓') ? '#e74c3c' :
+                               cell.includes('⚠') ? '#e8b84b' : 'var(--text-primary)' }}>
+                        {cell}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {table.insights && (
+            <div style={{ padding: '14px 18px', borderTop: '1px solid var(--border)',
+              display: 'flex', flexDirection: 'column', gap: 8 }}>
+              <div style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-muted)',
+                letterSpacing: '0.06em', marginBottom: 4 }}>KEY INSIGHTS</div>
+              {table.insights.map((ins, ii) => (
+                <div key={ii} style={{ fontSize: 13, color: 'var(--text-secondary)',
+                  paddingLeft: 12, borderLeft: '2px solid var(--gold-bright)' }}>{ins}</div>
+              ))}
+            </div>
+          )}
+        </div>
+      ))}
+
       <div style={{ marginTop: 16, fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
         Source: UN Comtrade, World Bank Pink Sheet, USDA PSD, Google Trends | Analysis: JMR Global 2026
       </div>
