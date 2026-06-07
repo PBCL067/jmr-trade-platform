@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BUYERS } from './data/buyerData';
+import { SUPPLIERS } from './data/supplierData';
 
 const CATEGORIES = ['All', 'Distributor', 'Confectionery', 'Dairy', 'Bakery',
                     'Food Manufacturer', 'Edible Oils & Fats', 'Instant Food'];
@@ -134,14 +135,58 @@ export default function Buyers() {
                 </div>
 
                 {/* Supplier match */}
-                <div style={{ padding: '10px 14px', background: 'var(--bg-hover)',
-                  borderRadius: 4, marginBottom: 10 }}>
-                  <div style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)',
-                    letterSpacing: '0.06em', marginBottom: 5 }}>JMR SUPPLIER MATCH</div>
-                  <div style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.7 }}>
-                    {getSupplierMatch(buyer)}
-                  </div>
-                </div>
+                {(() => {
+                  const matched = getMatchedSuppliers(buyer);
+                  return (
+                    <div style={{ padding: '10px 14px', background: 'rgba(232,184,75,0.05)',
+                      border: '1px solid rgba(232,184,75,0.2)', borderRadius: 4, marginBottom: 10 }}>
+                      <div style={{ fontSize: 11, color: '#e8b84b', fontFamily: 'var(--font-mono)',
+                        letterSpacing: '0.06em', marginBottom: 8 }}>
+                        JMR SUPPLIER MATCHES ({matched.length})
+                      </div>
+                      {matched.length === 0 ? (
+                        <div style={{ fontSize: 12, color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                          No direct supplier match yet in database.
+                        </div>
+                      ) : matched.map(s => (
+                        <div key={s.id} style={{ marginBottom: 8, paddingBottom: 8,
+                          borderBottom: '1px solid rgba(232,184,75,0.1)' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                            <div>
+                              <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 2 }}>
+                                {s.name}
+                              </div>
+                              <div style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+                                {s.city || s.country} · {s.product_category}
+                              </div>
+                            </div>
+                            <span style={{ fontSize: 10, padding: '2px 6px', borderRadius: 3,
+                              fontFamily: 'var(--font-mono)', color: '#e8b84b',
+                              border: '1px solid rgba(232,184,75,0.3)',
+                              background: 'rgba(232,184,75,0.08)', flexShrink: 0, marginLeft: 8 }}>
+                              {s.country}
+                            </span>
+                          </div>
+                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginTop: 5 }}>
+                            {(s.products || []).filter(p => {
+                              const pl = p.toLowerCase();
+                              return buyer.ingredient_needs.some(n => {
+                                const nl = n.toLowerCase();
+                                return pl.includes(nl) || nl.includes(pl);
+                              });
+                            }).map(p => (
+                              <span key={p} style={{ fontSize: 10, padding: '1px 6px', borderRadius: 3,
+                                background: 'rgba(232,184,75,0.1)', color: '#e8b84b',
+                                border: '1px solid rgba(232,184,75,0.2)', fontFamily: 'var(--font-mono)' }}>
+                                {p}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  );
+                })()}
 
                 <div style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.7,
                   padding: '8px 12px', background: 'var(--bg-hover)', borderRadius: 4 }}>
@@ -163,38 +208,14 @@ export default function Buyers() {
   );
 }
 
-function getSupplierMatch(buyer) {
-  const matches = [];
+function getMatchedSuppliers(buyer) {
   const needs = buyer.ingredient_needs.map(i => i.toLowerCase());
-
-  if (needs.some(n => n.includes('lecithin')))
-    matches.push('AGD / Bunge Argentina / Meridional → Soya Lecithin');
-  if (needs.some(n => n.includes('modified starch') || n.includes('waxy corn')))
-    matches.push('Horizonte Amidos (Brazil) / Lorenz / Ingredion → Modified Starch');
-  if (needs.some(n => n.includes('full cream milk') || n.includes('fcmp')))
-    matches.push('Conaprole (Uruguay) / Mastellone → Full Cream Milk Powder');
-  if (needs.some(n => n.includes('skimmed milk') || n.includes('smp')))
-    matches.push('Conaprole (Uruguay) / Mastellone / SanCor → Skimmed Milk Powder');
-  if (needs.some(n => n.includes('sodium caseinate')))
-    matches.push('Milkaut / SanCor / Conaprole → Sodium Caseinate');
-  if (needs.some(n => n.includes('soya protein concentrate') || n.includes('spc')))
-    matches.push('Bunge / AGD / Solbar (Argentina) → Soya Protein Concentrate');
-  if (needs.some(n => n.includes('soya protein isolate') || n.includes('spi')))
-    matches.push('Solbar / Bunge / Devansoy (Argentina) → Soya Protein Isolate');
-  if (needs.some(n => n.includes('maltodextrin')))
-    matches.push('Ingredion Argentina/Brazil / AGD → Maltodextrin');
-  if (needs.some(n => n.includes('dextrose')))
-    matches.push('Ingredion Argentina/Brazil / Cargill Brazil → Dextrose Monohydrate');
-  if (needs.some(n => n.includes('tartaric')))
-    matches.push('Derivados Vínicos / Argentar (Argentina, Mendoza) → Tartaric Acid');
-  if (needs.some(n => n.includes('cream of tartar')))
-    matches.push('Derivados Vínicos / Argentar (Argentina) → Cream of Tartar');
-  if (needs.some(n => n.includes('vital wheat gluten') || n.includes('wheat gluten')))
-    matches.push('Argentine wheat processors / Gluten exporters → Vital Wheat Gluten');
-  if (needs.some(n => n.includes('soybean oil') || n.includes('sunflower oil')))
-    matches.push('AGD / Molinos / Bunge (Argentina) → Refined Oils');
-
-  return matches.length > 0
-    ? matches.join('\n')
-    : 'No direct supplier match yet — add suppliers to cover this buyer\'s needs.';
+  return SUPPLIERS.filter(s => {
+    const products = (s.products || []).map(p => p.toLowerCase());
+    const category = (s.product_category || '').toLowerCase();
+    return needs.some(need =>
+      products.some(p => p.includes(need) || need.includes(p)) ||
+      category.includes(need) || need.includes(category)
+    );
+  });
 }

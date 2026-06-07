@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { SUPPLIERS } from './data/supplierData';
+import { BUYERS } from './data/buyerData';
 import { uploadSpec, getSupplierSpecs } from './firebase';
 
 const COUNTRIES  = ['All', 'Argentina', 'Brazil', 'Uruguay', 'Chile', 'Paraguay', 'Mexico', 'Colombia', 'Ecuador', 'Peru', 'South Africa'];
@@ -60,6 +61,19 @@ function ContactBadge({ s }) {
       {status.toUpperCase()}
     </span>
   );
+}
+
+
+function getMatchedBuyers(supplier) {
+  const products = (supplier.products || []).map(p => p.toLowerCase());
+  const category = (supplier.product_category || '').toLowerCase();
+  return BUYERS.filter(b => {
+    return b.ingredient_needs.some(need => {
+      const n = need.toLowerCase();
+      return products.some(p => p.includes(n) || n.includes(p)) ||
+             category.includes(n) || n.includes(category);
+    });
+  });
 }
 
 function SupplierCard({ s }) {
@@ -265,10 +279,60 @@ function SupplierCard({ s }) {
 
       {/* Expanded detail */}
       {expanded && (
-        <div style={{ marginTop: 10, padding: '10px 12px',
-          background: 'var(--bg-hover)', border: '1px solid var(--border)',
-          borderRadius: 4, fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-          {s.notes || 'No additional details.'}
+        <div style={{ marginTop: 10 }}>
+          <div style={{ padding: '10px 12px', background: 'var(--bg-hover)',
+            border: '1px solid var(--border)', borderRadius: 4,
+            fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: 10 }}>
+            {s.notes || 'No additional details.'}
+          </div>
+          {(() => {
+            const matched = getMatchedBuyers(s);
+            if (matched.length === 0) return null;
+            return (
+              <div style={{ padding: '10px 12px', background: 'rgba(74,158,218,0.05)',
+                border: '1px solid rgba(74,158,218,0.2)', borderRadius: 4 }}>
+                <div style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: '#4a9eda',
+                  letterSpacing: '0.08em', marginBottom: 8 }}>
+                  MATCHED BUYERS ({matched.length})
+                </div>
+                {matched.map(b => (
+                  <div key={b.id} style={{ marginBottom: 8, paddingBottom: 8,
+                    borderBottom: '1px solid rgba(74,158,218,0.1)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                      <div>
+                        <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 2 }}>
+                          {b.name}
+                        </div>
+                        <div style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+                          {b.city}, {b.country} · {b.category}
+                        </div>
+                      </div>
+                      <span style={{ fontSize: 10, padding: '2px 6px', borderRadius: 3,
+                        fontFamily: 'var(--font-mono)', color: '#4a9eda',
+                        border: '1px solid rgba(74,158,218,0.3)',
+                        background: 'rgba(74,158,218,0.08)', flexShrink: 0, marginLeft: 8 }}>
+                        {b.status}
+                      </span>
+                    </div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginTop: 5 }}>
+                      {b.ingredient_needs.filter(need => {
+                        const n = need.toLowerCase();
+                        const prods = (s.products || []).map(p => p.toLowerCase());
+                        const cat = (s.product_category || '').toLowerCase();
+                        return prods.some(p => p.includes(n) || n.includes(p)) || cat.includes(n) || n.includes(cat);
+                      }).map(need => (
+                        <span key={need} style={{ fontSize: 10, padding: '1px 6px', borderRadius: 3,
+                          background: 'rgba(232,184,75,0.1)', color: '#e8b84b',
+                          border: '1px solid rgba(232,184,75,0.2)', fontFamily: 'var(--font-mono)' }}>
+                          {need}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            );
+          })()}
         </div>
       )}
 
