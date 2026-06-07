@@ -964,7 +964,7 @@ export const SUPPLIERS = [
     "next_action": null,
     "next_action_date": null,
     "docs_received": [],
-    "lat": -19.4326,
+    "lat": 19.4326,
     "lng": -99.1332
   },
   {
@@ -1860,7 +1860,7 @@ export const SUPPLIERS = [
     "next_action": null,
     "next_action_date": null,
     "docs_received": [],
-    "lat": -25.6866,
+    "lat": 25.6866,
     "lng": -100.3161
   },
   {
@@ -1895,7 +1895,7 @@ export const SUPPLIERS = [
     "next_action": null,
     "next_action_date": null,
     "docs_received": [],
-    "lat": -19.4326,
+    "lat": 19.4326,
     "lng": -99.1332
   },
   {
@@ -2138,7 +2138,7 @@ export const SUPPLIERS = [
     "next_action": "Awaiting response",
     "next_action_date": "2026-06-02",
     "docs_received": [],
-    "lat": -19.4326,
+    "lat": 19.4326,
     "lng": -99.1332
   },
   {
@@ -2177,7 +2177,7 @@ export const SUPPLIERS = [
     "next_action": null,
     "next_action_date": null,
     "docs_received": [],
-    "lat": -19.4326,
+    "lat": 19.4326,
     "lng": -99.1332
   },
   {
