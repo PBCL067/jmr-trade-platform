@@ -6,6 +6,7 @@ import Signals from './Signals';
 import Suppliers from './Suppliers';
 import Contacts from './Contacts';
 import SupplierMap from './SupplierMap';
+import TradeMap from './TradeMap';
 import MarketIntel from './MarketIntel';
 import LandedCost from './LandedCost';
 import Learn from './Learn';
@@ -21,6 +22,7 @@ const NAV = [
   { id: 'signals',       label: 'Signals',       icon: '\u25c8' },
   { id: 'suppliers',     label: 'Suppliers',     icon: '\u25ce' },
   { id: 'map',          label: 'Supplier Map',  icon: '\u25b3' },
+  { id: 'trademap',      label: 'Trade Map',      icon: '\u25f3' },
   { id: 'learn',         label: 'Learn',         icon: '\u25d4' },
   { id: 'contacts',      label: 'Contacts',      icon: '\u25a1' },
   { id: 'buyers',        label: 'Buyers',        icon: '\u25d6' },
@@ -63,6 +65,7 @@ export default function App() {
       case 'contacts':      return <Contacts />;
       case 'research':     return <Research />;
       case 'buyers':        return <Buyers />;
+      case 'trademap':      return <TradeMap />;
       default:              return <Opportunities />;
     }
   };
