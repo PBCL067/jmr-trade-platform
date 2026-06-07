@@ -16,16 +16,16 @@ import './App.css';
 
 const NAV = [
   { id: 'opportunities', label: 'Opportunities', icon: '\u25c9' },
-  { id: 'intel',         label: 'Product Intel', icon: '\u25a0' },
-  { id: 'market',       label: 'Market Intel',  icon: '\u25cb' },
-  { id: 'landed',        label: 'Landed Cost',   icon: '\u25c6' },
-  { id: 'signals',       label: 'Signals',       icon: '\u25c8' },
-  { id: 'suppliers',     label: 'Suppliers',     icon: '\u25ce' },
-  { id: 'trademap',      label: 'Trade Map',      icon: '\u25f3' },
-  { id: 'learn',         label: 'Learn',         icon: '\u25d4' },
-  { id: 'contacts',      label: 'Contacts',      icon: '\u25a1' },
   { id: 'buyers',        label: 'Buyers',        icon: '\u25d6' },
-  { id: 'research',     label: 'Research',      icon: '\u25c8' },
+  { id: 'suppliers',     label: 'Suppliers',     icon: '\u25ce' },
+  { id: 'trademap',      label: 'Trade Map',     icon: '\u25f3' },
+  { id: 'contacts',      label: 'Contacts',      icon: '\u25a1' },
+  { id: 'landed',        label: 'Landed Cost',   icon: '\u25c6' },
+  { id: 'market',        label: 'Market Intel',  icon: '\u25cb' },
+  { id: 'intel',         label: 'Product Intel', icon: '\u25a0' },
+  { id: 'signals',       label: 'Signals',       icon: '\u25c8' },
+  { id: 'research',      label: 'Reports',       icon: '\u25c4' },
+  { id: 'learn',         label: 'Learn',         icon: '\u25d4' },
 ];
 
 export default function App() {
