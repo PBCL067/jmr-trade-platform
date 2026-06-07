@@ -53,10 +53,10 @@ const PRODUCTS = {
   'Milk Powder (FCMP)': {
     hs: 'HS 0402.21',
     hero: [
-      { label: 'Argentina FOB',          value: '$3.61/kg', sub: 'Mastellone / SanCor',          color: '#2ecc71' },
-      { label: 'Uruguay FOB (to SA)',    value: '$3.53/kg', sub: 'Precedent: already in SA',      color: '#e8b84b' },
-      { label: 'SA Market Price (CIF)', value: '$3.24/kg', sub: 'NZ benchmark (lowest)',          color: '#3b82f6' },
-      { label: 'Algeria alone (2025)',   value: '$324M',    sub: '2nd largest buyer after Brazil',  color: '#e8b84b' },
+      { label: 'Mastellone FOB BA',      value: '$4.10/kg', sub: 'Quoted — NOT VIABLE (+$0.09 before comm)', color: '#e74c3c' },
+      { label: 'Buyer Benchmark CIF',    value: '$4.10/kg', sub: 'Current Uruguay supply incl. agent comm',  color: '#e8b84b' },
+      { label: 'Need FOB Uruguay',       value: '~$3.75/kg', sub: 'Conaprole / Claldy — awaiting quote',    color: '#2ecc71' },
+      { label: 'SA Market (FCMP)',       value: '$17.7M',   sub: '4,312 MT/yr — Uruguay 37% share',         color: '#3b82f6' },
     ],
     sa_suppliers: [
       { supplier: 'New Zealand', volume_mt: 1727, price_per_kg: 3.240, share_pct: 42 },
@@ -89,12 +89,12 @@ const PRODUCTS = {
     ],
     opportunity: 'Uruguay already supplies SA at $3.53/kg CIF. Argentina FOB is $3.61/kg — competitive if freight from Buenos Aires matches Montevideo. Argentina already ships to Cameroon and Ivory Coast — Africa track record exists. Algeria alone imports $192M/yr from Latam.',
     opportunity_color: '#e8b84b',
-    key_supplier: 'Mastellone (La Serenisima)',
-    key_supplier_sub: 'General Rodriguez, Buenos Aires — Priority 1',
-    key_buyer: 'TBC — find buyer first',
-    key_buyer_sub: 'Clover Industries or Tiger Brands likely targets',
-    key_buyer_color: '#e8b84b',
-    next_step: 'Find SA buyer before approaching suppliers',
+    key_supplier: 'Mastellone (La Serenisima) + Conaprole (Uruguay)',
+    key_supplier_sub: 'Mastellone quoted $4,100 FOB BA — too high. Conaprole Uruguay awaiting response.',
+    key_buyer: 'SA Buyer — Confirmed Interested',
+    key_buyer_sub: 'Buyer benchmark: $4,100 CIF Durban. Need FOB Uruguay ~$3,700-3,800 to be viable.',
+    key_buyer_color: '#2ecc71',
+    next_step: 'Await Conaprole FOB Montevideo quote. Follow up Claldy. Mastellone $4,100 FOB BA not viable — gap of ~$92/MT before commission.',
   },
   'Corn': {
     hs: 'HS 1005.90',
