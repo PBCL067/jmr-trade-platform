@@ -2730,7 +2730,9 @@ export const SUPPLIERS = [
     "next_action": "Follow up if no response by Wednesday",
     "next_action_date": "2026-06-11",
     "notes": "Mexican starch supplier. Email: importaciones@group-benci.com, WhatsApp: +52 55 4518 2452",
-    "status": "Contacted"
+    "status": "Contacted",
+    "lat": 19.4326,
+    "lng": -99.1332
   },
   {
     "id": "bunge_argentina_lecithin",

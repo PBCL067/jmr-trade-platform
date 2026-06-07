@@ -21,7 +21,6 @@ const NAV = [
   { id: 'landed',        label: 'Landed Cost',   icon: '\u25c6' },
   { id: 'signals',       label: 'Signals',       icon: '\u25c8' },
   { id: 'suppliers',     label: 'Suppliers',     icon: '\u25ce' },
-  { id: 'map',          label: 'Supplier Map',  icon: '\u25b3' },
   { id: 'trademap',      label: 'Trade Map',      icon: '\u25f3' },
   { id: 'learn',         label: 'Learn',         icon: '\u25d4' },
   { id: 'contacts',      label: 'Contacts',      icon: '\u25a1' },
@@ -59,7 +58,6 @@ export default function App() {
       case 'landed':        return <LandedCost />;
       case 'signals':       return <Signals />;
       case 'suppliers':     return <Suppliers />;
-      case 'map':           return <SupplierMap />;
       case 'market':        return <MarketIntel />;
       case 'learn':         return <Learn />;
       case 'contacts':      return <Contacts />;

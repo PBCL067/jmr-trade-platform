@@ -208,9 +208,12 @@ export default function Buyers() {
   );
 }
 
+const MERCOSUR_COUNTRIES = ['Argentina', 'Brazil', 'Uruguay', 'Paraguay', 'Chile', 'Bolivia', 'Peru', 'Colombia', 'Mexico'];
+
 function getMatchedSuppliers(buyer) {
   const needs = buyer.ingredient_needs.map(i => i.toLowerCase());
   return SUPPLIERS.filter(s => {
+    if (!MERCOSUR_COUNTRIES.includes(s.country)) return false;
     const products = (s.products || []).map(p => p.toLowerCase());
     const category = (s.product_category || '').toLowerCase();
     return needs.some(need =>

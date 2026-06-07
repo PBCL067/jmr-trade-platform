@@ -64,10 +64,15 @@ function ContactBadge({ s }) {
 }
 
 
+const AFRICA_COUNTRIES = ['South Africa', 'Nigeria', 'Kenya', 'Egypt', 'Ghana',
+  'Ethiopia', 'Tanzania', 'Uganda', 'Morocco', 'Algeria', 'Tunisia',
+  'Ivory Coast', 'Senegal', 'Zambia', 'Zimbabwe', 'Mozambique', 'Angola'];
+
 function getMatchedBuyers(supplier) {
   const products = (supplier.products || []).map(p => p.toLowerCase());
   const category = (supplier.product_category || '').toLowerCase();
   return BUYERS.filter(b => {
+    if (!AFRICA_COUNTRIES.includes(b.country)) return false;
     return b.ingredient_needs.some(need => {
       const n = need.toLowerCase();
       return products.some(p => p.includes(n) || n.includes(p)) ||
