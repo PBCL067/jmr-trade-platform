@@ -663,5 +663,520 @@ export const BUYERS = [
     "contacted": false,
     "lat": 5.6037,
     "lng": -0.187
+  },
+  {
+    "id": "nestle_nigeria",
+    "name": "Nestl\u00e9 Nigeria PLC",
+    "country": "Nigeria",
+    "city": "Agbara, Ogun State",
+    "category": "Food Manufacturer",
+    "website": "nestle-cwa.com",
+    "email": "",
+    "revenue_usd_m": 600,
+    "size": "Large",
+    "manufactures": [
+      "Milo",
+      "Maggi Seasoning",
+      "Cereals",
+      "Infant Formula",
+      "Beverages"
+    ],
+    "distributes": [],
+    "ingredient_needs": [
+      "Soya Lecithin",
+      "Skimmed Milk Powder",
+      "Full Cream Milk Powder",
+      "Maltodextrin",
+      "Modified Starch",
+      "Sodium Caseinate",
+      "Soya Protein Concentrate"
+    ],
+    "notes": "Listed on Nigerian Stock Exchange. N244B revenue. Factory in Agbara Industrial Estate. Milo chocolate malt = lecithin + SMP. Maggi seasoning cubes = HVP + starch. Cerelac infant cereal = SMP + maltodextrin. Major ingredient buyer across multiple categories.",
+    "status": "Prospect",
+    "contacted": false,
+    "lat": 6.5244,
+    "lng": 3.3792
+  },
+  {
+    "id": "promasidor_nigeria",
+    "name": "Promasidor Nigeria",
+    "country": "Nigeria",
+    "city": "Isolo, Lagos",
+    "category": "Food Manufacturer",
+    "website": "promasidor.ng",
+    "email": "",
+    "revenue_usd_m": 300,
+    "size": "Large",
+    "manufactures": [
+      "Powdered Milk (Cowbell, Loya)",
+      "Cereals",
+      "Beverages",
+      "Seasoning"
+    ],
+    "distributes": [],
+    "ingredient_needs": [
+      "Skimmed Milk Powder",
+      "Full Cream Milk Powder",
+      "Maltodextrin",
+      "Soya Protein Concentrate",
+      "Modified Starch"
+    ],
+    "notes": "Cowbell and Loya milk brands are Nigeria's leading powdered milk products. Parent company Promasidor Holdings is SA-based. Major SMP and FFMP buyer - reconstitutes imported dairy powder for Nigerian market. $300M+ annual turnover. Strong Mercosur dairy opportunity.",
+    "status": "Prospect",
+    "contacted": false,
+    "lat": 6.4698,
+    "lng": 3.36
+  },
+  {
+    "id": "cadbury_nigeria",
+    "name": "Cadbury Nigeria PLC (Mondelez)",
+    "country": "Nigeria",
+    "city": "Lagos",
+    "category": "Confectionery",
+    "website": "nestle-cwa.com",
+    "email": "",
+    "revenue_usd_m": 150,
+    "size": "Large",
+    "manufactures": [
+      "Bournvita",
+      "Tom Tom",
+      "Trebor",
+      "Buttermint",
+      "Chocolate Drinks"
+    ],
+    "distributes": [],
+    "ingredient_needs": [
+      "Soya Lecithin",
+      "Skimmed Milk Powder",
+      "Maltodextrin",
+      "Dextrose Monohydrate",
+      "Modified Starch"
+    ],
+    "notes": "Mondelez subsidiary listed on Nigerian Stock Exchange. Bournvita chocolate malt drink = SMP + lecithin + maltodextrin at volume. Confectionery lines use lecithin and dextrose. Major West African brand with strong ingredient demand.",
+    "status": "Prospect",
+    "contacted": false,
+    "lat": 6.5244,
+    "lng": 3.3792
+  },
+  {
+    "id": "avi_limited",
+    "name": "AVI Limited",
+    "country": "South Africa",
+    "city": "Johannesburg",
+    "category": "Food Manufacturer",
+    "website": "avi.co.za",
+    "email": "",
+    "revenue_usd_m": 500,
+    "size": "Large",
+    "manufactures": [
+      "Biscuits",
+      "Snacks",
+      "Tea",
+      "Coffee",
+      "Frozen Foods",
+      "Cosmetics"
+    ],
+    "distributes": [],
+    "ingredient_needs": [
+      "Soya Lecithin",
+      "Modified Starch",
+      "Dextrose Monohydrate",
+      "Maltodextrin",
+      "Cream of Tartar",
+      "Tartaric Acid"
+    ],
+    "notes": "Owner of I&J (frozen fish), Five Roses tea, Freshpak, Baumann's Biscuits, Bakers (with Mondelez). Biscuit manufacturing = major lecithin user. Frozen food = modified starch. Cream of tartar in bakery lines. Listed on JSE.",
+    "status": "Prospect",
+    "contacted": false,
+    "lat": -26.2041,
+    "lng": 28.0473
+  },
+  {
+    "id": "woodlands_dairy",
+    "name": "Woodlands Dairy",
+    "country": "South Africa",
+    "city": "Humansdorp, Eastern Cape",
+    "category": "Dairy",
+    "website": "woodlandsdairy.co.za",
+    "email": "",
+    "revenue_usd_m": 150,
+    "size": "Medium",
+    "manufactures": [
+      "UHT Milk",
+      "Flavoured Milk",
+      "Dairy Beverages",
+      "Condensed Milk"
+    ],
+    "distributes": [],
+    "ingredient_needs": [
+      "Skimmed Milk Powder",
+      "Full Cream Milk Powder",
+      "Sodium Caseinate",
+      "Soya Lecithin",
+      "Modified Starch"
+    ],
+    "notes": "Major SA UHT milk producer supplying sub-Saharan Africa. Uses SMP for recombined milk production. Located in Eastern Cape - Port Elizabeth port is nearby. Good fit for Conaprole/Mastellone SMP and Mercosur dairy.",
+    "status": "Prospect",
+    "contacted": false,
+    "lat": -34.0259,
+    "lng": 24.7729
+  },
+  {
+    "id": "pioneer_foods",
+    "name": "Pioneer Foods (PepsiCo)",
+    "country": "South Africa",
+    "city": "Paarl, Western Cape",
+    "category": "Food Manufacturer",
+    "website": "pioneerfoods.co.za",
+    "email": "",
+    "revenue_usd_m": 900,
+    "size": "Large",
+    "manufactures": [
+      "Flour",
+      "Bread",
+      "Cereals",
+      "Fruit Juice",
+      "Pasta",
+      "Oil"
+    ],
+    "distributes": [],
+    "ingredient_needs": [
+      "Soya Lecithin",
+      "Vital Wheat Gluten",
+      "Modified Starch",
+      "Maltodextrin",
+      "Tartaric Acid",
+      "Dextrose Monohydrate"
+    ],
+    "notes": "Acquired by PepsiCo 2020. Sasko flour and bread, Weet-Bix cereals, Ceres juices, Liqui-Fruit. Industrial bread = lecithin. Wheat gluten for flour fortification. Ceres fruit juice = tartaric acid. Massive ingredient buyer.",
+    "status": "Prospect",
+    "contacted": false,
+    "lat": -33.7348,
+    "lng": 18.9756
+  },
+  {
+    "id": "afgri",
+    "name": "AFGRI Group",
+    "country": "South Africa",
+    "city": "Centurion, Pretoria",
+    "category": "Food Manufacturer",
+    "website": "afgri.co.za",
+    "email": "",
+    "revenue_usd_m": 300,
+    "size": "Large",
+    "manufactures": [
+      "Animal Feed",
+      "Maize Meal",
+      "Wheat Products",
+      "Grain Processing"
+    ],
+    "distributes": [],
+    "ingredient_needs": [
+      "Soya Protein Concentrate",
+      "Soya Lecithin",
+      "Dextrose Monohydrate",
+      "Modified Starch"
+    ],
+    "notes": "Major SA agricultural and food processing company. Animal feed division is a significant buyer of soy protein concentrate (technical grade) and lecithin. Grain processing produces starch and glucose byproducts.",
+    "status": "Prospect",
+    "contacted": false,
+    "lat": -25.8615,
+    "lng": 28.1886
+  },
+  {
+    "id": "centrale_danone_morocco",
+    "name": "Centrale Danone",
+    "country": "Morocco",
+    "city": "Casablanca",
+    "category": "Dairy",
+    "website": "centraledanone.ma",
+    "email": "",
+    "revenue_usd_m": 400,
+    "size": "Large",
+    "manufactures": [
+      "UHT Milk",
+      "Yoghurt",
+      "Fresh Dairy",
+      "Infant Milk",
+      "Cheese"
+    ],
+    "distributes": [],
+    "ingredient_needs": [
+      "Skimmed Milk Powder",
+      "Full Cream Milk Powder",
+      "Sodium Caseinate",
+      "Modified Starch",
+      "Soya Lecithin"
+    ],
+    "notes": "Morocco's #1 dairy producer. Danone majority shareholder. Centrale, Activia, Danette brands. Uses SMP for recombined UHT milk. Morocco imports significant dairy from Europe - Mercosur could compete on price. Gateway to North Africa.",
+    "status": "Prospect",
+    "contacted": false,
+    "lat": 33.5731,
+    "lng": -7.5898
+  },
+  {
+    "id": "bimo_morocco",
+    "name": "Bimo (Mondelez Maroc)",
+    "country": "Morocco",
+    "city": "Casablanca",
+    "category": "Bakery",
+    "website": "mondelezinternational.com",
+    "email": "",
+    "revenue_usd_m": 150,
+    "size": "Large",
+    "manufactures": [
+      "Biscuits",
+      "Wafers",
+      "Cakes",
+      "Snacks"
+    ],
+    "distributes": [],
+    "ingredient_needs": [
+      "Soya Lecithin",
+      "Skimmed Milk Powder",
+      "Modified Starch",
+      "Dextrose Monohydrate",
+      "Cream of Tartar"
+    ],
+    "notes": "Morocco's #1 biscuit manufacturer. Mondelez subsidiary since 2013. 56% Moroccan biscuit market share. Golden, Tonik, Tagger brands. Every biscuit line uses lecithin. 1,400+ employees. North Africa gateway for Mercosur ingredients.",
+    "status": "Prospect",
+    "contacted": false,
+    "lat": 33.5731,
+    "lng": -7.5898
+  },
+  {
+    "id": "cosumar_morocco",
+    "name": "Cosumar",
+    "country": "Morocco",
+    "city": "Casablanca",
+    "category": "Food Manufacturer",
+    "website": "cosumar.co.ma",
+    "email": "",
+    "revenue_usd_m": 500,
+    "size": "Large",
+    "manufactures": [
+      "Sugar",
+      "Molasses",
+      "Refined Sugar Products"
+    ],
+    "distributes": [],
+    "ingredient_needs": [
+      "Tartaric Acid",
+      "Cream of Tartar",
+      "Dextrose Monohydrate"
+    ],
+    "notes": "Morocco's largest sugar producer. Tartaric acid used in sugar processing and confectionery. Argentina's wine byproduct advantage applies here. Smaller ingredient need but strong Mercosur fit for tartaric acid.",
+    "status": "Prospect",
+    "contacted": false,
+    "lat": 33.5731,
+    "lng": -7.5898
+  },
+  {
+    "id": "alema_koudijs_ethiopia",
+    "name": "Alema Koudijs Animal Feed",
+    "country": "Ethiopia",
+    "city": "Addis Ababa",
+    "category": "Food Manufacturer",
+    "website": "alemakoudijs.com",
+    "email": "",
+    "revenue_usd_m": 100,
+    "size": "Medium",
+    "manufactures": [
+      "Poultry Feed",
+      "Cattle Feed",
+      "Fish Feed"
+    ],
+    "distributes": [],
+    "ingredient_needs": [
+      "Soya Protein Concentrate",
+      "Soya Lecithin",
+      "Dextrose Monohydrate",
+      "Maltodextrin"
+    ],
+    "notes": "Joint venture between Ethiopian investors and Royal De Heus (Netherlands). Ethiopia's largest commercial animal feed producer. SPC is a core ingredient in all feed formulations. Ethiopia's poultry sector growing rapidly. Long-term opportunity as market matures.",
+    "status": "Prospect",
+    "contacted": false,
+    "lat": 9.025,
+    "lng": 38.7469
+  },
+  {
+    "id": "nestle_ethiopia",
+    "name": "Nestl\u00e9 Ethiopia",
+    "country": "Ethiopia",
+    "city": "Addis Ababa",
+    "category": "Food Manufacturer",
+    "website": "nestle.com",
+    "email": "",
+    "revenue_usd_m": 80,
+    "size": "Medium",
+    "manufactures": [
+      "Milo",
+      "Nescaf\u00e9",
+      "Maggi",
+      "Cereals"
+    ],
+    "distributes": [],
+    "ingredient_needs": [
+      "Skimmed Milk Powder",
+      "Maltodextrin",
+      "Soya Lecithin",
+      "Modified Starch",
+      "Sodium Caseinate"
+    ],
+    "notes": "Growing Nestl\u00e9 operation in Ethiopia - 120M population market. Milo and Maggi are primary products. Ingredient needs mirror Nestl\u00e9 Nigeria. Fast-growing market as urbanisation accelerates.",
+    "status": "Prospect",
+    "contacted": false,
+    "lat": 9.025,
+    "lng": 38.7469
+  },
+  {
+    "id": "bidco_tanzania",
+    "name": "Bidco Tanzania",
+    "country": "Tanzania",
+    "city": "Dar es Salaam",
+    "category": "Edible Oils & Fats",
+    "website": "bidcoafrica.com",
+    "email": "",
+    "revenue_usd_m": 150,
+    "size": "Large",
+    "manufactures": [
+      "Cooking Oil",
+      "Margarine",
+      "Soap",
+      "Shortening"
+    ],
+    "distributes": [],
+    "ingredient_needs": [
+      "Soya Lecithin",
+      "Soybean Oil (Refined)",
+      "Sunflower Oil"
+    ],
+    "notes": "Bidco Africa's Tanzania operations. Salit and Bidco branded cooking oils and margarine. Margarine production = lecithin buyer. Part of the same Bidco group as Kenya. East Africa distribution reach.",
+    "status": "Prospect",
+    "contacted": false,
+    "lat": -6.7924,
+    "lng": 39.2083
+  },
+  {
+    "id": "zambeef_zambia",
+    "name": "Zambeef Products PLC",
+    "country": "Zambia",
+    "city": "Lusaka",
+    "category": "Food Manufacturer",
+    "website": "zambeef.co.zm",
+    "email": "",
+    "revenue_usd_m": 200,
+    "size": "Large",
+    "manufactures": [
+      "Beef",
+      "Chicken",
+      "Pork",
+      "Dairy",
+      "Flour",
+      "Animal Feed",
+      "Edible Oils"
+    ],
+    "distributes": [],
+    "ingredient_needs": [
+      "Soya Protein Concentrate",
+      "Modified Starch",
+      "Sodium Caseinate",
+      "Dextrose Monohydrate",
+      "Soya Lecithin"
+    ],
+    "notes": "Zambia's largest food company. Listed on Lusaka Stock Exchange and AIM London. Vertically integrated - beef, dairy, flour, edible oils, animal feed. SPC for feed division. Modified starch and sodium caseinate for processed meat. Strong Mercosur fit.",
+    "status": "Prospect",
+    "contacted": false,
+    "lat": -15.4166,
+    "lng": 28.2833
+  },
+  {
+    "id": "dairibord_zimbabwe",
+    "name": "Dairibord Zimbabwe",
+    "country": "Zimbabwe",
+    "city": "Harare",
+    "category": "Dairy",
+    "website": "dairibord.co.zw",
+    "email": "",
+    "revenue_usd_m": 80,
+    "size": "Medium",
+    "manufactures": [
+      "UHT Milk",
+      "Yoghurt",
+      "Cheese",
+      "Ice Cream",
+      "Beverages"
+    ],
+    "distributes": [],
+    "ingredient_needs": [
+      "Skimmed Milk Powder",
+      "Full Cream Milk Powder",
+      "Sodium Caseinate",
+      "Modified Starch",
+      "Soya Lecithin"
+    ],
+    "notes": "Zimbabwe's largest dairy company. Listed on Zimbabwe Stock Exchange. Uses SMP for recombined milk as local fresh milk supply is inconsistent. Mercosur dairy (Conaprole/Mastellone) would be competitive vs current European sources.",
+    "status": "Prospect",
+    "contacted": false,
+    "lat": -17.8252,
+    "lng": 31.0335
+  },
+  {
+    "id": "kapa_oil_kenya",
+    "name": "Kapa Oil Refineries",
+    "country": "Kenya",
+    "city": "Nairobi",
+    "category": "Edible Oils & Fats",
+    "website": "kapaoil.com",
+    "email": "",
+    "revenue_usd_m": 100,
+    "size": "Medium",
+    "manufactures": [
+      "Cooking Oil",
+      "Margarine",
+      "Shortening",
+      "Soap"
+    ],
+    "distributes": [],
+    "ingredient_needs": [
+      "Soya Lecithin",
+      "Soybean Oil (Refined)",
+      "Sunflower Oil"
+    ],
+    "notes": "Kenya's established edible oils producer. Rina and Fry's brands. Margarine production requires lecithin. Soybean oil used in blended cooking oils. Good fit for Argentine soybean oil and lecithin.",
+    "status": "Prospect",
+    "contacted": false,
+    "lat": -1.2921,
+    "lng": 36.8219
+  },
+  {
+    "id": "nestle_ghana",
+    "name": "Nestl\u00e9 Ghana",
+    "country": "Ghana",
+    "city": "Accra",
+    "category": "Food Manufacturer",
+    "website": "nestle.com.gh",
+    "email": "",
+    "revenue_usd_m": 120,
+    "size": "Medium",
+    "manufactures": [
+      "Milo",
+      "Nescaf\u00e9",
+      "Maggi",
+      "Cerelac"
+    ],
+    "distributes": [],
+    "ingredient_needs": [
+      "Skimmed Milk Powder",
+      "Soya Lecithin",
+      "Maltodextrin",
+      "Modified Starch",
+      "Sodium Caseinate"
+    ],
+    "notes": "Nestl\u00e9's West Africa hub. Milo is the dominant chocolate malt drink across West Africa. Ghana operations serve Ghana, C\u00f4te d'Ivoire and surrounding markets. Ingredient needs identical to Nestl\u00e9 Nigeria. Good Mercosur dairy and lecithin opportunity.",
+    "status": "Prospect",
+    "contacted": false,
+    "lat": 5.6037,
+    "lng": -0.187
   }
 ];

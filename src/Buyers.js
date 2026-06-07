@@ -4,7 +4,7 @@ import { SUPPLIERS } from './data/supplierData';
 
 const CATEGORIES = ['All', 'Distributor', 'Confectionery', 'Dairy', 'Bakery',
                     'Food Manufacturer', 'Edible Oils & Fats', 'Instant Food'];
-const COUNTRIES  = ['All', 'South Africa', 'Nigeria', 'Kenya', 'Egypt', 'Ghana'];
+const COUNTRIES  = ['All', 'South Africa', 'Nigeria', 'Kenya', 'Egypt', 'Ghana', 'Morocco', 'Ethiopia', 'Tanzania', 'Zambia', 'Zimbabwe'];
 const STATUS_COLOR = {
   'Priority Target': '#e8b84b',
   'Prospect':        '#4a9eda',
