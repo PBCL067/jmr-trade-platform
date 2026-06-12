@@ -12,6 +12,8 @@ import LandedCost from './LandedCost';
 import Learn from './Learn';
 import Research from './Research';
 import Buyers from './Buyers';
+import Login from './Login';
+import { getSession, onAuthChange, signOut } from './supabase';
 import './App.css';
 
 const NAV = [
@@ -32,6 +34,13 @@ export default function App() {
   const [active,     setActive]     = useState('opportunities');
   const [topSignals, setTopSignals] = useState([]);
   const [menuOpen,   setMenuOpen]   = useState(false);
+  const [session,    setSession]    = useState(undefined); // undefined = loading
+
+  useEffect(function() {
+    getSession().then(setSession);
+    const sub = onAuthChange(setSession);
+    return () => sub.unsubscribe();
+  }, []);
 
   useEffect(function() {
     (async function() {
@@ -70,6 +79,14 @@ export default function App() {
 
   const today = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 
+  if (session === undefined) {
+    return <div style={{display:'flex',alignItems:'center',justifyContent:'center',height:'100vh',color:'#718096'}}>Loading...</div>;
+  }
+
+  if (!session) {
+    return <Login />;
+  }
+
   return (
     <div className="app">
       {/* Overlay for mobile menu */}
@@ -95,6 +112,11 @@ export default function App() {
         <div className="sidebar-footer">
           <span className="status-dot" />
           <span className="status-text">Live Data</span>
+          <button onClick={signOut} style={{
+            marginLeft: 'auto', background: 'none', border: '1px solid rgba(255,255,255,0.2)',
+            color: 'rgba(255,255,255,0.6)', borderRadius: 4, padding: '4px 10px',
+            fontSize: 11, cursor: 'pointer', fontFamily: 'IBM Plex Mono, monospace'
+          }}>Logout</button>
         </div>
       </aside>
 
