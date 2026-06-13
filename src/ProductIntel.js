@@ -1,248 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import HelpTip from './Tooltip';
-import { TARIFFS } from './data/tariffData';
+import { fetchTable } from './supabase';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell } from 'recharts';
-
-const PRODUCTS = {
-  'Modified Starch': {
-    hs: 'HS 3505.10',
-    hero: [
-      { label: 'Argentina FOB Price',              value: '$0.69/kg', sub: 'Cheapest global exporter',          color: '#2ecc71' },
-      { label: 'SA Market Price (CIF)',             value: '$0.92/kg', sub: 'Thailand benchmark',                color: '#e8b84b' },
-      { label: 'Est. Landed (Buenos Aires-Durban)', value: '$0.80/kg', sub: 'incl. freight + tariff FREE',       color: '#3b82f6' },
-      { label: 'Our Margin',                        value: '$0.29/kg', sub: 'vs SA market price $1.09/kg',       color: '#2ecc71' },
-    ],
-    sa_suppliers: [
-      { supplier: 'Thailand',    volume_mt: 14437, price_per_kg: 0.917, share_pct: 45 },
-      { supplier: 'USA',         volume_mt:  7604, price_per_kg: 1.338, share_pct: 24 },
-      { supplier: 'Netherlands', volume_mt:  6953, price_per_kg: 0.892, share_pct: 22 },
-      { supplier: 'Italy',       volume_mt:  5304, price_per_kg: 1.590, share_pct: 17 },
-      { supplier: 'Vietnam',     volume_mt:  3921, price_per_kg: 0.757, share_pct: 12 },
-      { supplier: 'Brazil',      volume_mt:  3643, price_per_kg: 1.246, share_pct: 11 },
-      { supplier: 'China',       volume_mt:  2169, price_per_kg: 0.965, share_pct:  7 },
-      { supplier: 'Argentina',   volume_mt:     0, price_per_kg: 0.690, share_pct:  0 },
-    ],
-    sa_market_label: 'Total SA imports: ~57,800 MT/yr | $65.9M market',
-    global_exporters: [
-      { exporter: 'Argentina',   fob_per_kg: 0.69 },
-      { exporter: 'Thailand',    fob_per_kg: 0.90 },
-      { exporter: 'Brazil',      fob_per_kg: 1.29 },
-      { exporter: 'China',       fob_per_kg: 1.45 },
-      { exporter: 'Belgium',     fob_per_kg: 1.62 },
-      { exporter: 'Netherlands', fob_per_kg: 1.89 },
-      { exporter: 'Germany',     fob_per_kg: 2.18 },
-    ],
-    fob_domain: [0, 2.5],
-    arg_buyers: [
-      { importer: 'Chile',        volume_mt: 7532, price_per_kg: 0.654 },
-      { importer: 'Paraguay',     volume_mt:  478, price_per_kg: 0.747 },
-      { importer: 'Uruguay',      volume_mt:  138, price_per_kg: 1.860 },
-      { importer: 'Bolivia',      volume_mt:  119, price_per_kg: 1.109 },
-      { importer: 'Brazil',       volume_mt:   16, price_per_kg: 2.837 },
-      { importer: 'South Africa', volume_mt:    0, price_per_kg: null  },
-    ],
-    opportunity: 'Argentina exports 8,283 MT of modified starch globally but zero to South Africa. SA currently pays $0.92-1.34/kg CIF from Thailand and USA. Argentina can land product at $0.80/kg — undercutting all current suppliers.',
-    opportunity_color: '#2ecc71',
-    key_supplier: 'Ingredion Argentina / Lorenz / Semino',
-    key_supplier_sub: 'Multiple verified suppliers available',
-    key_buyer: 'Bragan / Solevo Group',
-    key_buyer_sub: 'Johannesburg — interested',
-    key_buyer_color: '#2ecc71',
-    next_step: null,
-  },
-  'Milk Powder (FCMP)': {
-    hs: 'HS 0402.21',
-    hero: [
-      { label: 'Mastellone FOB BA',      value: '$4.10/kg', sub: 'Quoted — NOT VIABLE (+$0.09 before comm)', color: '#e74c3c' },
-      { label: 'Buyer Benchmark CIF',    value: '$4.10/kg', sub: 'Current Uruguay supply incl. agent comm',  color: '#e8b84b' },
-      { label: 'Need FOB Uruguay',       value: '~$3.75/kg', sub: 'Conaprole / Claldy — awaiting quote',    color: '#2ecc71' },
-      { label: 'SA Market (FCMP)',       value: '$17.7M',   sub: '4,312 MT/yr — Uruguay 37% share',         color: '#3b82f6' },
-    ],
-    sa_suppliers: [
-      { supplier: 'New Zealand', volume_mt: 1727, price_per_kg: 3.240, share_pct: 42 },
-      { supplier: 'Uruguay',     volume_mt: 1515, price_per_kg: 3.527, share_pct: 37 },
-      { supplier: 'France',      volume_mt:  297, price_per_kg: 3.621, share_pct:  7 },
-      { supplier: 'Germany',     volume_mt:  196, price_per_kg: 6.186, share_pct:  5 },
-      { supplier: 'Italy',       volume_mt:  108, price_per_kg: 3.950, share_pct:  3 },
-      { supplier: 'Ireland',     volume_mt:   85, price_per_kg: 3.808, share_pct:  2 },
-      { supplier: 'Argentina',   volume_mt:    0, price_per_kg: 3.609, share_pct:  0 },
-    ],
-    sa_market_label: 'Total SA imports: ~4,312 MT/yr | $17.7M market',
-    global_exporters: [
-      { exporter: 'New Zealand',    fob_per_kg: 3.311 },
-      { exporter: 'Uruguay',        fob_per_kg: 3.579 },
-      { exporter: 'Argentina',      fob_per_kg: 3.609 },
-      { exporter: 'Ireland',        fob_per_kg: 3.709 },
-      { exporter: 'Germany',        fob_per_kg: 4.396 },
-      { exporter: 'EU Average',     fob_per_kg: 4.539 },
-      { exporter: 'Australia',      fob_per_kg: 5.562 },
-    ],
-    fob_domain: [0, 6],
-    arg_buyers: [
-      { importer: 'Brazil',       volume_mt: 73654, price_per_kg: 3.625 },
-      { importer: 'Algeria',      volume_mt: 20348, price_per_kg: 3.592 },
-      { importer: 'Cuba',         volume_mt:  2107, price_per_kg: 3.658 },
-      { importer: 'Cameroon',     volume_mt:  1425, price_per_kg: 3.131 },
-      { importer: 'Colombia',     volume_mt:  1403, price_per_kg: 3.404 },
-      { importer: 'Ivory Coast',  volume_mt:   551, price_per_kg: 3.299 },
-      { importer: 'South Africa', volume_mt:     0, price_per_kg: null  },
-    ],
-    opportunity: 'Uruguay already supplies SA at $3.53/kg CIF. Argentina FOB is $3.61/kg — competitive if freight from Buenos Aires matches Montevideo. Argentina already ships to Cameroon and Ivory Coast — Africa track record exists. Algeria alone imports $192M/yr from Latam.',
-    opportunity_color: '#e8b84b',
-    key_supplier: 'Mastellone (La Serenisima) + Conaprole (Uruguay)',
-    key_supplier_sub: 'Mastellone quoted $4,100 FOB BA — too high. Conaprole Uruguay awaiting response.',
-    key_buyer: 'SA Buyer — Confirmed Interested',
-    key_buyer_sub: 'Buyer benchmark: $4,100 CIF Durban. Need FOB Uruguay ~$3,700-3,800 to be viable.',
-    key_buyer_color: '#2ecc71',
-    next_step: 'Await Conaprole FOB Montevideo quote. Follow up Claldy. Mastellone $4,100 FOB BA not viable — gap of ~$92/MT before commission.',
-  },
-  'Corn': {
-    hs: 'HS 1005.90',
-    hero: [
-      { label: 'Argentina FOB Price',   value: '$0.20/kg', sub: '3rd largest global exporter',    color: '#2ecc71' },
-      { label: 'Brazil FOB (to SA)',    value: '$0.20/kg', sub: 'Main Latam competitor',           color: '#e8b84b' },
-      { label: 'Argentina to Africa',  value: '$1.33B',   sub: 'Algeria, Egypt, Morocco (2023)',   color: '#3b82f6' },
-      { label: 'Maghreb + Egypt',      value: '$1.21B',   sub: 'Argentina corn to N.Africa 2025',  color: '#e8b84b' },
-    ],
-    sa_suppliers: [
-      { supplier: 'Argentina', volume_mt: 162290, price_per_kg: 0.197, share_pct: 43 },
-      { supplier: 'Brazil',    volume_mt: 212378, price_per_kg: 0.200, share_pct: 57 },
-    ],
-    sa_market_label: 'SA corn imports from Latam: ~374,668 MT/yr (2024)',
-    global_exporters: [
-      { exporter: 'Argentina', fob_per_kg: 0.197 },
-      { exporter: 'Brazil',    fob_per_kg: 0.200 },
-      { exporter: 'USA',       fob_per_kg: 0.220 },
-      { exporter: 'Ukraine',   fob_per_kg: 0.210 },
-    ],
-    fob_domain: [0, 0.35],
-    arg_buyers: [
-      { importer: 'Algeria',               volume_mt: 2294120, price_per_kg: 0.262 },
-      { importer: 'Egypt',                 volume_mt: 1405720, price_per_kg: 0.270 },
-      { importer: 'Morocco',               volume_mt:  743465, price_per_kg: 0.272 },
-      { importer: 'Senegal',               volume_mt:  304815, price_per_kg: 0.261 },
-      { importer: 'Libya',                 volume_mt:   59958, price_per_kg: 0.223 },
-      { importer: 'Dem. Rep. of the Congo',volume_mt:   28000, price_per_kg: 0.218 },
-    ],
-    opportunity: 'Argentina is the 3rd largest global corn exporter and already sells $1.33B to Africa annually. Algeria and Egypt are the two biggest buyers. This is an established flow — JMR opportunity is in facilitating new routes or adding value through processing connections.',
-    opportunity_color: '#3b82f6',
-    key_supplier: 'Viterra Argentina / Cargill Argentina',
-    key_supplier_sub: 'Rosario port — major grain traders',
-    key_buyer: 'Multiple African buyers already active',
-    key_buyer_sub: 'Algeria $602M, Egypt $380M, Morocco $202M',
-    key_buyer_color: '#3b82f6',
-    next_step: null,
-  },
-  'Soybean Meal': {
-    hs: 'HS 2304.00',
-    hero: [
-      { label: 'Argentina FOB Price',  value: '$0.50/kg', sub: 'World #1 exporter',               color: '#2ecc71' },
-      { label: 'Argentina to Africa', value: '$871M',    sub: 'Egypt, Libya, Algeria, Morocco',    color: '#e8b84b' },
-      { label: 'Egypt alone',         value: '$360M',    sub: 'Largest single buyer',              color: '#3b82f6' },
-      { label: 'Total soy exports',   value: '$21.4B',   sub: 'World #1 in oil & meal (2025)',      color: '#4a5a70' },
-    ],
-    sa_suppliers: [
-      { supplier: 'Argentina', volume_mt: 0, price_per_kg: 0.495, share_pct: 0 },
-      { supplier: 'Brazil',    volume_mt: 0, price_per_kg: 0.510, share_pct: 0 },
-    ],
-    sa_market_label: 'SA is self-sufficient in soy meal — domestic crushing industry',
-    global_exporters: [
-      { exporter: 'Argentina', fob_per_kg: 0.495 },
-      { exporter: 'Brazil',    fob_per_kg: 0.510 },
-      { exporter: 'USA',       fob_per_kg: 0.540 },
-      { exporter: 'India',     fob_per_kg: 0.560 },
-    ],
-    fob_domain: [0, 0.7],
-    arg_buyers: [
-      { importer: 'Egypt',    volume_mt: 729627, price_per_kg: 0.493 },
-      { importer: 'Libya',    volume_mt: 303726, price_per_kg: 0.495 },
-      { importer: 'Algeria',  volume_mt: 262535, price_per_kg: 0.500 },
-      { importer: 'Morocco',  volume_mt: 165576, price_per_kg: 0.495 },
-      { importer: 'Senegal',  volume_mt:  92334, price_per_kg: 0.500 },
-      { importer: 'Ghana',    volume_mt:  52338, price_per_kg: 0.495 },
-    ],
-    opportunity: 'Argentina is the world #1 soybean meal exporter, supplying $871M to Africa annually. Egypt, Libya, Algeria and Morocco are major buyers for animal feed. JMR opportunity is connecting Argentine meal exporters with new African buyers — particularly West Africa where poultry farming is growing rapidly.',
-    opportunity_color: '#e8b84b',
-    key_supplier: 'Viterra / ADM / Cofco Argentina',
-    key_supplier_sub: 'Rosario crushing complex — world scale',
-    key_buyer: 'West African poultry feed manufacturers',
-    key_buyer_sub: 'Nigeria, Ghana, Ivory Coast — growing demand',
-    key_buyer_color: '#e8b84b',
-    next_step: null,
-  },
-  'Sunflower Oil': {
-    hs: 'HS 1512.11',
-    hero: [
-      { label: 'Argentina FOB Price',   value: '$0.84/kg', sub: '2nd largest global exporter',    color: '#2ecc71' },
-      { label: 'SA Market (current)',   value: '$1.09/kg', sub: 'Argentina already #2 supplier',  color: '#e8b84b' },
-      { label: 'Argentina to SA (2024)',value: '$5.4M',    sub: '6,500 MT — growing',             color: '#3b82f6' },
-      { label: 'Tariff (SARS)',         value: 'TBC',      sub: 'HS 1512.11 — pending confirm',   color: '#4a5a70' },
-    ],
-    sa_suppliers: [
-      { supplier: 'Argentina', volume_mt:  6500, price_per_kg: 0.837, share_pct: 35 },
-      { supplier: 'Ukraine',   volume_mt:  8200, price_per_kg: 0.910, share_pct: 45 },
-      { supplier: 'Russia',    volume_mt:  2100, price_per_kg: 0.890, share_pct: 12 },
-      { supplier: 'Other',     volume_mt:  1400, price_per_kg: 0.950, share_pct:  8 },
-    ],
-    sa_market_label: 'SA sunflower oil imports: ~160,000 MT/yr (growing)',
-    global_exporters: [
-      { exporter: 'Ukraine',    fob_per_kg: 0.910 },
-      { exporter: 'Russia',     fob_per_kg: 0.890 },
-      { exporter: 'Argentina',  fob_per_kg: 0.837 },
-      { exporter: 'EU',         fob_per_kg: 1.050 },
-    ],
-    fob_domain: [0, 1.3],
-    arg_buyers: [
-      { importer: 'South Africa', volume_mt:  6500, price_per_kg: 0.837 },
-      { importer: 'Mauritius',    volume_mt:  9500, price_per_kg: 0.907 },
-    ],
-    opportunity: 'Argentina is already the #2 sunflower oil supplier to SA and growing. At $0.84/kg FOB, Argentina undercuts Ukraine and Russia. The main risk is SARS tariff for HS 1512.11 which is still unconfirmed — this is a priority pending item before scaling up.',
-    opportunity_color: '#e8b84b',
-    key_supplier: 'AGD / Molinos Rio de la Plata',
-    key_supplier_sub: 'Major Argentine oilseed crushers',
-    key_buyer: 'SA industrial food manufacturers',
-    key_buyer_sub: 'Already buying — scale up existing flow',
-    key_buyer_color: '#2ecc71',
-    next_step: 'Confirm SARS tariff for HS 1512.11 before scaling',
-  },
-  'Soybean Oil': {
-    hs: 'HS 1507.90',
-    hero: [
-      { label: 'Argentina FOB Price',  value: '$0.95/kg', sub: 'Major global exporter',           color: '#2ecc71' },
-      { label: 'Brazil FOB',          value: '$0.98/kg', sub: 'Main competitor',                  color: '#e8b84b' },
-      { label: 'Argentina to Africa', value: '$25M',     sub: 'Established flow (2023)',           color: '#3b82f6' },
-      { label: 'SA tariff',           value: 'Check',    sub: 'HS 1507.90 — verify with SARS',    color: '#4a5a70' },
-    ],
-    sa_suppliers: [
-      { supplier: 'Argentina', volume_mt:  1980, price_per_kg: 0.950, share_pct: 38 },
-      { supplier: 'Brazil',    volume_mt:  2100, price_per_kg: 0.980, share_pct: 40 },
-      { supplier: 'Other',     volume_mt:  1100, price_per_kg: 1.020, share_pct: 22 },
-    ],
-    sa_market_label: 'SA soybean oil imports: estimated ~5,000 MT/yr from Latam',
-    global_exporters: [
-      { exporter: 'Argentina', fob_per_kg: 0.950 },
-      { exporter: 'Brazil',    fob_per_kg: 0.980 },
-      { exporter: 'USA',       fob_per_kg: 1.010 },
-      { exporter: 'EU',        fob_per_kg: 1.150 },
-    ],
-    fob_domain: [0, 1.4],
-    arg_buyers: [
-      { importer: 'Algeria',       volume_mt: 12800, price_per_kg: 0.950 },
-      { importer: 'Morocco',       volume_mt:  5200, price_per_kg: 0.955 },
-      { importer: 'Egypt',         volume_mt:  3100, price_per_kg: 0.960 },
-      { importer: 'South Africa',  volume_mt:  1980, price_per_kg: 0.950 },
-      { importer: 'Kenya',         volume_mt:   850, price_per_kg: 0.965 },
-    ],
-    opportunity: 'Argentina is a competitive soybean oil exporter with established flows to Algeria, Morocco and Egypt. SA already buys from Argentina. Price advantage over Brazil is small but consistent. Opportunity is expanding volumes and identifying new African buyers — particularly West Africa where palm oil substitution is growing.',
-    opportunity_color: '#3b82f6',
-    key_supplier: 'AGD / Molinos / Aceitera General Deheza',
-    key_supplier_sub: 'Major Argentine oilseed processors',
-    key_buyer: 'African food manufacturers and distributors',
-    key_buyer_sub: 'Algeria, Morocco, Egypt already active',
-    key_buyer_color: '#3b82f6',
-    next_step: 'Verify SA tariff for HS 1507.90 with SARS',
-  },
-};
 
 const Tip = ({ active, payload, label }) => {
   if (!active || !payload?.length) return null;
@@ -255,9 +14,97 @@ const Tip = ({ active, payload, label }) => {
   );
 };
 
+const PRODUCT_ORDER = ['Modified Starch', 'Milk Powder (FCMP)', 'Corn', 'Soybean Meal', 'Sunflower Oil', 'Soybean Oil'];
+
+const HS_LOOKUP = {
+  'Modified Starch':  '350510',
+  'Milk Powder (FCMP)': '040221',
+  'Corn':             '100590',
+  'Soybean Meal':     '230400',
+  'Sunflower Oil':    '151211',
+  'Soybean Oil':      '150790',
+};
+
+function parseField(v) {
+  if (typeof v === 'string') {
+    try { return JSON.parse(v); } catch { return v; }
+  }
+  return v;
+}
+
 export default function ProductIntel() {
-  const [selected, setSelected] = useState('Modified Starch');
-  const p = PRODUCTS[selected];
+  const [products,      setProducts]      = useState({});
+  const [selected,      setSelected]      = useState('Modified Starch');
+  const [liveSuppliers, setLiveSuppliers] = useState([]);
+  const [liveTariffs,   setLiveTariffs]   = useState({});
+  const [loadingLive,   setLoadingLive]   = useState(true);
+  const [loadingProducts, setLoadingProducts] = useState(true);
+
+  useEffect(() => {
+    fetchTable('product_deals')
+      .then(rows => {
+        const map = {};
+        rows.forEach(r => {
+          map[r.product_name] = {
+            hs: r.hs,
+            hero: parseField(r.hero) || [],
+            sa_suppliers: parseField(r.sa_suppliers) || [],
+            sa_market_label: r.sa_market_label,
+            global_exporters: parseField(r.global_exporters) || [],
+            fob_domain: parseField(r.fob_domain) || [0, 1],
+            arg_buyers: parseField(r.arg_buyers) || [],
+            opportunity: r.opportunity,
+            opportunity_color: r.opportunity_color,
+            key_supplier: r.key_supplier,
+            key_supplier_sub: r.key_supplier_sub,
+            key_buyer: r.key_buyer,
+            key_buyer_sub: r.key_buyer_sub,
+            key_buyer_color: r.key_buyer_color,
+            next_step: r.next_step,
+          };
+        });
+        setProducts(map);
+        setLoadingProducts(false);
+      })
+      .catch(() => setLoadingProducts(false));
+  }, []);
+
+  const p = products[selected];
+
+  useEffect(() => {
+    if (!p) return;
+    const hs = HS_LOOKUP[selected];
+    if (!hs) { setLiveSuppliers([]); setLoadingLive(false); return; }
+    setLoadingLive(true);
+    fetchTable('comtrade_data', { eq: ['hs_code', hs] })
+      .then(rows => {
+        // Get latest year available
+        const years = [...new Set(rows.map(r => r.ref_year))].sort((a,b) => b-a);
+        const latestYear = years[0];
+        const latest = rows
+          .filter(r => r.ref_year === latestYear && r.fob_value_usd > 0)
+          .sort((a,b) => b.fob_value_usd - a.fob_value_usd);
+        setLiveSuppliers(latest);
+        setLoadingLive(false);
+      })
+      .catch(() => setLoadingLive(false));
+  }, [selected, p]);
+
+  useEffect(() => {
+    fetchTable('tariff_rates')
+      .then(rows => {
+        const map = {};
+        rows.forEach(r => { map[r.hs_code] = r; });
+        setLiveTariffs(map);
+      });
+  }, []);
+
+  if (loadingProducts) {
+    return <div style={{ padding: 40, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>Loading product intel...</div>;
+  }
+  if (!p) {
+    return <div style={{ padding: 40, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>Product not found.</div>;
+  }
 
   const btnStyle = (name) => ({
     background: selected === name ? 'var(--bg-hover)' : 'none',
@@ -271,9 +118,9 @@ export default function ProductIntel() {
     <div>
       {/* Product selector */}
       <div style={{ display: 'flex', gap: 6, marginBottom: 24, flexWrap: 'wrap' }}>
-        {Object.keys(PRODUCTS).map(name => (
+        {PRODUCT_ORDER.map(name => (
           <button key={name} style={btnStyle(name)} onClick={() => setSelected(name)}>
-            {name} <span style={{ color: 'var(--text-muted)', marginLeft: 4 }}>{PRODUCTS[name].hs}</span>
+            {name} <span style={{ color: 'var(--text-muted)', marginLeft: 4 }}>{products[name]?.hs}</span>
           </button>
         ))}
       </div>
@@ -293,33 +140,76 @@ export default function ProductIntel() {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 20 }}>
         {/* SA suppliers table */}
         <div className="card">
-          <div className="section-label" style={{ marginBottom: 16 }}>Who supplies South Africa today</div>
-          <table className="data-table">
-            <thead>
-              <tr><th>Supplier</th><th>Volume MT<HelpTip text="Metric tonnes South Africa imported from this country in 2024. Source: UN Comtrade." /></th><th>CIF $/kg<HelpTip text="Cost + Insurance + Freight per kg — the price paid by SA importers inclusive of shipping to port." /></th><th>Share<HelpTip text="This supplier's share of total SA imports for this product." /></th></tr>
-            </thead>
-            <tbody>
-              {p.sa_suppliers.map(row => (
-                <tr key={row.supplier} style={{ background: row.supplier === 'Argentina' ? 'rgba(46,204,113,0.06)' : '' }}>
-                  <td style={{ color: row.supplier === 'Argentina' ? '#2ecc71' : 'var(--text-primary)',
-                    fontWeight: row.supplier === 'Argentina' ? 700 : 400 }}>
-                    {row.supplier === 'Argentina' ? '★ ' : ''}{row.supplier}
-                  </td>
-                  <td style={{ fontFamily: 'var(--font-mono)' }}>{row.volume_mt.toLocaleString()}</td>
-                  <td style={{ fontFamily: 'var(--font-mono)',
-                    color: row.supplier === 'Argentina' ? '#2ecc71' : 'var(--text-secondary)' }}>
-                    {row.price_per_kg ? '$' + row.price_per_kg.toFixed(3) : '-'}
-                  </td>
-                  <td style={{ fontFamily: 'var(--font-mono)' }}>{row.share_pct}%</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <div style={{ marginTop: 12, padding: '8px 12px', background: 'rgba(232,184,75,0.08)',
-            border: '1px solid rgba(232,184,75,0.2)', borderRadius: 4,
-            fontSize: 12, color: '#e8b84b', fontFamily: 'var(--font-mono)' }}>
-            {p.sa_market_label}
+          <div className="section-label" style={{ marginBottom: 16 }}>
+            Who supplies South Africa today
+            {!loadingLive && liveSuppliers.length > 0 && (
+              <span style={{ fontSize: 10, color: '#2ecc71', fontFamily: 'var(--font-mono)',
+                marginLeft: 8, padding: '2px 6px', background: 'rgba(46,204,113,0.1)',
+                border: '1px solid rgba(46,204,113,0.3)', borderRadius: 3 }}>
+                LIVE — {liveSuppliers[0]?.ref_year}
+              </span>
+            )}
           </div>
+          {loadingLive ? (
+            <div style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontSize: 12 }}>Loading live data...</div>
+          ) : liveSuppliers.length > 0 ? (
+            <>
+              <table className="data-table">
+                <thead>
+                  <tr>
+                    <th>Supplier</th>
+                    <th>Volume (kg)<HelpTip text="Net weight in kg SA imported from this country. Source: UN Comtrade." /></th>
+                    <th>FOB Value<HelpTip text="Total FOB value of imports from this country." /></th>
+                    <th>$/kg FOB<HelpTip text="Average FOB price per kg." /></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {liveSuppliers.slice(0, 10).map(row => {
+                    const isLatam = ['Argentina','Brazil','Uruguay','Paraguay','Chile'].includes(row.partner_name);
+                    const priceKg = row.qty_kg > 0 ? row.fob_value_usd / row.qty_kg : null;
+                    return (
+                      <tr key={row.partner_name} style={{ background: isLatam ? 'rgba(46,204,113,0.06)' : '' }}>
+                        <td style={{ color: isLatam ? '#2ecc71' : 'var(--text-primary)', fontWeight: isLatam ? 700 : 400 }}>
+                          {isLatam ? '★ ' : ''}{row.partner_name}
+                        </td>
+                        <td style={{ fontFamily: 'var(--font-mono)' }}>{row.qty_kg ? (row.qty_kg/1000).toFixed(0) + ' MT' : '-'}</td>
+                        <td style={{ fontFamily: 'var(--font-mono)' }}>${(row.fob_value_usd/1000).toFixed(0)}K</td>
+                        <td style={{ fontFamily: 'var(--font-mono)', color: isLatam ? '#2ecc71' : 'var(--text-secondary)' }}>
+                          {priceKg ? '$' + priceKg.toFixed(3) : '-'}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+              <div style={{ marginTop: 12, padding: '8px 12px', background: 'rgba(232,184,75,0.08)',
+                border: '1px solid rgba(232,184,75,0.2)', borderRadius: 4,
+                fontSize: 12, color: '#e8b84b', fontFamily: 'var(--font-mono)' }}>
+                {p.sa_market_label}
+              </div>
+            </>
+          ) : (
+            <table className="data-table">
+              <thead>
+                <tr><th>Supplier</th><th>Volume MT</th><th>CIF $/kg</th><th>Share</th></tr>
+              </thead>
+              <tbody>
+                {p.sa_suppliers.map(row => (
+                  <tr key={row.supplier} style={{ background: row.supplier === 'Argentina' ? 'rgba(46,204,113,0.06)' : '' }}>
+                    <td style={{ color: row.supplier === 'Argentina' ? '#2ecc71' : 'var(--text-primary)',
+                      fontWeight: row.supplier === 'Argentina' ? 700 : 400 }}>
+                      {row.supplier === 'Argentina' ? '★ ' : ''}{row.supplier}
+                    </td>
+                    <td style={{ fontFamily: 'var(--font-mono)' }}>{row.volume_mt.toLocaleString()}</td>
+                    <td style={{ fontFamily: 'var(--font-mono)', color: row.supplier === 'Argentina' ? '#2ecc71' : 'var(--text-secondary)' }}>
+                      {row.price_per_kg ? '$' + row.price_per_kg.toFixed(3) : '-'}
+                    </td>
+                    <td style={{ fontFamily: 'var(--font-mono)' }}>{row.share_pct}%</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
 
         {/* Global FOB chart */}
