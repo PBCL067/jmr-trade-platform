@@ -1,170 +1,166 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Tooltip from './Tooltip';
-import { TRADE_FLOWS, AFRICA_PROCESSING, TRADE_GAPS } from './data/opportunityData';
+import { AFRICA_PROCESSING, TRADE_GAPS } from './data/opportunityData';
 import IngredientFlow from './IngredientFlow';
+import { fetchTable } from './supabase';
 
 const LATAM = ['Argentina','Brazil','Uruguay','Chile','Colombia','Peru','Ecuador','Paraguay','Bolivia','Mexico'];
 
-const AFRICA = [...new Set(TRADE_FLOWS.map(r => r.importer))].sort();
 
-const DEALS = [
-  {
-    id: 'starch', status: 'PIPELINE', title: 'Modified Waxy Corn Starch E1422',
-    route: 'Brazil → South Africa', hs: 'HS 3505',
-    buyer: 'Bragan / Solevo (interested)', supplier: 'Horizonte Amidos (SuperCorp CFW)',
-    fob: 0.91, landed: 1.05, market: 1.09, advantage: 0.04,
-    sa_market_mt: 57799, sa_market_usd_m: 65.9,
-    current_sa_suppliers: 'Thailand, Netherlands, Brazil',
-    arg_exports_to_sa: -1,
-    fob_label: 'Brazil Ex Works',
-    notes: 'Supplier confirmed: Horizonte Amidos, Paraná Brazil. Product: SuperCorp CFW — Modified Waxy Corn Starch E1422, Non-GMO. Price: $910/MT Ex Works (est. FOB Paranaguá ~$950/MT). Viscosity 760-960 BU, Acetyl min 1.45%, pH 4.5-6.5, moisture max 14%. TDS and specs sent to buyer 2026-06-02. Awaiting buyer feedback.',
-    nextSteps: [
-      'Await buyer feedback on SuperCorp CFW specs',
-      'Get FOB Paranaguá price from Jordani (currently Ex Works $910/MT)',
-      'Get freight quote Paranaguá → Durban (20ft FCL)',
-      'Confirm HS 3505 tariff rate with SARS',
-      'Request CoA from recent batch from Horizonte',
-      'Request Halal certification status from Horizonte',
-    ],
-  },
-  {
-    id: 'milk', status: 'PIPELINE', title: 'Full Cream Milk Powder',
-    route: 'Argentina → South Africa', hs: 'HS 040221',
-    buyer: 'TBC', supplier: 'SanCor / Mastellone',
-    fob: 3.61, landed: 4.00, market: 4.11, advantage: 0.11,
-    sa_market_mt: 4312, sa_market_usd_m: 17.7,
-    current_sa_suppliers: 'New Zealand, Uruguay, France',
-    arg_exports_to_sa: 0,
-    notes: 'Uruguay already supplies SA at $3.53/kg CIF. Margin is tight and MFN dairy tariff (~15%) needs confirmation before proceeding. Need to find buyer first.',
-    nextSteps: [
-      'Confirm SA MFN import tariff for HS 040221 via SARS or customs broker',
-      'Identify SA milk powder distributor or buyer',
-      'Compare freight Buenos Aires → Durban vs Auckland → Durban',
-      'Get MOQ and lead time from SanCor export team',
-    ],
-  },
-  {
-    id: 'sunflower', status: 'RESEARCH', title: 'Sunflower Oil',
-    route: 'Argentina → South Africa', hs: 'HS 151211',
-    buyer: 'TBC', supplier: 'AGD / Molinos',
-    fob: 1.10, landed: null, market: null, advantage: null,
-    sa_market_mt: 160000, sa_market_usd_m: null,
-    current_sa_suppliers: 'Argentina already #2 supplier',
-    arg_exports_to_sa: 1368,
-    notes: 'Argentina already exports 1,368 MT/yr to SA. Need to identify specific SA buyers and assess whether we can add value vs existing commodity flows.',
-    nextSteps: [
-      'Map existing Argentine sunflower oil exporters to SA',
-      'Identify SA industrial buyers (food manufacturers)',
-      'Assess tariff position under SACU-Mercosur',
-    ],
-  },
-  {
-    id: 'lecithin', status: 'RESEARCH', title: 'Soya Lecithin',
-    route: 'Argentina → South Africa', hs: 'HS 292390',
-    buyer: 'Bragan / Solevo (potential)', supplier: 'TBC - Argentina',
-    fob: null, landed: null, market: null, advantage: null,
-    sa_market_mt: null, sa_market_usd_m: 20.3,
-    current_sa_suppliers: 'China (84%), India (4.5%), USA (4.3%)',
-    arg_exports_to_sa: 0,
-    notes: 'SA imports $20.3M of soya lecithin annually - 84% from China, zero from Mercosur. Argentina is the world largest soya lecithin producer (byproduct of Rosario soy crush corridor) yet has zero SA presence. Classic displacement opportunity. Bragan already carries soya lecithin. Source: UN Comtrade 2023.',
-    nextSteps: [
-      'Identify top Argentine soya lecithin exporters (Bunge, AGD, Molinos)',
-      'Get FOB Buenos Aires / Rosario indicative pricing',
-      'Confirm HS 292390 SACU-Mercosur tariff rate with SARS',
-      'Contact Bragan to gauge interest and current supplier pricing',
-      'Run landed cost analysis vs Chinese supplier price',
-    ],
-  },
-  {
-    id: 'soyoil', status: 'RESEARCH', title: 'Refined Soybean Oil',
-    route: 'Argentina / Brazil → South Africa', hs: 'HS 150790',
-    buyer: 'TBC', supplier: 'TBC - Argentina / Brazil',
-    fob: null, landed: null, market: null, advantage: null,
-    sa_market_mt: null, sa_market_usd_m: 23.1,
-    current_sa_suppliers: 'Netherlands (79%), Brazil (21%)',
-    arg_exports_to_sa: 0,
-    notes: 'SA imports $23.1M refined soybean oil - Netherlands dominates at 79% likely re-exporting Argentine/Brazilian origin oil. Brazil already at 21% direct. Opportunity to displace Dutch middleman and supply direct from Argentina or Brazil.',
-    nextSteps: [
-      'Identify Argentine/Brazilian refined soybean oil exporters',
-      'Establish Netherlands landed cost vs direct Mercosur landed cost',
-      'Confirm HS 150790 SACU-Mercosur tariff rate with SARS',
-      'Identify SA industrial buyers of refined soybean oil',
-      'Check if Bragan carries refined soybean oil',
-    ],
-  },
-];
+function QuotesPanel({ dealId }) {
+  const [quotes, setQuotes] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-const STATUS_COLOR = { CONFIRMED: '#2ecc71', PIPELINE: '#e8b84b', RESEARCH: '#4a5a70' };
-const STATUS_BG    = { CONFIRMED: 'rgba(46,204,113,0.08)', PIPELINE: 'rgba(232,184,75,0.08)', RESEARCH: 'rgba(74,90,112,0.08)' };
+  useEffect(() => {
+    fetchTable('deal_quotes', { eq: ['deal_id', dealId] })
+      .then(data => { setQuotes(data); setLoading(false); })
+      .catch(() => setLoading(false));
+  }, [dealId]);
+
+  const STATUS_COLOR = {
+    'Active':      '#2ecc71',
+    'Pending':     '#e8b84b',
+    'Reference':   '#4a9eda',
+    'Not Viable':  '#e74c3c',
+    'Closed':      '#4a5a70',
+  };
+
+  if (loading) return <div style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>Loading quotes...</div>;
+  if (!quotes.length) return <div style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>No quotes yet</div>;
+
+  return (
+    <div>
+      <div style={{ fontSize: 10, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', letterSpacing: '0.08em', marginBottom: 8 }}>SUPPLIER QUOTES</div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        {quotes.map(q => {
+          const color = STATUS_COLOR[q.status] || '#4a5a70';
+          return (
+            <div key={q.id} style={{ padding: '10px 14px', background: 'var(--bg-hover)',
+              borderRadius: 4, borderLeft: '3px solid ' + color }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 6 }}>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: 12, fontWeight: 600, color: 'var(--text-primary)' }}>
+                  {q.supplier_name}
+                </div>
+                <span style={{ fontSize: 10, color, background: color + '18',
+                  border: '1px solid ' + color + '40', padding: '2px 7px', borderRadius: 3,
+                  fontFamily: 'var(--font-mono)' }}>{q.status.toUpperCase()}</span>
+              </div>
+              <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', marginBottom: 6 }}>
+                {q.price_exw  && <div style={{ fontSize: 12, fontFamily: 'var(--font-mono)' }}>
+                  <span style={{ color: 'var(--text-muted)' }}>ExW: </span>
+                  <span style={{ color: '#e8b84b', fontWeight: 600 }}>${q.price_exw}/MT</span>
+                </div>}
+                {q.price_fob  && <div style={{ fontSize: 12, fontFamily: 'var(--font-mono)' }}>
+                  <span style={{ color: 'var(--text-muted)' }}>FOB: </span>
+                  <span style={{ color: '#e8b84b', fontWeight: 600 }}>${q.price_fob}/MT</span>
+                </div>}
+                {q.price_cif_estimate && <div style={{ fontSize: 12, fontFamily: 'var(--font-mono)' }}>
+                  <span style={{ color: 'var(--text-muted)' }}>CIF est: </span>
+                  <span style={{ color: '#4a9eda', fontWeight: 600 }}>${q.price_cif_estimate}/MT</span>
+                </div>}
+                {q.price_cif_benchmark && <div style={{ fontSize: 12, fontFamily: 'var(--font-mono)' }}>
+                  <span style={{ color: 'var(--text-muted)' }}>Benchmark: </span>
+                  <span style={{ color: 'var(--text-secondary)' }}>${q.price_cif_benchmark}/MT</span>
+                </div>}
+              </div>
+              {q.volume && <div style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginBottom: 4 }}>
+                Vol: {q.volume}
+              </div>}
+              {q.notes && <div style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.5 }}>{q.notes}</div>}
+              {q.valid_date && <div style={{ fontSize: 10, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginTop: 4 }}>
+                Quote date: {q.valid_date}
+              </div>}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 function DealCard({ deal }) {
-  const color = STATUS_COLOR[deal.status];
-  const bg    = STATUS_BG[deal.status];
+  const STATUS_COLOR = { Pipeline: '#e8b84b', Research: '#4a9eda', Closed: '#4a5a70', Confirmed: '#2ecc71' };
+  const color = STATUS_COLOR[deal.status] || '#4a5a70';
+  const spec  = deal.spec ? (typeof deal.spec === 'string' ? JSON.parse(deal.spec) : deal.spec) : {};
+
   return (
-    <div className="card" style={{ borderColor: color + '40', marginBottom: 20 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
+    <div className="card" style={{ borderLeft: '3px solid ' + color, marginBottom: 16 }}>
+
+      {/* Header */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
         <div>
-          <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 20, marginBottom: 4 }}>{deal.title}</div>
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-muted)', letterSpacing: '0.06em' }}>
-            {deal.route} &nbsp;|&nbsp; {deal.hs}
+          <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 18, marginBottom: 4 }}>
+            {deal.title}
+          </div>
+          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-muted)' }}>
+            {deal.route_from && deal.route_to && (
+              <span>{deal.route_from} → {deal.route_to}</span>
+            )}
+            {deal.hs_code && <span>HS {deal.hs_code}</span>}
+            {deal.port_origin && deal.port_destination && (
+              <span>⚓ {deal.port_origin} → {deal.port_destination}</span>
+            )}
           </div>
         </div>
-        <div style={{ padding: '4px 14px', borderRadius: 4, fontSize: 12, fontWeight: 700,
-          fontFamily: 'var(--font-mono)', letterSpacing: '0.08em', color, background: bg, border: '1px solid ' + color + '40' }}>
-          {deal.status}
-        </div>
+        <span style={{ flexShrink: 0, padding: '4px 14px', borderRadius: 4, fontSize: 11, fontWeight: 700,
+          fontFamily: 'var(--font-mono)', letterSpacing: '0.08em',
+          color, background: color + '18', border: '1px solid ' + color + '40' }}>
+          {(deal.status || '').toUpperCase()}
+        </span>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
-        <div>
-          <div className="section-label" style={{ marginBottom: 10 }}>Price Stack (USD/kg)</div>
-          {[[deal.fob_label || 'Argentina FOB', deal.fob, false], ['Est. Landed SA', deal.landed, false],
-            ['SA Market Price', deal.market, true], ['Our Advantage', deal.advantage, true]]
-            .filter(r => r[1] != null).map(([label, val, highlight]) => (
-            <div key={label} style={{ display: 'flex', justifyContent: 'space-between',
-              padding: '7px 0', borderBottom: '1px solid var(--border)', fontSize: 13 }}>
-              <span style={{ color: 'var(--text-secondary)' }}>{label}</span>
-              <span style={{ fontFamily: 'var(--font-mono)', color: highlight ? color : 'var(--text-primary)', fontWeight: highlight ? 700 : 400 }}>
-                ${val.toFixed(2)}
-              </span>
-            </div>
+
+      {/* Spec tags */}
+      {Object.keys(spec).length > 0 && (
+        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 10 }}>
+          {Object.entries(spec).map(([k, v]) => (
+            <span key={k} style={{ fontSize: 10, fontFamily: 'var(--font-mono)',
+              color: '#a855f7', background: 'rgba(168,85,247,0.1)',
+              border: '1px solid rgba(168,85,247,0.3)', padding: '2px 8px', borderRadius: 3 }}>
+              {k}: {Array.isArray(v) ? v.join(', ') : v}
+            </span>
           ))}
         </div>
-        <div>
-          <div className="section-label" style={{ marginBottom: 10 }}>SA Market</div>
-          <div style={{ padding: '10px 14px', background: 'var(--bg-hover)', borderRadius: 4, marginBottom: 8 }}>
-            <div style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginBottom: 4 }}>MARKET SIZE</div>
-            <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 22 }}>
-              {deal.sa_market_mt ? deal.sa_market_mt.toLocaleString() + ' MT/yr' : 'Market sizing TBC'}
-            </div>
-            {deal.sa_market_usd_m && <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2 }}>${deal.sa_market_usd_m}M market value</div>}
-          </div>
-          <div style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 4 }}>Current SA suppliers</div>
-          <div style={{ fontSize: 13, color: 'var(--text-secondary)' }}>{deal.current_sa_suppliers || '—'}</div>
-          {deal.arg_exports_to_sa === 0 && deal.arg_exports_to_sa !== -1 && (
-            <div style={{ marginTop: 8, padding: '6px 10px', background: 'rgba(232,184,75,0.08)',
-              border: '1px solid rgba(232,184,75,0.2)', borderRadius: 4, fontSize: 12, color: '#e8b84b', fontFamily: 'var(--font-mono)' }}>
-              ARG EXPORTS TO SA: ZERO — UNTAPPED
+      )}
+
+      {/* CIF Benchmark */}
+      {deal.cif_benchmark && (
+        <div style={{ display: 'inline-flex', gap: 8, alignItems: 'center', marginBottom: 10,
+          padding: '6px 12px', background: 'var(--bg-hover)', borderRadius: 4 }}>
+          <span style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>CIF BENCHMARK</span>
+          <span style={{ fontSize: 14, fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#e8b84b' }}>
+            ${deal.cif_benchmark.toLocaleString()}/MT
+          </span>
+          {deal.cif_benchmark_notes && (
+            <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>— {deal.cif_benchmark_notes}</span>
+          )}
+        </div>
+      )}
+
+      {/* Notes */}
+      {deal.notes && (
+        <div style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.7,
+          padding: '10px 14px', background: 'var(--bg-hover)', borderRadius: 4, marginBottom: 14 }}>
+          {deal.notes}
+        </div>
+      )}
+
+      {/* Quotes */}
+      <QuotesPanel dealId={deal.id} />
+
+      {/* Next Action */}
+      {deal.next_action && (
+        <div style={{ marginTop: 14, padding: '10px 14px', background: 'rgba(232,184,75,0.08)',
+          border: '1px solid rgba(232,184,75,0.2)', borderRadius: 4 }}>
+          <div style={{ fontSize: 10, color: '#e8b84b', fontFamily: 'var(--font-mono)',
+            letterSpacing: '0.08em', marginBottom: 4 }}>NEXT ACTION</div>
+          <div style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6 }}>{deal.next_action}</div>
+          {deal.next_action_date && (
+            <div style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginTop: 4 }}>
+              {deal.next_action_date}
             </div>
           )}
         </div>
-      </div>
-      <div style={{ marginBottom: 14, padding: '10px 14px', background: 'var(--bg-hover)', borderRadius: 4, display: 'flex', gap: 32 }}>
-        <div>
-          <div style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 3 }}>Buyer</div>
-          <div style={{ color: deal.buyer === 'TBC' ? 'var(--text-muted)' : color, fontWeight: 500 }}>{deal.buyer}</div>
-        </div>
-        <div>
-          <div style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 3 }}>Supplier</div>
-          <div style={{ color: 'var(--text-primary)', fontWeight: 500 }}>{deal.supplier}</div>
-        </div>
-      </div>
-      <div style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.7, padding: '10px 14px', background: 'var(--bg-hover)', borderRadius: 4, marginBottom: 14 }}>{deal.notes || ''}</div>
-      <div className="section-label" style={{ marginBottom: 8 }}>Next Steps</div>
-      <ol style={{ paddingLeft: 18 }}>
-        {(deal.nextSteps || []).map((step, i) => (
-          <li key={i} style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 8, lineHeight: 1.6 }}>{step}</li>
-        ))}
-      </ol>
+      )}
     </div>
   );
 }
@@ -174,8 +170,18 @@ function Screener() {
   const [importer, setImporter] = useState('All Africa');
   const [layer, setLayer]       = useState('ALL');
   const [selected, setSelected] = useState(null);
+  const [tradeFlows, setTradeFlows] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const filtered = TRADE_FLOWS.filter(r => {
+  useEffect(() => {
+    fetchTable('trade_flows')
+      .then(data => { setTradeFlows(data); setLoading(false); })
+      .catch(() => setLoading(false));
+  }, []);
+
+  const AFRICA = [...new Set(tradeFlows.map(r => r.importer))].sort();
+
+  const filtered = tradeFlows.filter(r => {
     if (r.exporter !== exporter) return false;
     if (importer !== 'All Africa' && r.importer !== importer) return false;
     if (layer !== 'ALL' && r.layer !== layer) return false;
@@ -188,6 +194,8 @@ function Screener() {
   };
 
   const fmt = (n) => n >= 1e9 ? '$' + (n/1e9).toFixed(1) + 'B' : n >= 1e6 ? '$' + (n/1e6).toFixed(1) + 'M' : n >= 1e3 ? '$' + (n/1e3).toFixed(0) + 'K' : '$' + n.toFixed(0);
+
+  if (loading) return <div style={{ padding: 40, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>Loading trade flows...</div>;
 
   return (
     <div>
@@ -413,6 +421,43 @@ function GapAnalysis() {
   );
 }
 
+function DealsView() {
+  const [deals,   setDeals]   = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [filter,  setFilter]  = useState('All');
+
+  useEffect(() => {
+    fetchTable('deals', { order: 'created_at', asc: false })
+      .then(data => { setDeals(data); setLoading(false); })
+      .catch(() => setLoading(false));
+  }, []);
+
+  const statuses = ['All', 'Pipeline', 'Research', 'Closed'];
+  const filtered = filter === 'All' ? deals : deals.filter(d => d.status === filter);
+
+  const selectStyle = {
+    background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 4,
+    color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: 12,
+    padding: '6px 10px', cursor: 'pointer',
+  };
+
+  if (loading) return <div style={{ padding: 40, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>Loading deals...</div>;
+
+  return (
+    <div>
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 16 }}>
+        <select value={filter} onChange={e => setFilter(e.target.value)} style={selectStyle}>
+          {statuses.map(s => <option key={s}>{s}</option>)}
+        </select>
+        <span style={{ fontSize: 12, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+          {filtered.length} deals
+        </span>
+      </div>
+      {filtered.map(deal => <DealCard key={deal.id} deal={deal} />)}
+    </div>
+  );
+}
+
 export default function Opportunities() {
   const [view, setView] = useState('deals');
 
@@ -437,7 +482,7 @@ export default function Opportunities() {
             fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--gold-bright)', letterSpacing: '0.04em' }}>
             FOCUS: Argentina → South Africa &nbsp;|&nbsp; Dry goods &amp; long-life food ingredients &nbsp;|&nbsp; Updated May 2026
           </div>
-          {DEALS.map(deal => <DealCard key={deal.id} deal={deal} />)}
+          <DealsView />
         </div>
       )}
       {view === 'screen' && <Screener />}
