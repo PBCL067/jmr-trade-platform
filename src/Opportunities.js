@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Tooltip from './Tooltip';
-import { AFRICA_PROCESSING, TRADE_GAPS } from './data/opportunityData';
+import { AFRICA_PROCESSING } from './data/opportunityData';
 import IngredientFlow from './IngredientFlow';
 import { fetchTable } from './supabase';
 
@@ -299,15 +299,25 @@ function Screener() {
 function GapAnalysis() {
   const [filterExporter, setFilterExporter] = React.useState('All');
   const [filterLabel,    setFilterLabel]    = React.useState('All');
+  const [tradeGaps,      setTradeGaps]      = React.useState([]);
+  const [loading,        setLoading]        = React.useState(true);
 
-  const exporters = ['All', ...new Set(TRADE_GAPS.map(g => g.exporter))].sort();
+  React.useEffect(() => {
+    fetchTable('trade_gaps')
+      .then(data => { setTradeGaps(data); setLoading(false); })
+      .catch(() => setLoading(false));
+  }, []);
+
+  const exporters = ['All', ...new Set(tradeGaps.map(g => g.exporter))].sort();
   const labels    = ['All', 'UNTAPPED', 'NEAR UNTAPPED', 'UNDER-PROCESSED', 'PROCESSING'];
 
-  const filtered = TRADE_GAPS.filter(function(g) {
+  const filtered = tradeGaps.filter(function(g) {
     if (filterExporter !== 'All' && g.exporter !== filterExporter) return false;
     if (filterLabel    !== 'All' && g.label    !== filterLabel)    return false;
     return true;
   });
+
+  if (loading) return <div style={{ padding: 40, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>Loading gap analysis...</div>;
 
   const LABEL_COLOR = {
     'UNTAPPED':        '#e74c3c',
@@ -328,7 +338,7 @@ function GapAnalysis() {
     letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 4, display: 'block',
   };
 
-  const untappedCount = TRADE_GAPS.filter(g => g.label === 'UNTAPPED' || g.label === 'NEAR UNTAPPED').length;
+  const untappedCount = tradeGaps.filter(g => g.label === 'UNTAPPED' || g.label === 'NEAR UNTAPPED').length;
 
   return (
     <div>
@@ -343,12 +353,12 @@ function GapAnalysis() {
           <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 28, color: '#e8b84b' }}>
             {fmt(TRADE_GAPS[0]?.l1_usd || 0)}
           </div>
-          <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>{TRADE_GAPS[0]?.exporter} → {TRADE_GAPS[0]?.importer}</div>
+          <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>{tradeGaps[0]?.exporter} → {tradeGaps[0]?.importer}</div>
         </div>
         <div className="card">
           <div style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-muted)', marginBottom: 6 }}>TOTAL L1 FLOWING</div>
           <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 28 }}>
-            {fmt(TRADE_GAPS.reduce((s, g) => s + g.l1_usd, 0))}
+            {fmt(tradeGaps.reduce((s, g) => s + g.l1_usd, 0))}
           </div>
           <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>raw commodities Latam → Africa</div>
         </div>
@@ -403,7 +413,7 @@ function GapAnalysis() {
                     {g.l2_usd > 0 ? fmt(g.l2_usd) : 'ZERO'}
                   </span>
                 </div>
-                {g.top_products.map(function(p) {
+                {(typeof g.top_products === 'string' ? JSON.parse(g.top_products) : g.top_products).map(function(p) {
                   return (
                     <span key={p.product} style={{ padding: '4px 10px', background: 'var(--bg-card)',
                       border: '1px solid var(--border)', borderRadius: 3,
