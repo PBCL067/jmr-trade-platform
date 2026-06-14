@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { INGREDIENT_FLOWS } from './data/ingredientFlowData';
+import React, { useState, useEffect } from 'react';
+import { fetchTable } from './supabase';
 
 const SECTORS = ['All', 'Bakery', 'Dairy', 'Frozen Food', 'Meat Processing',
                  'Confectionery', 'Instant Food', 'Sauces & Dressings',
@@ -21,12 +21,33 @@ const SECTOR_COLOR = {
   'Nutritional and Health': '#84cc16',
 };
 
+function parseField(v) {
+  if (typeof v === 'string') { try { return JSON.parse(v); } catch { return []; } }
+  return v || [];
+}
+
 export default function IngredientFlow() {
+  const [flows,    setFlows]    = useState([]);
+  const [loading,  setLoading]  = useState(true);
   const [sector,   setSector]   = useState('All');
   const [selected, setSelected] = useState(null);
   const [search,   setSearch]   = useState('');
 
-  const filtered = INGREDIENT_FLOWS.filter(function(f) {
+  useEffect(() => {
+    fetchTable('ingredient_flows')
+      .then(rows => {
+        setFlows(rows.map(r => ({
+          ...r,
+          supplied_by:    parseField(r.supplied_by),
+          used_in:        parseField(r.used_in),
+          african_buyers: parseField(r.african_buyers),
+        })));
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
+  const filtered = flows.filter(function(f) {
     if (search && !f.ingredient.toLowerCase().includes(search.toLowerCase()) &&
         !f.description.toLowerCase().includes(search.toLowerCase())) return false;
     if (sector !== 'All' && !f.used_in.some(u => u.sector === sector)) return false;
@@ -42,6 +63,8 @@ export default function IngredientFlow() {
     fontSize: 10, fontFamily: 'var(--font-mono)', color: 'var(--text-muted)',
     letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 4, display: 'block',
   };
+
+  if (loading) return <div style={{ padding: 40, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>Loading ingredient flows...</div>;
 
   return (
     <div>
