@@ -133,13 +133,13 @@ export default function LandedCost() {
   if (!products[selected]) return <div style={{ padding: 40, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>Product not found.</div>;
 
   const p = products[selected];
-  const tariffUsd = p.tariffType === 'zar' ? p.tariffZar / zarUsd : (p.tariffUsd || 0);
+  const tariffUsd = p.tariff_type === 'zar' ? p.tariff_zar / zarUsd : (p.tariff_usd || 0);
 
   // Break-even for ZAR-denominated tariffs
   const argSupplier = p.suppliers.find(s => s.highlight);
   const argCIF = argSupplier ? argSupplier.fob + argSupplier.freight + argSupplier.fob * INSURANCE : null;
-  const breakEvenZar = p.tariffType === 'zar' && argCIF
-    ? p.tariffZar / (p.saMarket - argCIF)
+  const breakEvenZar = p.tariff_type === 'zar' && argCIF
+    ? p.tariff_zar / (p.sa_market - argCIF)
     : null;
 
   const btnStyle = (name) => ({
@@ -182,7 +182,7 @@ export default function LandedCost() {
             {lastFetch && <span style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>Updated {lastFetch}</span>}
           </div>
         </div>
-        {p.tariffType === 'zar' && breakEvenZar && (
+        {p.tariff_type === 'zar' && breakEvenZar && (
           <div style={{ marginLeft: 'auto', textAlign: 'right' }}>
             <div style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginBottom: 4 }}>
               {selected.toUpperCase()} TARIFF AT THIS RATE
@@ -199,14 +199,14 @@ export default function LandedCost() {
             </div>
           </div>
         )}
-        {p.tariffType !== 'zar' && (
+        {p.tariff_type !== 'zar' && (
           <div style={{ marginLeft: 'auto', textAlign: 'right' }}>
             <div style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginBottom: 4 }}>TARIFF</div>
             <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, fontSize: 18,
-              color: p.tariffNote.startsWith('TBC') ? '#e74c3c' : '#2ecc71' }}>
-              {p.tariffNote.startsWith('TBC') ? 'UNCONFIRMED' : 'FREE'}
+              color: p.tariff_note.startsWith('TBC') ? '#e74c3c' : '#2ecc71' }}>
+              {p.tariff_note.startsWith('TBC') ? 'UNCONFIRMED' : 'FREE'}
             </div>
-            <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>{p.tariffNote}</div>
+            <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>{p.tariff_note}</div>
           </div>
         )}
       </div>
@@ -223,9 +223,9 @@ export default function LandedCost() {
 
       <SupplierTable
         suppliers={p.suppliers}
-        saMarket={p.saMarket}
+        saMarket={p.sa_market}
         tariffUsd={tariffUsd}
-        tariffNote={p.tariffNote}
+        tariffNote={p.tariff_note}
         title={selected + ' (' + p.hs + ') — Delivered Durban'}
         tariffData={tariffs[p.hs_code]}
         zarUsd={zarUsd}
