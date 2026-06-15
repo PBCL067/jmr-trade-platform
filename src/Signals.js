@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Tooltip from './Tooltip';
-import { fetchCollection } from './firebase';
+import { fetchTable } from './supabase';
 
 const SIGNAL_COLOR = { BUY: '#2ecc71', SELL: '#e74c3c', NEUTRAL: '#e8b84b' };
 const SIGNAL_BG    = { BUY: 'rgba(46,204,113,0.1)', SELL: 'rgba(231,76,60,0.1)', NEUTRAL: 'rgba(232,184,75,0.1)' };
@@ -121,15 +121,14 @@ export default function Signals() {
   const [filter, setFilter]         = useState('ALL');
 
   useEffect(function() {
-    (async function() {
-      try {
-        const docs = await fetchCollection('signals');
+    fetchTable('signals')
+      .then(function(rows) {
         const map = {};
-        docs.forEach(function(d) { if (d.commodity && d.signal) map[d.commodity] = d; });
+        rows.forEach(function(d) { if (d.commodity && d.signal) map[d.commodity] = d; });
         if (Object.keys(map).length > 0) setAllSignals(map);
-      } catch(e) { console.error(e); }
-      finally { setLoading(false); }
-    })();
+        setLoading(false);
+      })
+      .catch(function(e) { console.error(e); setLoading(false); });
   }, []);
 
   if (loading) return <div className="loading">Loading signals</div>;
