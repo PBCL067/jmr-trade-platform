@@ -111,7 +111,7 @@ export default function LandedCost() {
       setProducts(pMap);
       setTariffs(tMap);
       setLoading(false);
-    }).catch(function() { setLoading(false); });
+    }).catch(function(err) { console.error('LandedCost fetch failed:', err); setLoading(false); });
   }, []);
 
   async function fetchRate() {
@@ -130,7 +130,7 @@ export default function LandedCost() {
   useEffect(function() { fetchRate(); }, []);
 
   if (loading) return <div style={{ padding: 40, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>Loading landed cost data...</div>;
-  if (!products[selected]) return <div style={{ padding: 40, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>Product not found.</div>;
+  if (!products[selected]) return <div style={{ padding: 40, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>Product not found: "{selected}" — available: {Object.keys(products).join(', ') || 'none (fetch may have failed)'}</div>;
 
   const p = products[selected];
   const tariffUsd = p.tariff_type === 'zar' ? p.tariff_zar / zarUsd : (p.tariff_usd || 0);
