@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fetchCollection } from './firebase';
+import { fetchTable } from './supabase';
 import Opportunities from './Opportunities';
 import ProductIntel from './ProductIntel';
 import Signals from './Signals';
@@ -45,7 +45,7 @@ export default function App() {
   useEffect(function() {
     (async function() {
       try {
-        const docs = await fetchCollection('signals');
+        const docs = await fetchTable('signals');
         const sorted = docs
           .filter(function(d) { return d.signal === 'BUY' || d.signal === 'SELL'; })
           .sort(function(a, b) { return Math.abs(b.combined_score) - Math.abs(a.combined_score); })
