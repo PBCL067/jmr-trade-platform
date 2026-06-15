@@ -33,19 +33,33 @@ export default function IngredientFlow() {
   const [selected, setSelected] = useState(null);
   const [search,   setSearch]   = useState('');
 
+  const [suppliers, setSuppliers] = useState([]);
+
   useEffect(() => {
-    fetchTable('ingredient_flows')
-      .then(rows => {
-        setFlows(rows.map(r => ({
-          ...r,
-          supplied_by:    parseField(r.supplied_by),
-          used_in:        parseField(r.used_in),
-          african_buyers: parseField(r.african_buyers),
-        })));
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+    Promise.all([
+      fetchTable('ingredient_flows'),
+      fetchTable('suppliers'),
+    ]).then(([flowRows, supplierRows]) => {
+      setFlows(flowRows.map(r => ({
+        ...r,
+        supplied_by:          parseField(r.supplied_by),
+        used_in:              parseField(r.used_in),
+        african_buyers:       parseField(r.african_buyers),
+        supplier_categories:  parseField(r.supplier_categories),
+      })));
+      setSuppliers(supplierRows);
+      setLoading(false);
+    }).catch(() => setLoading(false));
   }, []);
+
+  function getSuppliersForFlow(flow) {
+    const cats = flow.supplier_categories || [];
+    if (!cats.length) return flow.supplied_by || [];
+    const matched = suppliers
+      .filter(s => cats.includes(s.product_category) && s.food_grade)
+      .map(s => s.name);
+    return matched.length > 0 ? matched : (flow.supplied_by || []);
+  }
 
   const filtered = flows.filter(function(f) {
     if (search && !f.ingredient.toLowerCase().includes(search.toLowerCase()) &&
