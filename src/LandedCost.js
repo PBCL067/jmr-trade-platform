@@ -1,209 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import Tooltip from './Tooltip';
-import { TARIFFS, getTariffUsd, MERCOSUR_COUNTRIES } from './data/tariffData';
-
-const PRODUCTS = {
-  'Modified Starch': {
-    hs: 'HS 3505.10',
-    saMarket: 1.09,
-    tariffType: 'fixed',
-    tariffUsd: 0,
-    tariffNote: 'FREE — all origins',
-    suppliers: [
-      { name: 'Argentina',   fob: 0.690, freight: 0.12, highlight: true },
-      { name: 'Vietnam',     fob: 0.757, freight: 0.15 },
-      { name: 'Thailand',    fob: 0.902, freight: 0.14 },
-      { name: 'Brazil',      fob: 1.290, freight: 0.11 },
-      { name: 'China',       fob: 1.446, freight: 0.13 },
-      { name: 'Netherlands', fob: 1.887, freight: 0.20 },
-      { name: 'Germany',     fob: 2.181, freight: 0.19 },
-    ],
-  },
-  'Milk Powder (FCMP)': {
-    hs: 'HS 0402.21',
-    saMarket: 4.11,
-    tariffType: 'zar',
-    tariffZar: 4.50,
-    tariffNote: 'R4.50/kg (SARS confirmed)',
-    suppliers: [
-      { name: 'New Zealand', fob: 3.311, freight: 0.18 },
-      { name: 'Uruguay',     fob: 3.579, freight: 0.11 },
-      { name: 'Brazil',      fob: 3.580, freight: 0.11 },
-      { name: 'Argentina',   fob: 3.609, freight: 0.12, highlight: true },
-      { name: 'Ireland',     fob: 3.709, freight: 0.20 },
-      { name: 'Germany',     fob: 4.396, freight: 0.19 },
-      { name: 'Australia',   fob: 5.562, freight: 0.17 },
-    ],
-  },
-  'Sunflower Oil': {
-    hs: 'HS 1512.11',
-    saMarket: 1.09,
-    tariffType: 'pct_by_supplier',
-    tariffUsd: 0,
-    tariffNote: 'CONFIRMED: 10% MFN | 4% MERCOSUR (Argentina/Brazil/Uruguay/Paraguay)',
-    suppliers: [
-      { name: 'Argentina',   fob: 0.837, freight: 0.12, highlight: true },
-      { name: 'Ukraine',     fob: 0.910, freight: 0.18 },
-      { name: 'Russia',      fob: 0.890, freight: 0.19 },
-      { name: 'EU Average',  fob: 1.050, freight: 0.17 },
-    ],
-  },
-  'Soybean Oil': {
-    hs: 'HS 1507.90',
-    saMarket: 1.15,
-    tariffType: 'pct_by_supplier',
-    tariffUsd: 0,
-    tariffNote: 'CONFIRMED: 10% MFN all origins incl. MERCOSUR',
-    suppliers: [
-      { name: 'Argentina',   fob: 0.950, freight: 0.12, highlight: true },
-      { name: 'Brazil',      fob: 0.980, freight: 0.11 },
-      { name: 'USA',         fob: 1.010, freight: 0.16 },
-      { name: 'EU',          fob: 1.150, freight: 0.17 },
-    ],
-  },
-  'Soybean Meal': {
-    hs: 'HS 2304.00',
-    saMarket: 0.62,
-    tariffType: 'pct_by_supplier',
-    tariffUsd: 0,
-    tariffNote: 'CONFIRMED: 6.6% MFN | 2.64% MERCOSUR (Argentina/Brazil/Uruguay/Paraguay)',
-    suppliers: [
-      { name: 'Argentina',   fob: 0.495, freight: 0.12, highlight: true },
-      { name: 'Brazil',      fob: 0.510, freight: 0.11 },
-      { name: 'USA',         fob: 0.540, freight: 0.16 },
-      { name: 'India',       fob: 0.560, freight: 0.22 },
-    ],
-  },
-  'Corn': {
-    hs: 'HS 1005.90',
-    saMarket: 0.28,
-    tariffType: 'fixed',
-    tariffUsd: 0,
-    tariffNote: 'CONFIRMED: FREE — all origins',
-    suppliers: [
-      { name: 'Argentina',   fob: 0.197, freight: 0.12, highlight: true },
-      { name: 'Brazil',      fob: 0.200, freight: 0.11 },
-      { name: 'USA',         fob: 0.220, freight: 0.16 },
-      { name: 'Ukraine',     fob: 0.210, freight: 0.19 },
-    ],
-  'Wheat Flour': {
-    hs: 'HS 1101.00',
-    saMarket: 0.49,
-    tariffType: 'zar',
-    tariffZar: 0.2305,
-    tariffNote: 'Variable formula: 23.05c/kg (updated 2026-05-15) — all origins same rate',
-    unconfirmedTariff: false,
-    suppliers: [
-      { name: 'Argentina',   fob: 0.310, freight: 0.12, highlight: true },
-      { name: 'Turkey',      fob: 0.285, freight: 0.16 },
-      { name: 'Lesotho',     fob: 0.340, freight: 0.06 },
-      { name: 'India',       fob: 0.270, freight: 0.22 },
-      { name: 'Italy',       fob: 0.500, freight: 0.17 },
-    ],
-  },
-  'Glucose Syrup': {
-    hs: 'HS 1702.30',
-    saMarket: 0.60,
-    tariffType: 'fixed',
-    tariffUsd: 0,
-    tariffNote: 'CONFIRMED: FREE all origins (SARS 2026-05-15)',
-    unconfirmedTariff: false,
-    suppliers: [
-      { name: 'Argentina',   fob: 0.420, freight: 0.14, highlight: true },
-      { name: 'China',       fob: 0.380, freight: 0.13 },
-      { name: 'Turkey',      fob: 0.390, freight: 0.16 },
-      { name: 'France',      fob: 0.850, freight: 0.17 },
-    ],
-  },
-  'Cassava Starch': {
-    hs: 'HS 1108.14',
-    saMarket: 0.62,
-    tariffType: 'pct_by_supplier',
-    tariffUsd: 0,
-    tariffNote: 'CONFIRMED: 10% MFN all origins incl. MERCOSUR — no preference (SARS 2026-05-15)',
-    unconfirmedTariff: false,
-    suppliers: [
-      { name: 'Brazil',      fob: 0.500, freight: 0.11, highlight: true },
-      { name: 'Paraguay',    fob: 0.480, freight: 0.13, highlight: true },
-      { name: 'Thailand',    fob: 0.520, freight: 0.14 },
-      { name: 'Vietnam',     fob: 0.490, freight: 0.15 },
-    ],
-  },
-  'Maize Starch': {
-    hs: 'HS 1108.12',
-    saMarket: 0.51,
-    tariffType: 'pct_by_supplier',
-    tariffUsd: 0,
-    tariffNote: 'CONFIRMED: 10% MFN all origins incl. MERCOSUR — no preference (SARS 2026-05-15)',
-    unconfirmedTariff: false,
-    suppliers: [
-      { name: 'Argentina',   fob: 0.380, freight: 0.12, highlight: true },
-      { name: 'Brazil',      fob: 0.400, freight: 0.11, highlight: true },
-      { name: 'Turkey',      fob: 0.360, freight: 0.16 },
-      { name: 'Pakistan',    fob: 0.340, freight: 0.22 },
-    ],
-  },
-  'Wheat Starch': {
-    hs: 'HS 1108.13',
-    saMarket: 1.15,
-    tariffType: 'pct_by_supplier',
-    tariffUsd: 0,
-    tariffNote: 'CONFIRMED: 10% MFN all origins incl. MERCOSUR — no preference (SARS 2026-05-15)',
-    unconfirmedTariff: false,
-    suppliers: [
-      { name: 'Argentina',   fob: 0.750, freight: 0.12, highlight: true },
-      { name: 'Mexico',      fob: 0.800, freight: 0.16, highlight: true },
-      { name: 'Netherlands', fob: 0.920, freight: 0.17 },
-      { name: 'Poland',      fob: 0.870, freight: 0.17 },
-    ],
-  },
-  'Corn Flour': {
-    hs: 'HS 1102.20',
-    saMarket: 0.43,
-    tariffType: 'fixed',
-    tariffUsd: 0,
-    tariffNote: 'CONFIRMED: FREE all origins (SARS 2026-05-15)',
-    unconfirmedTariff: false,
-    suppliers: [
-      { name: 'Mexico',      fob: 0.290, freight: 0.16, highlight: true },
-      { name: 'Lesotho',     fob: 0.200, freight: 0.06 },
-      { name: 'India',       fob: 0.260, freight: 0.22 },
-    ],
-  },
-  'Gelatin': {
-    hs: 'HS 3503.00',
-    saMarket: 7.03,
-    tariffType: 'fixed',
-    tariffUsd: 0,
-    tariffNote: 'CONFIRMED: Bulk >10kg FREE all origins. Retail ≤10kg: 17% MFN (SARS 2026-05-15)',
-    unconfirmedTariff: false,
-    suppliers: [
-      { name: 'Brazil',      fob: 5.800, freight: 0.11, highlight: true },
-      { name: 'Argentina',   fob: 6.200, freight: 0.12, highlight: true },
-      { name: 'China',       fob: 5.200, freight: 0.13 },
-      { name: 'Germany',     fob: 6.800, freight: 0.17 },
-    ],
-  },
-  'Peptones/Proteins': {
-    hs: 'HS 3504.00',
-    saMarket: 2.63,
-    tariffType: 'fixed',
-    tariffUsd: 0,
-    tariffNote: 'CONFIRMED: FREE all origins (SARS 2026-05-15)',
-    unconfirmedTariff: false,
-    suppliers: [
-      { name: 'Brazil',      fob: 1.800, freight: 0.11, highlight: true },
-      { name: 'China',       fob: 1.200, freight: 0.13 },
-      { name: 'France',      fob: 4.500, freight: 0.17 },
-      { name: 'India',       fob: 2.800, freight: 0.22 },
-    ],
-  },
-  },
-};
+import { fetchTable } from './supabase';
 
 const INSURANCE = 0.005;
+const MERCOSUR_COUNTRIES = ['Argentina', 'Brazil', 'Uruguay', 'Paraguay'];
 
-function SupplierTable({ suppliers, saMarket, tariffUsd, title, tariffNote, hsCode, zarUsd }) {
+function getTariffUsd(tariff, supplierName, zarUsd) {
+  if (!tariff) return { rate: 0, label: 'Unknown', confirmed: false, isPct: false };
+  const isMercosur = MERCOSUR_COUNTRIES.includes(supplierName);
+  if (tariff.unit === 'specific') {
+    const zarPerKg = isMercosur ? (tariff.mercosur_zar_per_kg || tariff.general_zar_per_kg) : tariff.general_zar_per_kg;
+    return { rate: (zarPerKg || 0) / zarUsd, label: isMercosur ? tariff.mercosur : tariff.general, confirmed: tariff.confirmed, isPct: false };
+  }
+  const pct = isMercosur ? (tariff.mercosur_pct ?? tariff.general_pct) : tariff.general_pct;
+  return { rate: pct || 0, label: isMercosur ? tariff.mercosur : tariff.general, confirmed: tariff.confirmed, isPct: true };
+}
+
+const PRODUCT_ORDER_LC = ['Modified Starch','Milk Powder (FCMP)','Sunflower Oil','Soybean Oil','Soybean Meal','Corn','Wheat Flour','Glucose Syrup','Cassava Starch','Maize Starch','Wheat Starch','Corn Flour','Gelatin','Peptones/Proteins'];
+
+
+function SupplierTable({ suppliers, saMarket, tariffUsd, title, tariffNote, tariffData, zarUsd }) {
   return (
     <div className="card" style={{ marginBottom: 20 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
@@ -225,7 +41,7 @@ function SupplierTable({ suppliers, saMarket, tariffUsd, title, tariffNote, hsCo
         <tbody>
           {suppliers.map(function(s) {
             const ins = s.fob * INSURANCE;
-            const tariffInfo = getTariffUsd(hsCode, s.name, zarUsd);
+            const tariffInfo = getTariffUsd(tariffData, s.name, zarUsd);
             const effectiveTariff = tariffInfo.isPct ? s.fob * tariffInfo.rate : tariffInfo.rate;
             const landed = s.fob + s.freight + ins + effectiveTariff;
             const margin = saMarket - landed;
@@ -239,7 +55,7 @@ function SupplierTable({ suppliers, saMarket, tariffUsd, title, tariffNote, hsCo
                 <td style={{ fontFamily: 'var(--font-mono)', fontSize: 12 }}>${s.fob.toFixed(3)}</td>
                 <td style={{ fontFamily: 'var(--font-mono)', fontSize: 12 }}>${s.freight.toFixed(3)}</td>
                 <td style={{ fontFamily: 'var(--font-mono)', fontSize: 12,
-                  color: effectiveTariff > 0 ? (MERCOSUR_COUNTRIES.includes(s.name) && tariffInfo.rate < (getTariffUsd(hsCode, 'Other', zarUsd).rate) ? '#2ecc71' : '#e8b84b') : 'var(--text-muted)' }}>
+                  color: effectiveTariff > 0 ? (MERCOSUR_COUNTRIES.includes(s.name) && tariffInfo.rate < (getTariffUsd(tariffData, 'Other', zarUsd).rate) ? '#2ecc71' : '#e8b84b') : 'var(--text-muted)' }}>
                   ${effectiveTariff.toFixed(3)} <span style={{fontSize:10}}>({tariffInfo.label})</span>
                 </td>
                 <td style={{ fontFamily: 'var(--font-mono)', fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>
@@ -270,10 +86,33 @@ function SupplierTable({ suppliers, saMarket, tariffUsd, title, tariffNote, hsCo
 }
 
 export default function LandedCost() {
-  const [zarUsd,   setZarUsd]   = useState(16.44);
-  const [fetching, setFetching] = useState(false);
-  const [lastFetch,setLastFetch]= useState(null);
-  const [selected, setSelected] = useState('Modified Starch');
+  const [zarUsd,    setZarUsd]    = useState(16.44);
+  const [fetching,  setFetching]  = useState(false);
+  const [lastFetch, setLastFetch] = useState(null);
+  const [selected,  setSelected]  = useState('Modified Starch');
+  const [products,  setProducts]  = useState({});
+  const [tariffs,   setTariffs]   = useState({});
+  const [loading,   setLoading]   = useState(true);
+
+  useEffect(function() {
+    Promise.all([
+      fetchTable('landed_cost_products'),
+      fetchTable('tariff_rates'),
+    ]).then(function([prods, tariffRows]) {
+      const pMap = {};
+      prods.forEach(function(p) {
+        pMap[p.product_name] = {
+          ...p,
+          suppliers: typeof p.suppliers === 'string' ? JSON.parse(p.suppliers) : (p.suppliers || []),
+        };
+      });
+      const tMap = {};
+      tariffRows.forEach(function(t) { tMap[t.hs_code] = t; });
+      setProducts(pMap);
+      setTariffs(tMap);
+      setLoading(false);
+    }).catch(function() { setLoading(false); });
+  }, []);
 
   async function fetchRate() {
     setFetching(true);
@@ -290,7 +129,10 @@ export default function LandedCost() {
 
   useEffect(function() { fetchRate(); }, []);
 
-  const p = PRODUCTS[selected];
+  if (loading) return <div style={{ padding: 40, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>Loading landed cost data...</div>;
+  if (!products[selected]) return <div style={{ padding: 40, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>Product not found.</div>;
+
+  const p = products[selected];
   const tariffUsd = p.tariffType === 'zar' ? p.tariffZar / zarUsd : (p.tariffUsd || 0);
 
   // Break-even for ZAR-denominated tariffs
@@ -312,9 +154,9 @@ export default function LandedCost() {
     <div>
       {/* Product selector */}
       <div style={{ display: 'flex', gap: 6, marginBottom: 20, flexWrap: 'wrap' }}>
-        {Object.keys(PRODUCTS).map(name => (
+        {PRODUCT_ORDER_LC.map(name => (
           <button key={name} style={btnStyle(name)} onClick={() => setSelected(name)}>
-            {name} <span style={{ color: 'var(--text-muted)', marginLeft: 4 }}>{PRODUCTS[name].hs}</span>
+            {name} <span style={{ color: 'var(--text-muted)', marginLeft: 4 }}>{products[name]?.hs}</span>
           </button>
         ))}
       </div>
@@ -385,7 +227,7 @@ export default function LandedCost() {
         tariffUsd={tariffUsd}
         tariffNote={p.tariffNote}
         title={selected + ' (' + p.hs + ') — Delivered Durban'}
-        hsCode={p.hs.replace('HS ','').replace('.','')}
+        tariffData={tariffs[p.hs_code]}
         zarUsd={zarUsd}
       />
 
