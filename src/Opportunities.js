@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Tooltip from './Tooltip';
 import { AFRICA_PROCESSING } from './data/opportunityData';
+import { generateTradeFlowReport, generateGapReport } from './ReportGenerator';
 import IngredientFlow from './IngredientFlow';
 import { fetchTable } from './supabase';
 
@@ -380,6 +381,12 @@ function GapAnalysis() {
         <span style={{ fontSize: 12, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', paddingBottom: 8 }}>
           {filtered.length} pairs
         </span>
+        <button onClick={() => generateGapReport({ gaps: filtered, filterExporter, filterLabel })}
+          style={{ padding:'6px 16px', background:'var(--gold)', border:'none', borderRadius:4,
+            cursor:'pointer', fontFamily:'var(--font-mono)', fontSize:11, color:'#fff',
+            letterSpacing:'0.06em' }}>
+          ⬇ GENERATE REPORT
+        </button>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>

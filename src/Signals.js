@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Tooltip from './Tooltip';
 import { fetchTable } from './supabase';
+import { generateSignalsReport } from './ReportGenerator';
 
 const SIGNAL_COLOR = { BUY: '#2ecc71', SELL: '#e74c3c', NEUTRAL: '#e8b84b' };
 const SIGNAL_BG    = { BUY: 'rgba(46,204,113,0.1)', SELL: 'rgba(231,76,60,0.1)', NEUTRAL: 'rgba(232,184,75,0.1)' };
@@ -142,6 +143,14 @@ export default function Signals() {
 
   return (
     <div>
+      <div style={{ display:'flex', justifyContent:'flex-end', marginBottom:16 }}>
+        <button onClick={() => generateSignalsReport({ signals: allSignals, filter })}
+          style={{ padding:'6px 16px', background:'var(--gold)', border:'none', borderRadius:4,
+            cursor:'pointer', fontFamily:'var(--font-mono)', fontSize:11, color:'#fff',
+            letterSpacing:'0.06em' }}>
+          ⬇ GENERATE REPORT
+        </button>
+      </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 12, marginBottom: 20 }}>
         {['BUY','NEUTRAL','SELL'].map(function(s) {
           const color = SIGNAL_COLOR[s];

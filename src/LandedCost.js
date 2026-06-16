@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Tooltip from './Tooltip';
 import { fetchTable } from './supabase';
+import { generateLandedCostReport } from './ReportGenerator';
 
 const INSURANCE = 0.005;
 const MERCOSUR_COUNTRIES = ['Argentina', 'Brazil', 'Uruguay', 'Paraguay'];
@@ -152,6 +153,20 @@ export default function LandedCost() {
 
   return (
     <div>
+      <div style={{ display:'flex', justifyContent:'flex-end', marginBottom:16 }}>
+        <button onClick={() => generateLandedCostReport({
+            product: selected,
+            suppliers: p.suppliers,
+            zarUsd,
+            tariffNote: p.tariff_note,
+            saMarket: p.sa_market,
+          })}
+          style={{ padding:'6px 16px', background:'var(--gold)', border:'none', borderRadius:4,
+            cursor:'pointer', fontFamily:'var(--font-mono)', fontSize:11, color:'#fff',
+            letterSpacing:'0.06em' }}>
+          ⬇ GENERATE REPORT
+        </button>
+      </div>
       {/* Product selector */}
       <div style={{ display: 'flex', gap: 6, marginBottom: 20, flexWrap: 'wrap' }}>
         {PRODUCT_ORDER_LC.map(name => (
