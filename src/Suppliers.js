@@ -93,7 +93,7 @@ function getMatchedBuyersDynamic(supplier, buyers) {
   });
 }
 
-function SupplierCard({ s, buyers }) {
+function SupplierCard({ s, buyers, onEdit }) {
   const [expanded,    setExpanded]    = React.useState(false);
   const [specs,       setSpecs]       = React.useState([]);
   const [specsLoaded, setSpecsLoaded] = React.useState(false);
@@ -148,6 +148,12 @@ function SupplierCard({ s, buyers }) {
               style={{ background: 'none', border: '1px solid var(--border)', borderRadius: 4,
                 color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontSize: 10,
                 padding: '3px 8px', cursor: 'pointer' }}>{expanded ? 'less' : 'more'}</button>
+            {onEdit && (
+              <button onClick={() => onEdit(s)}
+                style={{ background: 'none', border: '1px solid var(--border)', borderRadius: 4,
+                  color: 'var(--gold)', fontFamily: 'var(--font-mono)', fontSize: 10,
+                  padding: '3px 8px', cursor: 'pointer' }}>edit</button>
+            )}
           </div>
           {s.size && (
             <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)',
@@ -843,7 +849,7 @@ export default function Suppliers() {
         <div className="page-section">
           <div className="section-label" style={{ marginBottom: 12 }}>Suppliers ({supplierCards.length})</div>
           <div className="card-grid card-grid--2">
-            {supplierCards.map(s => <SupplierCard key={s.id} s={s} buyers={buyers} />)}
+            {supplierCards.map(s => <SupplierCard key={s.id} s={s} buyers={buyers} onEdit={startEdit} />)}
           </div>
         </div>
       )}
@@ -851,7 +857,7 @@ export default function Suppliers() {
         <div className="page-section">
           <div className="section-label" style={{ marginBottom: 12 }}>Buyers ({buyerCards.length})</div>
           <div className="card-grid card-grid--2">
-            {buyerCards.map(s => <SupplierCard key={s.id} s={s} buyers={buyers} />)}
+            {buyerCards.map(s => <SupplierCard key={s.id} s={s} buyers={buyers} onEdit={startEdit} />)}
           </div>
         </div>
       )}
@@ -859,7 +865,7 @@ export default function Suppliers() {
         <div className="page-section">
           <div className="section-label" style={{ marginBottom: 12 }}>Competitive Intel ({intelCards.length})</div>
           <div className="card-grid card-grid--2">
-            {intelCards.map(s => <SupplierCard key={s.id} s={s} buyers={buyers} />)}
+            {intelCards.map(s => <SupplierCard key={s.id} s={s} buyers={buyers} onEdit={startEdit} />)}
           </div>
         </div>
       )}
