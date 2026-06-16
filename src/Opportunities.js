@@ -219,6 +219,12 @@ function Screener() {
         <span style={{ fontSize: 12, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
           {filtered.length} flows
         </span>
+        <button onClick={() => generateTradeFlowReport({ flows: filtered, exporter, importer, layer })}
+          style={{ padding:'6px 16px', background:'var(--gold)', border:'none', borderRadius:4,
+            cursor:'pointer', fontFamily:'var(--font-mono)', fontSize:11, color:'#fff',
+            letterSpacing:'0.06em' }}>
+          ⬇ GENERATE REPORT
+        </button>
       </div>
 
       {filtered.length === 0 && (
@@ -352,7 +358,7 @@ function GapAnalysis() {
         <div className="card" style={{ borderColor: '#e8b84b40' }}>
           <div style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-muted)', marginBottom: 6 }}>LARGEST UNTAPPED</div>
           <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 28, color: '#e8b84b' }}>
-            {fmt(TRADE_GAPS[0]?.l1_usd || 0)}
+            {fmt(tradeGaps[0]?.l1_usd || 0)}
           </div>
           <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>{tradeGaps[0]?.exporter} → {tradeGaps[0]?.importer}</div>
         </div>

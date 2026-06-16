@@ -668,66 +668,168 @@ export function generateSignalsReport({ signals, filter }) {
 export function generateLandedCostReport({ product, suppliers, zarUsd, tariffNote, saMarket }) {
   const INSURANCE = 0.005;
   const MERCOSUR = ['Argentina','Brazil','Uruguay','Paraguay'];
+  const today = new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+
+  // Compute landed costs
+  const rows = (suppliers||[]).map(s => {
+    const ins = (s.fob||0) * INSURANCE;
+    const landed = (s.fob||0) + (s.freight||0) + ins;
+    const margin = (saMarket||0) - landed;
+    const status = margin > 0.05 ? 'VIABLE' : margin > 0 ? 'MARGINAL' : 'NOT VIABLE';
+    const color  = margin > 0.05 ? '#2ecc71' : margin > 0 ? '#e8b84b' : '#e74c3c';
+    const isMercosur = MERCOSUR.includes(s.name);
+    return { ...s, ins, landed, margin, status, color, isMercosur };
+  });
+
+  const bestMercosur = rows.filter(r => r.isMercosur).sort((a,b) => a.landed - b.landed)[0];
+  const bestAny = rows.sort((a,b) => a.landed - b.landed)[0];
+  const mercosurAdvantage = bestMercosur && bestAny && !bestMercosur.isMercosur
+    ? null : bestMercosur ? (saMarket - bestMercosur.landed) : null;
 
   const html = `<!DOCTYPE html><html><head><meta charset="utf-8">
-<title>JMR Landed Cost Report</title>
+<title>JMR Landed Cost Analysis</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
   body{background:#0d1f3c;font-family:'IBM Plex Mono',monospace;color:#fff;width:1200px}
   .page{width:1200px;background:#0d1f3c;padding:40px}
-  .header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid rgba(200,153,58,0.3)}
-  .logo-text{font-family:'Syne',sans-serif;font-weight:800;font-size:28px;color:#fff}
-  .logo-sub{font-size:10px;letter-spacing:0.2em;color:#c8993a;margin-top:4px}
-  .title{font-family:'Syne',sans-serif;font-weight:800;font-size:28px;color:#fff;text-align:center}
-  .subtitle{font-size:13px;color:#c8993a;letter-spacing:0.15em;text-align:center;margin-top:6px}
-  table{width:100%;border-collapse:collapse;margin-bottom:28px}
-  th{background:rgba(200,153,58,0.15);color:#c8993a;padding:10px 14px;text-align:left;font-size:9px;letter-spacing:0.1em;border-bottom:1px solid rgba(200,153,58,0.3)}
-  td{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px}
-  .footer{display:flex;justify-content:space-between;margin-top:32px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.1);font-size:10px;color:#8a9ab5}
+  .header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px;padding-bottom:24px;border-bottom:2px solid rgba(200,153,58,0.4)}
+  .logo-area{display:flex;flex-direction:column;gap:4px}
+  .logo-text{font-family:'Syne',sans-serif;font-weight:800;font-size:32px;color:#fff;letter-spacing:0.05em}
+  .logo-sub{font-size:10px;letter-spacing:0.25em;color:#c8993a;margin-top:2px}
+  .title-area{text-align:center;flex:1;padding:0 40px}
+  .report-title{font-family:'Syne',sans-serif;font-weight:800;font-size:30px;color:#fff;letter-spacing:0.05em;margin-bottom:6px}
+  .report-sub{font-size:13px;color:#c8993a;letter-spacing:0.15em}
+  .rate-box{background:rgba(200,153,58,0.12);border:1px solid rgba(200,153,58,0.35);border-radius:10px;padding:18px 24px;text-align:center;min-width:120px}
+  .rate-val{font-family:'Syne',sans-serif;font-weight:800;font-size:28px;color:#c8993a}
+  .rate-lbl{font-size:9px;letter-spacing:0.15em;color:#8a9ab5;margin-top:4px}
+  .hero{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
+  .hero-card{border-radius:10px;padding:22px;position:relative;overflow:hidden}
+  .hero-icon{font-size:28px;margin-bottom:10px}
+  .hero-label{font-size:9px;letter-spacing:0.14em;color:#8a9ab5;margin-bottom:8px;text-transform:uppercase}
+  .hero-value{font-family:'Syne',sans-serif;font-weight:800;font-size:32px;margin-bottom:4px}
+  .hero-sub{font-size:10px;color:#8a9ab5;line-height:1.5}
+  .section-label{font-size:10px;letter-spacing:0.18em;color:#c8993a;margin-bottom:14px;text-transform:uppercase;border-bottom:1px solid rgba(200,153,58,0.2);padding-bottom:8px}
+  .main-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:28px}
+  .panel{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:24px}
+  table{width:100%;border-collapse:collapse}
+  th{background:rgba(200,153,58,0.12);color:#c8993a;padding:10px 14px;text-align:left;font-size:9px;letter-spacing:0.12em;border-bottom:1px solid rgba(200,153,58,0.25)}
+  td{padding:11px 14px;border-bottom:1px solid rgba(255,255,255,0.05);font-size:12px;vertical-align:middle}
+  .viable{background:rgba(46,204,113,0.12);color:#2ecc71;border:1px solid rgba(46,204,113,0.3);padding:3px 10px;border-radius:4px;font-size:9px;font-weight:700;letter-spacing:0.06em;display:inline-block}
+  .marginal{background:rgba(232,184,75,0.12);color:#e8b84b;border:1px solid rgba(232,184,75,0.3);padding:3px 10px;border-radius:4px;font-size:9px;font-weight:700;letter-spacing:0.06em;display:inline-block}
+  .notviable{background:rgba(231,76,60,0.12);color:#e74c3c;border:1px solid rgba(231,76,60,0.3);padding:3px 10px;border-radius:4px;font-size:9px;font-weight:700;letter-spacing:0.06em;display:inline-block}
+  .bar-wrap{width:80px;background:rgba(255,255,255,0.08);border-radius:3px;height:6px;display:inline-block;vertical-align:middle;margin-right:6px}
+  .bar-fill{height:6px;border-radius:3px}
+  .takeaways{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px}
+  .takeaway{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:18px}
+  .takeaway-icon{font-size:28px;margin-bottom:10px}
+  .takeaway-title{font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:#fff;margin-bottom:6px}
+  .takeaway-text{font-size:11px;color:#8a9ab5;line-height:1.65}
+  .footer{display:flex;justify-content:space-between;align-items:center;margin-top:32px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.1);font-size:10px;color:#8a9ab5}
   @media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 </style></head><body><div class="page">
+
+  <!-- HEADER -->
   <div class="header">
-    <div><div class="logo-text">JMR <span style="color:#c8993a">⬡</span></div><div class="logo-sub">GLOBAL INGREDIENTS</div></div>
-    <div><div class="title">LANDED COST ANALYSIS</div>
-    <div class="subtitle">${product||''} · DELIVERED DURBAN · ZAR/USD ${zarUsd?.toFixed(2)||'16.44'}</div></div>
-    <div style="background:rgba(200,153,58,0.15);border:1px solid rgba(200,153,58,0.3);border-radius:8px;padding:16px 20px;text-align:center">
-      <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:24px;color:#c8993a">$${(saMarket||0).toFixed(3)}</div>
-      <div style="font-size:9px;color:#8a9ab5;letter-spacing:0.1em">SA MARKET<br>PRICE /KG</div>
+    <div class="logo-area">
+      <div class="logo-text">JMR <span style="color:#c8993a;font-size:24px">⬡</span></div>
+      <div class="logo-sub">GLOBAL INGREDIENTS</div>
+    </div>
+    <div class="title-area">
+      <div class="report-title">LANDED COST ANALYSIS</div>
+      <div class="report-sub">${product||''} · DELIVERED DURBAN · ${today}</div>
+    </div>
+    <div class="rate-box">
+      <div class="rate-val">R${(zarUsd||16.44).toFixed(2)}</div>
+      <div class="rate-lbl">ZAR / USD<br>LIVE RATE</div>
     </div>
   </div>
-  <div style="margin-bottom:16px;padding:12px 16px;background:rgba(255,255,255,0.04);border-radius:6px;font-size:11px;color:#8a9ab5">
-    Tariff: <span style="color:#c8993a">${tariffNote||'See SARS Schedule 1'}</span> &nbsp;|&nbsp; Insurance: 0.5% of FOB &nbsp;|&nbsp; ★ = Mercosur preferential supplier
+
+  <!-- HERO STATS -->
+  <div class="hero">
+    <div class="hero-card" style="background:rgba(200,153,58,0.1);border:1px solid rgba(200,153,58,0.25)">
+      <div class="hero-icon">🌍</div>
+      <div class="hero-label">SA Market Price</div>
+      <div class="hero-value" style="color:#c8993a">$${(saMarket||0).toFixed(3)}<span style="font-size:16px">/kg</span></div>
+      <div class="hero-sub">Current CIF Durban benchmark</div>
+    </div>
+    <div class="hero-card" style="background:rgba(46,204,113,0.08);border:1px solid rgba(46,204,113,0.2)">
+      <div class="hero-icon">⭐</div>
+      <div class="hero-label">Best Mercosur Landed</div>
+      <div class="hero-value" style="color:#2ecc71">$${bestMercosur?(bestMercosur.landed).toFixed(3):'N/A'}<span style="font-size:16px">/kg</span></div>
+      <div class="hero-sub">${bestMercosur?.name||'No Mercosur supplier'} · inc. freight + insurance</div>
+    </div>
+    <div class="hero-card" style="background:rgba(74,158,218,0.08);border:1px solid rgba(74,158,218,0.2)">
+      <div class="hero-icon">📦</div>
+      <div class="hero-label">Tariff</div>
+      <div class="hero-value" style="color:#4a9eda;font-size:22px">${tariffNote||'See SARS'}</div>
+      <div class="hero-sub">SA import duty — SARS Schedule 1</div>
+    </div>
+    <div class="hero-card" style="background:${bestMercosur&&bestMercosur.margin>0.05?'rgba(46,204,113,0.08)':'rgba(231,76,60,0.08)'};border:1px solid ${bestMercosur&&bestMercosur.margin>0.05?'rgba(46,204,113,0.2)':'rgba(231,76,60,0.2)'}">
+      <div class="hero-icon">${bestMercosur&&bestMercosur.margin>0.05?'✅':'⚠️'}</div>
+      <div class="hero-label">Mercosur Margin</div>
+      <div class="hero-value" style="color:${bestMercosur&&bestMercosur.margin>0.05?'#2ecc71':'#e74c3c'}">${bestMercosur?(bestMercosur.margin>=0?'+':'')+bestMercosur.margin.toFixed(3):'N/A'}<span style="font-size:16px">/kg</span></div>
+      <div class="hero-sub">vs SA market price</div>
+    </div>
   </div>
-  <table>
+
+  <!-- MAIN TABLE -->
+  <div class="section-label">SUPPLIER COMPARISON — DELIVERED DURBAN</div>
+  <table style="margin-bottom:28px">
     <thead><tr>
-      <th>SUPPLIER ORIGIN</th><th>FOB $/KG</th><th>FREIGHT $/KG</th><th>INSURANCE</th><th>TARIFF</th><th>LANDED $/KG</th><th>VS MARKET</th><th>STATUS</th>
+      <th>ORIGIN</th><th>FOB $/KG</th><th>FREIGHT $/KG</th><th>INSURANCE</th><th>TOTAL LANDED</th><th>VS MARKET</th><th>MARGIN BAR</th><th>STATUS</th>
     </tr></thead>
     <tbody>
-      ${(suppliers||[]).map(s => {
-        const ins = (s.fob||0) * INSURANCE;
-        const landed = (s.fob||0) + (s.freight||0) + ins;
-        const margin = (saMarket||0) - landed;
-        const status = margin > 0.05 ? 'VIABLE' : margin > 0 ? 'MARGINAL' : 'NOT VIABLE';
-        const color = margin > 0.05 ? '#2ecc71' : margin > 0 ? '#e8b84b' : '#e74c3c';
-        const isMercosur = MERCOSUR.includes(s.name);
-        return `<tr style="background:${s.highlight?'rgba(46,204,113,0.04)':'transparent'}">
-          <td style="color:${isMercosur?'#2ecc71':'#fff'};font-weight:${isMercosur?'600':'400'}">${isMercosur?'★ ':''}${s.name}</td>
-          <td style="color:#c8993a">$${(s.fob||0).toFixed(3)}</td>
-          <td style="color:#ccc">$${(s.freight||0).toFixed(3)}</td>
-          <td style="color:#ccc">$${ins.toFixed(3)}</td>
-          <td style="color:#8a9ab5">$0.000</td>
-          <td style="color:#fff;font-weight:600">$${landed.toFixed(3)}</td>
-          <td style="color:${color};font-weight:600">${margin>=0?'+':''}${margin.toFixed(3)}</td>
-          <td><span style="background:${color}22;color:${color};border:1px solid ${color}44;padding:2px 8px;border-radius:3px;font-size:9px;font-weight:700">${status}</span></td>
+      ${rows.sort((a,b) => a.landed-b.landed).map(s => {
+        const maxMargin = Math.max(...rows.map(r => Math.abs(r.margin)));
+        const barPct = maxMargin > 0 ? Math.min(100, Math.abs(s.margin)/maxMargin*100).toFixed(0) : 0;
+        return `<tr style="background:${s.isMercosur?'rgba(46,204,113,0.04)':'transparent'}">
+          <td style="color:${s.isMercosur?'#2ecc71':'#fff'};font-weight:${s.isMercosur?600:400}">
+            ${s.isMercosur?'★ ':''}${s.name}
+          </td>
+          <td style="color:#c8993a;font-family:'Syne',sans-serif;font-weight:700">$${(s.fob||0).toFixed(3)}</td>
+          <td style="color:#8a9ab5">$${(s.freight||0).toFixed(3)}</td>
+          <td style="color:#8a9ab5">$${s.ins.toFixed(3)}</td>
+          <td style="color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:14px">$${s.landed.toFixed(3)}</td>
+          <td style="color:${s.color};font-weight:700">${s.margin>=0?'+':''}${s.margin.toFixed(3)}</td>
+          <td>
+            <div class="bar-wrap"><div class="bar-fill" style="width:${barPct}%;background:${s.color}"></div></div>
+          </td>
+          <td><span class="${s.status==='VIABLE'?'viable':s.status==='MARGINAL'?'marginal':'notviable'}">${s.status}</span></td>
         </tr>`;
       }).join('')}
     </tbody>
   </table>
-  <div class="footer"><div>Source: JMR Trade Intelligence Platform | SARS Schedule 1 | UN Comtrade</div><div style="color:#c8993a">www.jmrglobalgroup.com</div></div>
+
+  <!-- TAKEAWAYS -->
+  <div class="section-label">KEY TAKEAWAYS</div>
+  <div class="takeaways">
+    <div class="takeaway">
+      <div class="takeaway-icon">🏆</div>
+      <div class="takeaway-title">Cheapest Origin</div>
+      <div class="takeaway-text">${rows[0]?.name||'N/A'} delivers the lowest landed cost at $${rows[0]?.landed.toFixed(3)||'N/A'}/kg — ${rows[0]?.isMercosur?'a Mercosur supplier':'non-Mercosur origin'}.</div>
+    </div>
+    <div class="takeaway">
+      <div class="takeaway-icon">⭐</div>
+      <div class="takeaway-title">Mercosur Position</div>
+      <div class="takeaway-text">${bestMercosur?`${bestMercosur.name} is the most competitive Mercosur origin at $${bestMercosur.landed.toFixed(3)}/kg landed — ${bestMercosur.margin>0.05?'VIABLE margin of $'+bestMercosur.margin.toFixed(3)+'/kg vs SA market.':'margin is thin, needs negotiation.'}`:'No Mercosur suppliers currently listed for this product.'}</div>
+    </div>
+    <div class="takeaway">
+      <div class="takeaway-icon">📊</div>
+      <div class="takeaway-title">Viable Origins</div>
+      <div class="takeaway-text">${rows.filter(r=>r.status==='VIABLE').length} of ${rows.length} origins are viable at current SA market price of $${(saMarket||0).toFixed(3)}/kg. ${rows.filter(r=>r.status==='MARGINAL').length} are marginal.</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div>Source: JMR Trade Intelligence Platform &nbsp;|&nbsp; SARS Schedule 1 &nbsp;|&nbsp; UN Comtrade &nbsp;|&nbsp; FX: frankfurter.app</div>
+    <div style="color:#c8993a;letter-spacing:0.08em">www.jmrglobalgroup.com</div>
+  </div>
+
 </div></body></html>`;
 
-  const win = window.open('', '_blank', 'width:1250,height:900');
+  const win = window.open('', '_blank', 'width=1250,height=900');
   win.document.write(html);
   win.document.close();
   win.focus();
