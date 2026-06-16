@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import HelpTip from './Tooltip';
 import { fetchTable } from './supabase';
+import { generateProductIntelReport } from './ReportGenerator';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell } from 'recharts';
 
 const Tip = ({ active, payload, label }) => {
@@ -116,6 +117,14 @@ export default function ProductIntel() {
 
   return (
     <div>
+      <div style={{ display:'flex', justifyContent:'flex-end', marginBottom:8 }}>
+        <button onClick={() => generateProductIntelReport({ product: selected, p, liveSuppliers })}
+          style={{ padding:'6px 16px', background:'var(--gold)', border:'none', borderRadius:4,
+            cursor:'pointer', fontFamily:'var(--font-mono)', fontSize:11, color:'#fff',
+            letterSpacing:'0.06em' }}>
+          ⬇ GENERATE REPORT
+        </button>
+      </div>
       {/* Product selector */}
       <div style={{ display: 'flex', gap: 6, marginBottom: 24, flexWrap: 'wrap' }}>
         {PRODUCT_ORDER.map(name => (

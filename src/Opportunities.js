@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Tooltip from './Tooltip';
 import { AFRICA_PROCESSING } from './data/opportunityData';
-import { generateTradeFlowReport, generateGapReport } from './ReportGenerator';
+import { generateTradeFlowReport, generateGapReport, generateDealsReport } from './ReportGenerator';
 import IngredientFlow from './IngredientFlow';
 import { fetchTable } from './supabase';
 
@@ -466,6 +466,12 @@ function DealsView() {
         <select value={filter} onChange={e => setFilter(e.target.value)} style={selectStyle}>
           {statuses.map(s => <option key={s}>{s}</option>)}
         </select>
+        <button onClick={() => generateDealsReport({ deals: filtered, filter })}
+          style={{ padding:'6px 16px', background:'var(--gold)', border:'none', borderRadius:4,
+            cursor:'pointer', fontFamily:'var(--font-mono)', fontSize:11, color:'#fff',
+            letterSpacing:'0.06em' }}>
+          ⬇ GENERATE REPORT
+        </button>
         <span style={{ fontSize: 12, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
           {filtered.length} deals
         </span>

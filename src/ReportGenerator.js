@@ -733,3 +733,203 @@ export function generateLandedCostReport({ product, suppliers, zarUsd, tariffNot
   win.focus();
   setTimeout(() => win.print(), 1500);
 }
+
+// ── ACTIVE DEALS REPORT ───────────────────────────────────────────────────────
+export function generateDealsReport({ deals, filter }) {
+  const STATUS_COLOR = {Pipeline:'#e8b84b',Research:'#4a9eda',Closed:'#4a5a70',Confirmed:'#2ecc71'};
+  const today = new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+
+  const html = `<!DOCTYPE html><html><head><meta charset="utf-8">
+<title>JMR Active Deals Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#0d1f3c;font-family:'IBM Plex Mono',monospace;color:#fff;width:1200px}
+  .page{width:1200px;min-height:1200px;background:#0d1f3c;padding:40px}
+  .header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid rgba(200,153,58,0.3)}
+  .logo-text{font-family:'Syne',sans-serif;font-weight:800;font-size:28px;color:#fff}
+  .logo-sub{font-size:10px;letter-spacing:0.2em;color:#c8993a;margin-top:4px}
+  .title{font-family:'Syne',sans-serif;font-weight:800;font-size:28px;color:#fff;text-align:center}
+  .subtitle{font-size:13px;color:#c8993a;letter-spacing:0.15em;text-align:center;margin-top:6px}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+  .stat{border-radius:8px;padding:16px;text-align:center}
+  .stat-num{font-family:'Syne',sans-serif;font-weight:800;font-size:36px}
+  .stat-lbl{font-size:9px;letter-spacing:0.1em;margin-top:4px}
+  .deal-card{background:rgba(255,255,255,0.04);border-radius:8px;padding:20px;margin-bottom:16px}
+  .deal-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+  .deal-title{font-family:'Syne',sans-serif;font-weight:700;font-size:18px}
+  .deal-meta{font-size:11px;color:#8a9ab5;margin-top:4px}
+  .badge{font-size:9px;padding:4px 12px;border-radius:4px;font-weight:700;letter-spacing:0.06em}
+  .deal-notes{font-size:12px;color:#8a9ab5;line-height:1.7;padding:10px 14px;background:rgba(255,255,255,0.03);border-radius:4px;margin-bottom:12px}
+  .next-action{padding:10px 14px;background:rgba(232,184,75,0.08);border:1px solid rgba(232,184,75,0.2);border-radius:4px;font-size:12px;color:#e8b84b}
+  .footer{display:flex;justify-content:space-between;margin-top:32px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.1);font-size:10px;color:#8a9ab5}
+  @media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style></head><body><div class="page">
+  <div class="header">
+    <div><div class="logo-text">JMR <span style="color:#c8993a">⬡</span></div><div class="logo-sub">GLOBAL INGREDIENTS</div></div>
+    <div><div class="title">ACTIVE DEAL PIPELINE</div>
+    <div class="subtitle">${filter === 'All' ? 'ALL DEALS' : filter.toUpperCase()} · Generated ${today}</div></div>
+    <div style="background:rgba(200,153,58,0.15);border:1px solid rgba(200,153,58,0.3);border-radius:8px;padding:16px 20px;text-align:center">
+      <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:32px;color:#c8993a">${deals.length}</div>
+      <div style="font-size:9px;color:#8a9ab5;letter-spacing:0.1em">ACTIVE<br>DEALS</div>
+    </div>
+  </div>
+  <div class="stats">
+    ${['Pipeline','Research','Confirmed','Closed'].map(s => {
+      const count = deals.filter(d => d.status === s).length;
+      const color = STATUS_COLOR[s]||'#4a5a70';
+      return `<div class="stat" style="background:${color}15;border:1px solid ${color}30">
+        <div class="stat-num" style="color:${color}">${count}</div>
+        <div class="stat-lbl" style="color:${color}">${s.toUpperCase()}</div>
+      </div>`;
+    }).join('')}
+  </div>
+  ${deals.map(d => {
+    const color = STATUS_COLOR[d.status]||'#4a5a70';
+    const spec = d.spec ? (typeof d.spec === 'string' ? JSON.parse(d.spec) : d.spec) : {};
+    return `<div class="deal-card" style="border-left:4px solid ${color}">
+      <div class="deal-header">
+        <div>
+          <div class="deal-title">${d.title}</div>
+          <div class="deal-meta">
+            ${d.route_from&&d.route_to?`${d.route_from} → ${d.route_to} &nbsp;|&nbsp;`:''}
+            ${d.product?`${d.product} &nbsp;|&nbsp;`:''}
+            ${d.port_origin&&d.port_destination?`⚓ ${d.port_origin} → ${d.port_destination}`:''}
+          </div>
+        </div>
+        <span class="badge" style="background:${color}22;color:${color};border:1px solid ${color}44">${(d.status||'').toUpperCase()}</span>
+      </div>
+      ${Object.keys(spec).length>0?`<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">
+        ${Object.entries(spec).map(([k,v])=>`<span style="font-size:10px;color:#a855f7;background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.3);padding:2px 8px;border-radius:3px">${k}: ${Array.isArray(v)?v.join(', '):v}</span>`).join('')}
+      </div>`:''}
+      ${d.price_cif_benchmark?`<div style="display:inline-flex;gap:8px;align-items:center;margin-bottom:10px;padding:6px 12px;background:rgba(255,255,255,0.05);border-radius:4px">
+        <span style="font-size:11px;color:#8a9ab5">CIF BENCHMARK</span>
+        <span style="font-size:14px;color:#e8b84b;font-weight:700">$${d.price_cif_benchmark?.toLocaleString()}/MT</span>
+        ${d.cif_benchmark_notes?`<span style="font-size:11px;color:#8a9ab5">— ${d.cif_benchmark_notes}</span>`:''}
+      </div>`:''}
+      ${d.notes?`<div class="deal-notes">${d.notes}</div>`:''}
+      ${d.next_action?`<div class="next-action"><span style="font-size:9px;letter-spacing:0.08em;display:block;margin-bottom:4px">NEXT ACTION</span>${d.next_action}${d.next_action_date?`<span style="font-size:10px;color:#8a9ab5;display:block;margin-top:4px">${d.next_action_date}</span>`:''}</div>`:''}
+    </div>`;
+  }).join('')}
+  <div class="footer"><div>Source: JMR Trade Intelligence Platform · Confidential</div><div style="color:#c8993a">www.jmrglobalgroup.com</div></div>
+</div></body></html>`;
+
+  const win = window.open('', '_blank', 'width:1250,height:900');
+  win.document.write(html);
+  win.document.close();
+  win.focus();
+  setTimeout(() => win.print(), 1500);
+}
+
+// ── PRODUCT INTEL REPORT ──────────────────────────────────────────────────────
+export function generateProductIntelReport({ product, p, liveSuppliers }) {
+  const fmt = (n) => n >= 1e9 ? '$'+(n/1e9).toFixed(2)+'B' : n >= 1e6 ? '$'+(n/1e6).toFixed(1)+'M' : n >= 1e3 ? '$'+(n/1e3).toFixed(0)+'K' : '$'+n.toFixed(0);
+  const today = new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+
+  const html = `<!DOCTYPE html><html><head><meta charset="utf-8">
+<title>JMR Product Intel Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#0d1f3c;font-family:'IBM Plex Mono',monospace;color:#fff;width:1200px}
+  .page{width:1200px;min-height:1200px;background:#0d1f3c;padding:40px}
+  .header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid rgba(200,153,58,0.3)}
+  .logo-text{font-family:'Syne',sans-serif;font-weight:800;font-size:28px;color:#fff}
+  .logo-sub{font-size:10px;letter-spacing:0.2em;color:#c8993a;margin-top:4px}
+  .title{font-family:'Syne',sans-serif;font-weight:800;font-size:28px;color:#fff;text-align:center}
+  .subtitle{font-size:13px;color:#c8993a;letter-spacing:0.15em;text-align:center;margin-top:6px}
+  .hero{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+  .hero-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:20px}
+  .hero-label{font-size:9px;letter-spacing:0.12em;color:#8a9ab5;margin-bottom:8px}
+  .hero-value{font-family:'Syne',sans-serif;font-weight:800;font-size:28px}
+  .hero-sub{font-size:10px;color:#8a9ab5;margin-top:4px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
+  .panel{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:20px}
+  .panel-title{font-size:9px;letter-spacing:0.12em;color:#8a9ab5;margin-bottom:14px;border-bottom:1px solid rgba(255,255,255,0.06);padding-bottom:8px}
+  table{width:100%;border-collapse:collapse}
+  th{color:#8a9ab5;padding:6px 8px;text-align:left;font-size:9px;letter-spacing:0.08em;border-bottom:1px solid rgba(255,255,255,0.06)}
+  td{padding:8px;border-bottom:1px solid rgba(255,255,255,0.04);font-size:11px}
+  .opp{padding:14px 16px;background:rgba(46,204,113,0.06);border:1px solid rgba(46,204,113,0.2);border-radius:6px;margin-bottom:16px}
+  .footer{display:flex;justify-content:space-between;margin-top:32px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.1);font-size:10px;color:#8a9ab5}
+  @media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style></head><body><div class="page">
+  <div class="header">
+    <div><div class="logo-text">JMR <span style="color:#c8993a">⬡</span></div><div class="logo-sub">GLOBAL INGREDIENTS</div></div>
+    <div><div class="title">PRODUCT INTELLIGENCE: ${(product||'').toUpperCase()}</div>
+    <div class="subtitle">${p?.hs||''} · SA IMPORT MARKET ANALYSIS · ${today}</div></div>
+    <div style="background:rgba(200,153,58,0.15);border:1px solid rgba(200,153,58,0.3);border-radius:8px;padding:16px 20px;text-align:center;min-width:100px">
+      <div style="font-size:9px;color:#8a9ab5;letter-spacing:0.1em;margin-bottom:4px">JMR DEAL</div>
+      <div style="font-size:9px;color:#2ecc71;font-weight:700">${p?.key_supplier?'ACTIVE':''}</div>
+    </div>
+  </div>
+  <div class="hero">
+    ${(p?.hero||[]).map(h => `<div class="hero-card">
+      <div class="hero-label">${h.label}</div>
+      <div class="hero-value" style="color:${h.color||'#c8993a'}">${h.value}</div>
+      <div class="hero-sub">${h.sub||''}</div>
+    </div>`).join('')}
+  </div>
+  <div class="grid2">
+    <div class="panel">
+      <div class="panel-title">WHO SUPPLIES SOUTH AFRICA TODAY (LIVE COMTRADE)</div>
+      <table>
+        <thead><tr><th>SUPPLIER</th><th>VOLUME (MT)</th><th>FOB VALUE</th><th>$/KG</th></tr></thead>
+        <tbody>
+          ${(liveSuppliers||[]).slice(0,10).map(s => {
+            const isLatam = ['Argentina','Brazil','Uruguay','Paraguay','Chile'].includes(s.partner_name);
+            const priceKg = s.qty_kg > 0 ? s.fob_value_usd / s.qty_kg : null;
+            return `<tr style="background:${isLatam?'rgba(46,204,113,0.06)':'transparent'}">
+              <td style="color:${isLatam?'#2ecc71':'#fff'};font-weight:${isLatam?'600':'400'}">${isLatam?'★ ':''}${s.partner_name}</td>
+              <td style="color:#ccc">${s.qty_kg?(s.qty_kg/1000).toFixed(0)+' MT':'-'}</td>
+              <td style="color:#c8993a">$${(s.fob_value_usd/1000).toFixed(0)}K</td>
+              <td style="color:${isLatam?'#2ecc71':'#8a9ab5'}">${priceKg?'$'+priceKg.toFixed(3):'-'}</td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>
+    <div class="panel">
+      <div class="panel-title">GLOBAL FOB PRICE COMPARISON ($/KG)</div>
+      ${(p?.global_exporters||[]).map(e => {
+        const maxFob = Math.max(...(p?.global_exporters||[]).map(x=>x.fob_per_kg||0));
+        const pct = maxFob > 0 ? (e.fob_per_kg/maxFob*100).toFixed(0) : 0;
+        const isArg = e.exporter === 'Argentina';
+        return `<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <div style="width:110px;font-size:11px;color:${isArg?'#2ecc71':'#ccc'}">${isArg?'★ ':''}${e.exporter}</div>
+          <div style="flex:1;background:rgba(255,255,255,0.08);border-radius:2px;height:6px">
+            <div style="width:${pct}%;background:${isArg?'#2ecc71':'#3b82f6'};height:6px;border-radius:2px"></div>
+          </div>
+          <div style="font-size:11px;color:#c8993a;width:50px;text-align:right">$${e.fob_per_kg?.toFixed(3)}</div>
+        </div>`;
+      }).join('')}
+    </div>
+  </div>
+  ${p?.opportunity?`<div class="opp">
+    <div style="font-size:12px;font-weight:600;color:#2ecc71;margin-bottom:8px">THE OPPORTUNITY</div>
+    <div style="font-size:12px;color:#ccc;line-height:1.7">${p.opportunity}</div>
+  </div>`:''}
+  <div class="panel" style="margin-bottom:20px">
+    <div class="panel-title">DEAL STATUS</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div>
+        <div style="font-size:10px;color:#8a9ab5;margin-bottom:4px">KEY SUPPLIER</div>
+        <div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:2px">${p?.key_supplier||'—'}</div>
+        <div style="font-size:11px;color:#8a9ab5">${p?.key_supplier_sub||''}</div>
+      </div>
+      <div>
+        <div style="font-size:10px;color:#8a9ab5;margin-bottom:4px">KEY BUYER</div>
+        <div style="font-size:13px;font-weight:600;color:${p?.key_buyer_color||'#fff'};margin-bottom:2px">${p?.key_buyer||'—'}</div>
+        <div style="font-size:11px;color:#8a9ab5">${p?.key_buyer_sub||''}</div>
+      </div>
+    </div>
+    ${p?.next_step?`<div style="margin-top:14px;padding:10px 14px;background:rgba(231,76,60,0.08);border:1px solid rgba(231,76,60,0.3);border-radius:4px;font-size:12px;color:#e74c3c">⚠ Pending: ${p.next_step}</div>`:''}
+  </div>
+  <div class="footer"><div>Source: JMR Trade Intelligence Platform | UN Comtrade | Confidential</div><div style="color:#c8993a">www.jmrglobalgroup.com</div></div>
+</div></body></html>`;
+
+  const win = window.open('', '_blank', 'width:1250,height:900');
+  win.document.write(html);
+  win.document.close();
+  win.focus();
+  setTimeout(() => win.print(), 1500);
+}
