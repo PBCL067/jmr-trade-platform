@@ -109,12 +109,14 @@ export default function Suppliers() {
 
   async function handleSave() {
     if (!form.name.trim()) { alert('Name is required'); return; }
-    if (!form.id.trim())   { alert('ID is required (lowercase, underscores)'); return; }
     setSaving(true);
     try {
-      const payload = { ...form,
-        products: JSON.stringify([]),
-        certifications: JSON.stringify([]),
+      const autoId = form.name.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
+      const payload = {
+        ...form,
+        id: editingId || autoId,
+        products: form.products || JSON.stringify([]),
+        certifications: form.certifications || JSON.stringify([]),
         docs_received: JSON.stringify([]),
       };
       if (editingId) {
@@ -209,57 +211,129 @@ export default function Suppliers() {
       {showForm && (
         <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.6)', zIndex:1000,
           display:'flex', alignItems:'center', justifyContent:'center' }}>
-          <div style={{ background:'var(--bg-panel)', borderRadius:8, padding:32, width:560,
+          <div style={{ background:'var(--bg-panel)', borderRadius:8, padding:32, width:600,
             maxHeight:'85vh', overflowY:'auto', border:'1px solid var(--border)' }}>
             <div style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:18,
               marginBottom:20 }}>{editingId ? 'Edit Supplier' : 'Add Supplier'}</div>
 
             <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12, marginBottom:12 }}>
-              <div><label style={labelStyle}>ID (unique, no spaces)</label>
-                <input style={inputStyle} value={form.id} disabled={!!editingId}
-                  onChange={e => setForm(p => ({...p, id: e.target.value.toLowerCase().replace(/\s/g,'_')}))} /></div>
-              <div><label style={labelStyle}>Name</label>
+              <div style={{ gridColumn:'1/-1' }}>
+                <label style={labelStyle}>Company Name *</label>
                 <input style={inputStyle} value={form.name}
-                  onChange={e => setForm(p => ({...p, name: e.target.value}))} /></div>
-              <div><label style={labelStyle}>Country</label>
+                  onChange={e => setForm(p => ({...p, name: e.target.value}))} />
+              </div>
+              <div>
+                <label style={labelStyle}>Country</label>
                 <select style={inputStyle} value={form.country}
                   onChange={e => setForm(p => ({...p, country: e.target.value}))}>
                   {COUNTRIES.filter(c => c !== 'All').map(c => <option key={c}>{c}</option>)}
-                </select></div>
-              <div><label style={labelStyle}>City</label>
+                </select>
+              </div>
+              <div>
+                <label style={labelStyle}>City</label>
                 <input style={inputStyle} value={form.city || ''}
-                  onChange={e => setForm(p => ({...p, city: e.target.value}))} /></div>
-              <div><label style={labelStyle}>Category</label>
-                <select style={inputStyle} value={form.product_category}
+                  onChange={e => setForm(p => ({...p, city: e.target.value}))} />
+              </div>
+              <div>
+                <label style={labelStyle}>Product Category</label>
+                <select style={inputStyle} value={form.product_category || ''}
                   onChange={e => setForm(p => ({...p, product_category: e.target.value}))}>
                   {CATEGORIES.filter(c => c !== 'All').map(c => <option key={c}>{c}</option>)}
-                </select></div>
-              <div><label style={labelStyle}>Size</label>
-                <select style={inputStyle} value={form.size}
+                </select>
+              </div>
+              <div>
+                <label style={labelStyle}>Role</label>
+                <select style={inputStyle} value={form.role || 'Manufacturer/Exporter'}
+                  onChange={e => setForm(p => ({...p, role: e.target.value}))}>
+                  {ROLES.filter(r => r !== 'All').map(r => <option key={r}>{r}</option>)}
+                </select>
+              </div>
+              <div>
+                <label style={labelStyle}>Size</label>
+                <select style={inputStyle} value={form.size || 'Medium'}
                   onChange={e => setForm(p => ({...p, size: e.target.value}))}>
                   {['Large','Medium','Small'].map(s => <option key={s}>{s}</option>)}
-                </select></div>
-              <div><label style={labelStyle}>Website</label>
+                </select>
+              </div>
+              <div>
+                <label style={labelStyle}>Priority</label>
+                <select style={inputStyle} value={form.priority || 2}
+                  onChange={e => setForm(p => ({...p, priority: parseInt(e.target.value)}))}>
+                  {[1,2,3,4,5].map(n => <option key={n} value={n}>P{n}</option>)}
+                </select>
+              </div>
+              <div>
+                <label style={labelStyle}>Website</label>
                 <input style={inputStyle} value={form.website || ''}
-                  onChange={e => setForm(p => ({...p, website: e.target.value}))} /></div>
-              <div><label style={labelStyle}>Nearest Port</label>
+                  onChange={e => setForm(p => ({...p, website: e.target.value}))} />
+              </div>
+              <div>
+                <label style={labelStyle}>Nearest Port</label>
                 <input style={inputStyle} value={form.nearest_port || ''}
-                  onChange={e => setForm(p => ({...p, nearest_port: e.target.value}))} /></div>
-              <div><label style={labelStyle}>FOB Price Range</label>
+                  onChange={e => setForm(p => ({...p, nearest_port: e.target.value}))} />
+              </div>
+              <div>
+                <label style={labelStyle}>FOB Price Range</label>
                 <input style={inputStyle} value={form.fob_price_range || ''}
-                  onChange={e => setForm(p => ({...p, fob_price_range: e.target.value}))} /></div>
-              <div><label style={labelStyle}>Status</label>
-                <input style={inputStyle} value={form.status || ''}
-                  onChange={e => setForm(p => ({...p, status: e.target.value}))} /></div>
+                  placeholder="e.g. $0.65-0.75/kg FOB"
+                  onChange={e => setForm(p => ({...p, fob_price_range: e.target.value}))} />
+              </div>
+              <div>
+                <label style={labelStyle}>Annual Capacity (MT)</label>
+                <input style={inputStyle} value={form.annual_capacity_mt || ''}
+                  placeholder="e.g. >50,000"
+                  onChange={e => setForm(p => ({...p, annual_capacity_mt: e.target.value}))} />
+              </div>
             </div>
 
-            <div style={{ marginBottom:12 }}><label style={labelStyle}>Next Action</label>
-              <input style={inputStyle} value={form.next_action || ''}
-                onChange={e => setForm(p => ({...p, next_action: e.target.value}))} /></div>
+            <div style={{ marginBottom:12 }}>
+              <label style={labelStyle}>Products (comma separated)</label>
+              <input style={inputStyle}
+                value={(() => { try { const v = JSON.parse(form.products || '[]'); return v.join(', '); } catch { return ''; } })()}
+                placeholder="e.g. Modified Starch, Native Starch, Glucose Syrup"
+                onChange={e => setForm(p => ({...p, products: JSON.stringify(e.target.value.split(',').map(x => x.trim()).filter(Boolean))}))} />
+            </div>
 
-            <div style={{ marginBottom:20 }}><label style={labelStyle}>Notes</label>
+            <div style={{ marginBottom:12 }}>
+              <label style={labelStyle}>Certifications (comma separated)</label>
+              <input style={inputStyle}
+                value={(() => { try { const v = JSON.parse(form.certifications || '[]'); return v.join(', '); } catch { return ''; } })()}
+                placeholder="e.g. ISO 9001, FSSC 22000, Halal, Kosher"
+                onChange={e => setForm(p => ({...p, certifications: JSON.stringify(e.target.value.split(',').map(x => x.trim()).filter(Boolean))}))} />
+            </div>
+
+            <div style={{ marginBottom:12 }}>
+              <label style={labelStyle}>Next Action</label>
+              <input style={inputStyle} value={form.next_action || ''}
+                onChange={e => setForm(p => ({...p, next_action: e.target.value}))} />
+            </div>
+
+            <div style={{ marginBottom:16 }}>
+              <label style={labelStyle}>Notes</label>
               <textarea style={{...inputStyle, height:80, resize:'vertical'}} value={form.notes || ''}
-                onChange={e => setForm(p => ({...p, notes: e.target.value}))} /></div>
+                onChange={e => setForm(p => ({...p, notes: e.target.value}))} />
+            </div>
+
+            <div style={{ display:'flex', gap:16, marginBottom:20 }}>
+              <label style={{ display:'flex', alignItems:'center', gap:6, fontSize:12,
+                fontFamily:'var(--font-mono)', color:'var(--text-muted)', cursor:'pointer' }}>
+                <input type="checkbox" checked={!!form.food_grade}
+                  onChange={e => setForm(p => ({...p, food_grade: e.target.checked}))} />
+                Food Grade
+              </label>
+              <label style={{ display:'flex', alignItems:'center', gap:6, fontSize:12,
+                fontFamily:'var(--font-mono)', color:'var(--text-muted)', cursor:'pointer' }}>
+                <input type="checkbox" checked={!!form.export_experience}
+                  onChange={e => setForm(p => ({...p, export_experience: e.target.checked}))} />
+                Export Experience
+              </label>
+              <label style={{ display:'flex', alignItems:'center', gap:6, fontSize:12,
+                fontFamily:'var(--font-mono)', color:'var(--text-muted)', cursor:'pointer' }}>
+                <input type="checkbox" checked={!!form.verified}
+                  onChange={e => setForm(p => ({...p, verified: e.target.checked}))} />
+                Verified
+              </label>
+            </div>
 
             <div style={{ display:'flex', gap:8, justifyContent:'flex-end' }}>
               <button onClick={() => setShowForm(false)} style={{ padding:'8px 18px',
@@ -274,109 +348,8 @@ export default function Suppliers() {
           </div>
         </div>
       )}
-      <div style={{ display: 'flex', gap: 8, marginBottom: 12, flexWrap: 'wrap', alignItems: 'center' }}>
-        <button onClick={startNew} style={{ padding:'6px 16px',
-          background:'var(--gold)', border:'none', borderRadius:4, cursor:'pointer',
-          fontFamily:'var(--font-mono)', fontSize:11, color:'#fff', letterSpacing:'0.06em' }}>
-          + ADD SUPPLIER
-        </button>
-        <input value={search} onChange={e => setSearch(e.target.value)}
-          placeholder="Search suppliers..."
-          style={{ flex: 1, minWidth: 200, background: 'var(--bg-card)',
-            border: '1px solid var(--border)', borderRadius: 4, padding: '6px 12px',
-            color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: 12 }} />
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-muted)' }}>
-          {filtered.length} / {suppliers.length}
-        </span>
-      </div>
 
-      <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
-        {[
-          [COUNTRIES,        country,       setCountry,       'Country'],
-          [CATEGORIES,       category,      setCategory,      'Category'],
-          [ROLES,            role,          setRole,          'Role'],
-          [SIZES,            size,          setSize,          'Size'],
-          [CONTACT_STATUSES, contactStatus, setContactStatus, 'Contact Status'],
-        ].map(([opts, val, setter, label]) => (
-          <select key={label} value={val} onChange={e => setter(e.target.value)}
-            style={{ background: 'var(--bg-card)', border: '1px solid var(--border)',
-              borderRadius: 4, padding: '6px 10px', color: 'var(--text-primary)',
-              fontFamily: 'var(--font-mono)', fontSize: 11, cursor: 'pointer' }}>
-            {opts.map(o => <option key={o} value={o}>{o === 'All' ? label + ': All' : o}</option>)}
-          </select>
-        ))}
-      </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 12 }}>
-        {filtered.map(s => (
-          <div key={s.id}
-            onClick={() => setSelected(selected?.id === s.id ? null : s)}
-            style={{ background: 'var(--bg-card)', border: '1px solid ' + (selected?.id === s.id ? 'var(--border-bright)' : 'var(--border)'),
-              borderRadius: 6, padding: 16, cursor: 'pointer',
-              borderLeft: '3px solid ' + (ROLE_COLOR[s.role] || '#4a5a70') }}>
-
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 6 }}>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>
-                {s.name}
-              </div>
-              <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
-                {s.size && <span style={{ fontSize: 10, color: SIZE_COLOR[s.size] || '#4a9eda',
-                  background: (SIZE_COLOR[s.size] || '#4a9eda') + '18',
-                  border: '1px solid ' + (SIZE_COLOR[s.size] || '#4a9eda') + '40',
-                  padding: '2px 6px', borderRadius: 3, fontFamily: 'var(--font-mono)' }}>{s.size}</span>}
-                <ContactBadge s={s} />
-              </div>
-            </div>
-
-            <div style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginBottom: 4 }}>
-              {s.city ? `${s.city}, ` : ''}{s.country} · {s.product_category}
-            </div>
-
-            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 6 }}>
-              <span style={{ fontSize: 10, color: ROLE_COLOR[s.role] || '#4a5a70',
-                background: (ROLE_COLOR[s.role] || '#4a5a70') + '18',
-                border: '1px solid ' + (ROLE_COLOR[s.role] || '#4a5a70') + '40',
-                padding: '2px 6px', borderRadius: 3, fontFamily: 'var(--font-mono)' }}>
-                {ROLE_TYPE[s.role] || s.role}
-              </span>
-              {s.priority && <span style={{ fontSize: 10, color: '#a855f7',
-                background: 'rgba(168,85,247,0.1)', border: '1px solid rgba(168,85,247,0.3)',
-                padding: '2px 6px', borderRadius: 3, fontFamily: 'var(--font-mono)' }}>
-                P{s.priority}
-              </span>}
-              {s.verified && <span style={{ fontSize: 10, color: '#2ecc71',
-                background: 'rgba(46,204,113,0.1)', border: '1px solid rgba(46,204,113,0.3)',
-                padding: '2px 6px', borderRadius: 3, fontFamily: 'var(--font-mono)' }}>✓ VERIFIED</span>}
-            </div>
-
-            {selected?.id === s.id && (
-              <div style={{ marginTop: 12, borderTop: '1px solid var(--border)', paddingTop: 12 }}>
-                {s.notes && <p style={{ fontSize: 12, color: 'var(--text-secondary)', marginBottom: 8, lineHeight: 1.5 }}>{s.notes}</p>}
-
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6, marginBottom: 8 }}>
-                  {s.website && <a href={'https://' + s.website} target="_blank" rel="noreferrer"
-                    style={{ fontSize: 11, color: '#4a9eda', fontFamily: 'var(--font-mono)' }}
-                    onClick={e => e.stopPropagation()}>🌐 {s.website}</a>}
-                  {s.nearest_port && <span style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-                    ⚓ {s.nearest_port} {s.port_distance_km ? `(${s.port_distance_km}km)` : ''}</span>}
-                  {s.fob_price_range && <span style={{ fontSize: 11, color: '#e8b84b', fontFamily: 'var(--font-mono)' }}>
-                    💲 {s.fob_price_range}</span>}
-                  {s.contact_approach && <span style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', gridColumn: '1/-1' }}>
-                    📋 {s.contact_approach}</span>}
-                </div>
-
-                {s.products && (
-                  <div style={{ marginBottom: 8 }}>
-                    <div style={{ fontSize: 10, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginBottom: 4 }}>PRODUCTS</div>
-                    <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
-                      {(typeof s.products === 'string' ? JSON.parse(s.products) : s.products).map(p => (
-                        <span key={p} style={{ fontSize: 10, color: '#e8b84b', background: 'rgba(232,184,75,0.1)',
-                          border: '1px solid rgba(232,184,75,0.3)', padding: '2px 6px', borderRadius: 3,
-                          fontFamily: 'var(--font-mono)' }}>{p}</span>
-                      ))}
-                    </div>
-                  </div>
-                )}
 
                 {s.certifications && (typeof s.certifications === 'string' ? JSON.parse(s.certifications) : s.certifications).length > 0 && (
                   <div style={{ marginBottom: 8 }}>
