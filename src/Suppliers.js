@@ -547,6 +547,54 @@ function generateWeeklyReport(suppliers) {
 }
 
 
+const PRODUCT_LIST = ["AMIDOGEM LINE Starches", "Acetylated Distarch Adipate", "Acetylated Starch", "Acidulants", "Animal Nutrition Starch", "Biodiesel", "Bovine Gelatin", "Butter", "Carrageenan (Carraforce)", "Cassava Flour", "Cassava Modified Starch", "Cassava Starch", "Cassava Starch (Fecula de Mandioca)", "Cassava Starch Derivatives", "Cheese", "Citrus Pectins", "Collagen", "Collagen Peptides", "Concentrated Vegetable Protein (CVP)", "Corn", "Corn Flour", "Corn Flour (Harina de Ma\u00edz)", "Corn Flour (Maseca)", "Corn Flour (Nixtamalized)", "Corn Grits", "Corn Maltodextrin", "Corn Masa Flour", "Corn Oil", "Corn Oil (MACEITE)", "Corn Semolina", "Corn Starch", "Corn Starch Derivatives", "Corn Tortillas", "Cream", "Crude Sunflower Oil", "Dextrin", "Dextrins", "Dextrose", "Dextrose 95%", "E1422 Acetylated Distarch Adipate (COLFLO\u00ae 67)", "E1442 Hydroxypropyl Distarch Phosphate (NATIONAL\u2122 465)", "Emulsifiers (SSL, GMO 90%)", "Ethanol", "Fat Substitutes", "Food Colours", "Food Ingredients", "Fructose", "Fructose 42", "Fructose 55", "Full Cream Milk Powder", "Gelatin", "Gelatin Derivatives", "Glucose", "Glucose Syrup", "Glucose Syrup (43\u00b0, 44\u00b0 B\u00e9, High Maltose, Sweetose)", "Gluten Feed", "Gluten Meal", "Guar Gum", "HFCS", "Human Nutrition Ingredients", "Hydroxypropyl Starch", "Injection Starch", "Instant FCMP", "Malt Extract (EB-MALT)", "Maltodextrin", "Maltodextrin (Inamalt)", "Maltose", "Modified Cassava Starch", "Modified Cassava Starch (E1422)", "Modified Corn Starch", "Modified Corn Starch (Almidon YG)", "Modified Corn Starch (US2, Waxy)", "Modified Corn Starch for Dairy", "Modified Corn Starches (GMO)", "Modified Potato Starch", "Modified Rice Starch", "Modified Starch", "Modified Starch (Cationic)", "Modified Starch (Hydrolysed)", "Modified Starch (Oxidised)", "Modified Starch E1422", "Modified Tapioca Starch", "Modified Tapioca Starch (E1422)", "Modified Wheat Starch", "Native Cassava Starch", "Native Cassava Starch (Bitter/Industrial)", "Native Corn Starch", "Native Starch", "Oxidized Starch", "Pasta", "Pea Protein", "Pharma Excipients", "Pharma Grade Starch", "Pharmaceutical Gelatin", "Pharmaceutical Grade Starch", "Phosphates", "Popcorn Corn (Non-GMO)", "Potato Starch", "Pre-gelatinised Starch", "Pre-gelatinized Starch", "Pregelatinised Corn Starch (Bahigel)", "Pregelatinised Starch", "Pregelatinized Starch", "Preservatives", "Refined Soybean Oil", "Refined Sunflower Oil", "Roquette CLEARAM Modified Starches", "Roquette E1422 Waxy Corn Starch", "Roquette Maltodextrin", "Roquette Native Starches", "Roquette Pea Protein", "Semolina", "Skim Milk Powder", "Skimmed Milk Powder", "Soy Derivatives", "Soy Flour", "Soy Protein Concentrate", "Soy Protein Isolate", "Soya Lecithin", "Soybean Meal", "Soybean Oil", "Specialty Ingredients", "Specialty Starches", "Stabiliser Systems", "Stabilising Systems (Estabimix)", "Sugar", "Sunflower Oil", "Sweeteners (Sucralose, Aspartame, Acesulfame K)", "Tapioca Starch", "Textured Soy Protein", "Textured Vegetable Protein (TVP)", "UHT Milk", "Vital Wheat Gluten", "Waxy Corn Starch", "Wheat", "Wheat Bran", "Wheat Flour", "Wheat Flour Tortillas", "Wheat Germ", "Wheat Gluten", "Wheat Starch", "Wheat Starch Derivatives", "Xanthan Gum", "Yoghurt"];
+
+function ProductTagSelector({ selected, onChange }) {
+  const [search, setSearch] = React.useState('');
+  const filtered = search.length > 0
+    ? PRODUCT_LIST.filter(p => p.toLowerCase().includes(search.toLowerCase()) && !selected.includes(p))
+    : [];
+
+  function add(p) { onChange([...selected, p]); setSearch(''); }
+  function remove(p) { onChange(selected.filter(x => x !== p)); }
+
+  return (
+    <div>
+      <div style={{display:'flex',flexWrap:'wrap',gap:4,marginBottom:6}}>
+        {selected.map(p => (
+          <span key={p} style={{fontSize:11,fontFamily:'var(--font-mono)',
+            color:'var(--text-muted)',background:'var(--bg-hover)',
+            border:'1px solid var(--border)',padding:'2px 7px',borderRadius:3,
+            display:'flex',alignItems:'center',gap:4}}>
+            {p}
+            <span onClick={() => remove(p)} style={{cursor:'pointer',color:'#e74c3c',fontWeight:700}}>×</span>
+          </span>
+        ))}
+      </div>
+      <input style={{width:'100%',background:'var(--bg-card)',border:'1px solid var(--border)',
+        borderRadius:4,padding:'6px 10px',color:'var(--text-primary)',
+        fontFamily:'var(--font-mono)',fontSize:12,boxSizing:'border-box'}}
+        value={search} placeholder="Type to search products..."
+        onChange={e => setSearch(e.target.value)} />
+      {filtered.length > 0 && (
+        <div style={{background:'var(--bg-panel)',border:'1px solid var(--border)',
+          borderRadius:4,marginTop:2,maxHeight:160,overflowY:'auto',zIndex:100,position:'relative'}}>
+          {filtered.slice(0,10).map(p => (
+            <div key={p} onClick={() => add(p)}
+              style={{padding:'6px 10px',cursor:'pointer',fontSize:11,
+                fontFamily:'var(--font-mono)',color:'var(--text-secondary)',
+                borderBottom:'1px solid var(--border)'}}
+              onMouseEnter={e => e.target.style.background='var(--bg-hover)'}
+              onMouseLeave={e => e.target.style.background='transparent'}>
+              {p}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 const EMPTY_SUPPLIER = {
   name: '', country: 'Argentina', city: '',
   role: 'Manufacturer/Exporter', product_category: 'Modified Starch',
@@ -603,7 +651,16 @@ export default function Suppliers() {
     setSaving(true);
     try {
       const autoId = form.name.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g,'');
-      const payload = { ...form, id: editingId || autoId };
+      let lat = form.lat, lng = form.lng;
+      if ((!lat || !lng) && (form.city || form.country)) {
+        try {
+          const q = encodeURIComponent((form.city || '') + ' ' + (form.country || ''));
+          const geo = await fetch('https://nominatim.openstreetmap.org/search?q=' + q + '&format=json&limit=1');
+          const geoData = await geo.json();
+          if (geoData[0]) { lat = parseFloat(geoData[0].lat); lng = parseFloat(geoData[0].lon); }
+        } catch(e) { console.warn('Geocoding failed:', e); }
+      }
+      const payload = { ...form, id: editingId || autoId, lat, lng };
       if (editingId) {
         await updateRow('suppliers', editingId, payload);
       } else {
@@ -730,11 +787,13 @@ export default function Suppliers() {
                   placeholder="e.g. >50,000"
                   onChange={e => setForm(p => ({...p, annual_capacity_mt: e.target.value}))} /></div>
             </div>
-            <div style={{marginBottom:12}}><label style={labelStyle}>Products (comma separated)</label>
-              <input style={inputStyle}
-                value={(() => { try { return JSON.parse(form.products||'[]').join(', '); } catch { return ''; } })()}
-                placeholder="e.g. Modified Starch, Native Starch"
-                onChange={e => setForm(p => ({...p, products: JSON.stringify(e.target.value.split(',').map(x=>x.trim()).filter(Boolean))}))} /></div>
+            <div style={{marginBottom:12}}>
+              <label style={labelStyle}>Products</label>
+              <ProductTagSelector
+                selected={(() => { try { return JSON.parse(form.products||'[]'); } catch { return []; } })()}
+                onChange={tags => setForm(p => ({...p, products: JSON.stringify(tags)}))}
+              />
+            </div>
             <div style={{marginBottom:12}}><label style={labelStyle}>Certifications (comma separated)</label>
               <input style={inputStyle}
                 value={(() => { try { return JSON.parse(form.certifications||'[]').join(', '); } catch { return ''; } })()}
