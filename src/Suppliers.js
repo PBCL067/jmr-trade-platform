@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import { SUPPLIERS } from './data/supplierData';
-import { BUYERS } from './data/buyerData';
+import React, { useState, useEffect } from 'react';
+import { fetchTable, updateRow, insertRow } from './supabase';
 import { uploadSpec, getSupplierSpecs } from './firebase';
 
 const COUNTRIES  = ['All', 'Argentina', 'Brazil', 'Uruguay', 'Chile', 'Paraguay', 'Mexico', 'Colombia', 'Ecuador', 'Peru', 'South Africa'];
