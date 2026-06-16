@@ -644,7 +644,19 @@ export default function Suppliers() {
   }, []);
 
   function startNew() { setForm(EMPTY_SUPPLIER); setEditingId(null); setShowForm(true); }
-  function startEdit(sup) { setForm({...EMPTY_SUPPLIER, ...sup}); setEditingId(sup.id); setShowForm(true); }
+  function startEdit(sup) {
+    const parsed = {
+      ...EMPTY_SUPPLIER,
+      ...sup,
+      products: JSON.stringify(Array.isArray(sup.products) ? sup.products :
+        (typeof sup.products === 'string' ? JSON.parse(sup.products || '[]') : [])),
+      certifications: JSON.stringify(Array.isArray(sup.certifications) ? sup.certifications :
+        (typeof sup.certifications === 'string' ? JSON.parse(sup.certifications || '[]') : [])),
+    };
+    setForm(parsed);
+    setEditingId(sup.id);
+    setShowForm(true);
+  }
 
   async function handleSave() {
     if (!form.name.trim()) { alert('Name is required'); return; }
@@ -767,10 +779,11 @@ export default function Suppliers() {
                   onChange={e => setForm(p => ({...p, size: e.target.value}))}>
                   {['Large','Medium','Small'].map(s => <option key={s}>{s}</option>)}
                 </select></div>
-              <div><label style={labelStyle}>Priority</label>
-                <select style={inputStyle} value={form.priority}
-                  onChange={e => setForm(p => ({...p, priority: parseInt(e.target.value)}))}>
-                  {[1,2,3,4,5].map(n => <option key={n} value={n}>P{n}</option>)}
+              <div><label style={labelStyle}>Status</label>
+                <select style={inputStyle} value={form.status || ''}
+                  onChange={e => setForm(p => ({...p, status: e.target.value}))}>
+                  {['', 'Active', 'Warm', 'Cold', 'Qualified', 'No Fit', 'On Hold'].map(s =>
+                    <option key={s} value={s}>{s || '-- Select --'}</option>)}
                 </select></div>
               <div><label style={labelStyle}>Website</label>
                 <input style={inputStyle} value={form.website || ''}
