@@ -80,7 +80,20 @@ function getMatchedBuyers(supplier) {
   });
 }
 
-function SupplierCard({ s }) {
+function getMatchedBuyersDynamic(supplier, buyers) {
+  const products = (supplier.products || []).map(p => p.toLowerCase());
+  const category = (supplier.product_category || '').toLowerCase();
+  return buyers.filter(b => {
+    if (!AFRICA_COUNTRIES.includes(b.country)) return false;
+    return (b.ingredient_needs || []).some(need => {
+      const n = need.toLowerCase();
+      return products.some(p => p.includes(n) || n.includes(p)) ||
+             category.includes(n) || n.includes(category);
+    });
+  });
+}
+
+function SupplierCard({ s, buyers }) {
   const [expanded,    setExpanded]    = React.useState(false);
   const [specs,       setSpecs]       = React.useState([]);
   const [specsLoaded, setSpecsLoaded] = React.useState(false);
@@ -290,7 +303,7 @@ function SupplierCard({ s }) {
             {s.notes || 'No additional details.'}
           </div>
           {(() => {
-            const matched = getMatchedBuyers(s);
+            const matched = getMatchedBuyersDynamic(s, buyers || []);
             if (matched.length === 0) return null;
             return (
               <div style={{ padding: '10px 12px', background: 'rgba(74,158,218,0.05)',
@@ -550,11 +563,31 @@ const labelStyle = {
 };
 
 export default function Suppliers() {
+  const [suppliers,     setSuppliers]     = useState([]);
+  const [buyers,        setBuyers]        = useState([]);
   const [country,       setCountry]       = useState('All');
   const [showForm,  setShowForm]  = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [form,      setForm]      = useState(EMPTY_SUPPLIER);
   const [saving,    setSaving]    = useState(false);
+
+  useEffect(() => {
+    Promise.all([
+      fetchTable('suppliers', { order: 'priority', asc: true }),
+      fetchTable('buyers'),
+    ]).then(([s, b]) => {
+      setSuppliers(s.map(r => ({
+        ...r,
+        products: typeof r.products === 'string' ? JSON.parse(r.products || '[]') : (r.products || []),
+        certifications: typeof r.certifications === 'string' ? JSON.parse(r.certifications || '[]') : (r.certifications || []),
+        ingredient_needs: typeof r.ingredient_needs === 'string' ? JSON.parse(r.ingredient_needs || '[]') : (r.ingredient_needs || []),
+      })));
+      setBuyers(b.map(r => ({
+        ...r,
+        ingredient_needs: typeof r.ingredient_needs === 'string' ? JSON.parse(r.ingredient_needs || '[]') : (r.ingredient_needs || []),
+      })));
+    }).catch(e => console.error(e));
+  }, []);
 
   function startNew() { setForm(EMPTY_SUPPLIER); setEditingId(null); setShowForm(true); }
   function startEdit(sup) { setForm({...EMPTY_SUPPLIER, ...sup}); setEditingId(sup.id); setShowForm(true); }
@@ -584,7 +617,7 @@ export default function Suppliers() {
   const [contactStatus, setContactStatus] = useState('All');
   const [search,        setSearch]        = useState('');
 
-  const filtered = SUPPLIERS.filter(function(s) {
+  const filtered = suppliers.filter(function(s) {
     if (country  !== 'All' && s.country !== country) return false;
     if (size     !== 'All' && s.size    !== size)    return false;
     if (category !== 'All') {
@@ -796,9 +829,9 @@ export default function Suppliers() {
 
       <div style={{ marginBottom: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <span style={{ fontSize: 12, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-          {filtered.length} of {SUPPLIERS.length} suppliers
+          {filtered.length} of {suppliers.length} suppliers
         </span>
-        <button onClick={() => generateWeeklyReport(SUPPLIERS)}
+        <button onClick={() => generateWeeklyReport(suppliers)}
           style={{ background: '#1a3a5c', border: 'none', borderRadius: 4,
             color: '#fff', fontFamily: 'var(--font-mono)', fontSize: 11,
             padding: '6px 14px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -810,7 +843,7 @@ export default function Suppliers() {
         <div className="page-section">
           <div className="section-label" style={{ marginBottom: 12 }}>Suppliers ({supplierCards.length})</div>
           <div className="card-grid card-grid--2">
-            {supplierCards.map(s => <SupplierCard key={s.id} s={s} />)}
+            {supplierCards.map(s => <SupplierCard key={s.id} s={s} buyers={buyers} />)}
           </div>
         </div>
       )}
@@ -818,7 +851,7 @@ export default function Suppliers() {
         <div className="page-section">
           <div className="section-label" style={{ marginBottom: 12 }}>Buyers ({buyerCards.length})</div>
           <div className="card-grid card-grid--2">
-            {buyerCards.map(s => <SupplierCard key={s.id} s={s} />)}
+            {buyerCards.map(s => <SupplierCard key={s.id} s={s} buyers={buyers} />)}
           </div>
         </div>
       )}
@@ -826,7 +859,7 @@ export default function Suppliers() {
         <div className="page-section">
           <div className="section-label" style={{ marginBottom: 12 }}>Competitive Intel ({intelCards.length})</div>
           <div className="card-grid card-grid--2">
-            {intelCards.map(s => <SupplierCard key={s.id} s={s} />)}
+            {intelCards.map(s => <SupplierCard key={s.id} s={s} buyers={buyers} />)}
           </div>
         </div>
       )}
