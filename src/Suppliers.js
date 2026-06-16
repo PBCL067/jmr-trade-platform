@@ -99,6 +99,37 @@ export default function Suppliers() {
   const [search,   setSearch]   = useState('');
   const [selected, setSelected] = useState(null);
   const [specs,    setSpecs]    = useState([]);
+  const [showForm,  setShowForm]  = useState(false);
+  const [editingId, setEditingId] = useState(null);
+  const [form,      setForm]      = useState(EMPTY_SUPPLIER);
+  const [saving,    setSaving]    = useState(false);
+
+  function startNew() { setForm(EMPTY_SUPPLIER); setEditingId(null); setShowForm(true); }
+  function startEdit(s) { setForm({ ...EMPTY_SUPPLIER, ...s }); setEditingId(s.id); setShowForm(true); }
+
+  async function handleSave() {
+    if (!form.name.trim()) { alert('Name is required'); return; }
+    if (!form.id.trim())   { alert('ID is required (lowercase, underscores)'); return; }
+    setSaving(true);
+    try {
+      const payload = { ...form,
+        products: JSON.stringify([]),
+        certifications: JSON.stringify([]),
+        docs_received: JSON.stringify([]),
+      };
+      if (editingId) {
+        await updateRow('suppliers', editingId, payload);
+      } else {
+        await insertRow('suppliers', payload);
+      }
+      const fresh = await fetchTable('suppliers', { order: 'name', asc: true });
+      setSuppliers(fresh);
+      setShowForm(false);
+      setForm(EMPTY_SUPPLIER);
+      setEditingId(null);
+    } catch(e) { alert('Save failed: ' + e.message); }
+    finally { setSaving(false); }
+  }
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
