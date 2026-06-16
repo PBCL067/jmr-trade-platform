@@ -552,6 +552,33 @@ const labelStyle = {
 
 export default function Suppliers() {
   const [country,       setCountry]       = useState('All');
+  const [showForm,  setShowForm]  = useState(false);
+  const [editingId, setEditingId] = useState(null);
+  const [form,      setForm]      = useState(EMPTY_SUPPLIER);
+  const [saving,    setSaving]    = useState(false);
+
+  function startNew() { setForm(EMPTY_SUPPLIER); setEditingId(null); setShowForm(true); }
+  function startEdit(sup) { setForm({...EMPTY_SUPPLIER, ...sup}); setEditingId(sup.id); setShowForm(true); }
+
+  async function handleSave() {
+    if (!form.name.trim()) { alert('Name is required'); return; }
+    setSaving(true);
+    try {
+      const autoId = form.name.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g,'');
+      const payload = { ...form, id: editingId || autoId };
+      if (editingId) {
+        await updateRow('suppliers', editingId, payload);
+      } else {
+        await insertRow('suppliers', payload);
+      }
+      const fresh = await fetchTable('suppliers', { order: 'priority', asc: true });
+      setSuppliers(fresh);
+      setShowForm(false);
+      setForm(EMPTY_SUPPLIER);
+      setEditingId(null);
+    } catch(e) { alert('Save failed: ' + e.message); }
+    finally { setSaving(false); }
+  }
   const [category,      setCategory]      = useState('All');
   const [role,          setRole]          = useState('All');
   const [size,          setSize]          = useState('All');
