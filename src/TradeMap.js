@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { SUPPLIERS } from './data/supplierData';
-import { BUYERS } from './data/buyerData';
+import { fetchTable } from './supabase';
 
 const LAYER_COLORS = {
   supplier: '#e8b84b',
@@ -28,6 +27,21 @@ const CATEGORY_COLORS = {
 const SIZE_RADIUS = { Large: 10, Medium: 8, Small: 6 };
 
 export default function TradeMap() {
+  const [suppliers, setSuppliers] = useState([]);
+  const [buyers,    setBuyers]    = useState([]);
+
+  useEffect(() => {
+    Promise.all([fetchTable('suppliers'), fetchTable('buyers')]).then(([s, b]) => {
+      setSuppliers(s.map(r => ({
+        ...r,
+        products: typeof r.products === 'string' ? JSON.parse(r.products || '[]') : (r.products || []),
+      })));
+      setBuyers(b.map(r => ({
+        ...r,
+        ingredient_needs: typeof r.ingredient_needs === 'string' ? JSON.parse(r.ingredient_needs || '[]') : (r.ingredient_needs || []),
+      })));
+    });
+  }, []);
   const mapRef    = useRef(null);
   const leafletRef = useRef(null);
   const markersRef = useRef({});
@@ -38,18 +52,16 @@ export default function TradeMap() {
   const [selected,      setSelected]      = useState(null);
   const [countryFilter, setCountryFilter] = useState('All');
 
-  const countries = ['All', ...new Set([
-    ...BUYERS.map(b => b.country),
-  ].sort())];
+  const countries = ['All', ...new Set([...buyers.map(b => b.country)].sort())];
 
-  const filteredSuppliers = showSuppliers ? SUPPLIERS.filter(s => {
+  const filteredSuppliers = showSuppliers ? suppliers.filter(s => {
     if (!s.lat || !s.lng) return false;
     if (ingFilter && !s.products?.some(p => p.toLowerCase().includes(ingFilter.toLowerCase())) &&
         !s.product_category?.toLowerCase().includes(ingFilter.toLowerCase())) return false;
     return true;
   }) : [];
 
-  const filteredBuyers = showBuyers ? BUYERS.filter(b => {
+  const filteredBuyers = showBuyers ? buyers.filter(b => {
     if (!b.lat || !b.lng) return false;
     if (countryFilter !== 'All' && b.country !== countryFilter) return false;
     if (ingFilter && !b.ingredient_needs?.some(i => i.toLowerCase().includes(ingFilter.toLowerCase()))) return false;
