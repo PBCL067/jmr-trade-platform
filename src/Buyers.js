@@ -52,10 +52,10 @@ export default function Buyers() {
 
   async function handleSave() {
     if (!form.name.trim()) { alert('Name is required'); return; }
-    if (!form.id.trim())   { alert('ID is required (lowercase, underscores)'); return; }
     setSaving(true);
     try {
-      const payload = { ...form };
+      const autoId = form.name.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g,'');
+      const payload = { ...form, id: editingId || autoId };
       if (editingId) {
         await updateRow('buyers', editingId, payload);
       } else {
@@ -113,18 +113,15 @@ export default function Buyers() {
   return (
     <div>
       {showForm && (
-        <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.6)', zIndex:1000,
-          display:'flex', alignItems:'center', justifyContent:'center' }}>
-          <div style={{ background:'var(--bg-panel)', borderRadius:8, padding:32, width:520,
-            maxHeight:'85vh', overflowY:'auto', border:'1px solid var(--border)' }}>
-            <div style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:18,
-              marginBottom:20 }}>{editingId ? 'Edit Buyer' : 'Add Buyer'}</div>
-
-            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12, marginBottom:12 }}>
-              <div><label style={labelStyleB}>ID (unique, no spaces)</label>
-                <input style={inputStyleB} value={form.id} disabled={!!editingId}
-                  onChange={e => setForm(p => ({...p, id: e.target.value.toLowerCase().replace(/ /g,'_')}))} /></div>
-              <div><label style={labelStyleB}>Company Name</label>
+        <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.6)',zIndex:1000,
+          display:'flex',alignItems:'center',justifyContent:'center'}}>
+          <div style={{background:'var(--bg-panel)',borderRadius:8,padding:32,width:540,
+            maxHeight:'85vh',overflowY:'auto',border:'1px solid var(--border)'}}>
+            <div style={{fontFamily:'var(--font-display)',fontWeight:700,fontSize:18,marginBottom:20}}>
+              {editingId ? 'Edit Buyer' : 'Add Buyer'}
+            </div>
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:12}}>
+              <div style={{gridColumn:'1/-1'}}><label style={labelStyleB}>Company Name *</label>
                 <input style={inputStyleB} value={form.name}
                   onChange={e => setForm(p => ({...p, name: e.target.value}))} /></div>
               <div><label style={labelStyleB}>Country</label>
@@ -134,10 +131,14 @@ export default function Buyers() {
                 <input style={inputStyleB} value={form.city || ''}
                   onChange={e => setForm(p => ({...p, city: e.target.value}))} /></div>
               <div><label style={labelStyleB}>Category</label>
-                <input style={inputStyleB} value={form.category || ''}
-                  onChange={e => setForm(p => ({...p, category: e.target.value}))} /></div>
+                <select style={inputStyleB} value={form.category || 'Food Manufacturer'}
+                  onChange={e => setForm(p => ({...p, category: e.target.value}))}>
+                  {['Food Manufacturer','Dairy Manufacturer','Distributor','Retailer',
+                    'Feed Manufacturer','Ingredient Distributor','Other'].map(c =>
+                    <option key={c}>{c}</option>)}
+                </select></div>
               <div><label style={labelStyleB}>Size</label>
-                <select style={inputStyleB} value={form.size}
+                <select style={inputStyleB} value={form.size || 'Medium'}
                   onChange={e => setForm(p => ({...p, size: e.target.value}))}>
                   {['Large','Medium','Small'].map(s => <option key={s}>{s}</option>)}
                 </select></div>
@@ -147,35 +148,35 @@ export default function Buyers() {
               <div><label style={labelStyleB}>Email</label>
                 <input style={inputStyleB} value={form.email || ''}
                   onChange={e => setForm(p => ({...p, email: e.target.value}))} /></div>
-              <div><label style={labelStyleB}>Status</label>
+              <div style={{gridColumn:'1/-1'}}><label style={labelStyleB}>Status</label>
                 <select style={inputStyleB} value={form.status || 'Target'}
                   onChange={e => setForm(p => ({...p, status: e.target.value}))}>
-                  {['Target','Priority Target','Active','Watch','Contacted','No Fit'].map(s => <option key={s}>{s}</option>)}
+                  {['Target','Priority Target','Active','Watch','Contacted','No Fit'].map(s =>
+                    <option key={s}>{s}</option>)}
                 </select></div>
             </div>
-
-            <div style={{ marginBottom:12 }}><label style={labelStyleB}>Ingredient Needs (comma separated)</label>
-              <input style={inputStyleB} value={
-                (() => { try { const v = JSON.parse(form.ingredient_needs); return Array.isArray(v) ? v.join(', ') : form.ingredient_needs; } catch { return form.ingredient_needs || ''; } })()
-              } onChange={e => setForm(p => ({...p, ingredient_needs: JSON.stringify(e.target.value.split(',').map(x => x.trim()).filter(Boolean))}))} /></div>
-
-            <div style={{ marginBottom:20 }}><label style={labelStyleB}>Notes</label>
-              <textarea style={{...inputStyleB, height:80, resize:'vertical'}} value={form.notes || ''}
+            <div style={{marginBottom:12}}><label style={labelStyleB}>Ingredient Needs (comma separated)</label>
+              <input style={inputStyleB}
+                value={(() => { try { const v = JSON.parse(form.ingredient_needs||'[]'); return v.join(', '); } catch { return ''; } })()}
+                placeholder="e.g. Modified Starch, Soya Lecithin, FCMP"
+                onChange={e => setForm(p => ({...p, ingredient_needs: JSON.stringify(e.target.value.split(',').map(x=>x.trim()).filter(Boolean))}))} /></div>
+            <div style={{marginBottom:20}}><label style={labelStyleB}>Notes</label>
+              <textarea style={{...inputStyleB,height:80,resize:'vertical'}} value={form.notes || ''}
                 onChange={e => setForm(p => ({...p, notes: e.target.value}))} /></div>
-
-            <div style={{ display:'flex', gap:8, justifyContent:'flex-end' }}>
-              <button onClick={() => setShowForm(false)} style={{ padding:'8px 18px',
-                background:'none', border:'1px solid var(--border)', borderRadius:4,
-                cursor:'pointer', fontFamily:'var(--font-mono)', fontSize:12,
-                color:'var(--text-muted)' }}>Cancel</button>
-              <button onClick={handleSave} disabled={saving} style={{ padding:'8px 18px',
-                background:'var(--gold)', border:'none', borderRadius:4, cursor:'pointer',
-                fontFamily:'var(--font-mono)', fontSize:12, color:'#fff',
-                opacity: saving ? 0.7 : 1 }}>{saving ? 'Saving...' : 'Save Buyer'}</button>
+            <div style={{display:'flex',gap:8,justifyContent:'flex-end'}}>
+              <button onClick={() => setShowForm(false)} style={{padding:'8px 18px',
+                background:'none',border:'1px solid var(--border)',borderRadius:4,
+                cursor:'pointer',fontFamily:'var(--font-mono)',fontSize:12,color:'var(--text-muted)'}}>
+                Cancel</button>
+              <button onClick={handleSave} disabled={saving} style={{padding:'8px 18px',
+                background:'var(--gold)',border:'none',borderRadius:4,cursor:'pointer',
+                fontFamily:'var(--font-mono)',fontSize:12,color:'#fff',opacity:saving?0.7:1}}>
+                {saving ? 'Saving...' : 'Save Buyer'}</button>
             </div>
           </div>
         </div>
       )}
+
       <div style={{ display: 'flex', gap: 8, marginBottom: 12, flexWrap: 'wrap' }}>
         <button onClick={startNew} style={{ marginLeft:'auto', padding:'6px 16px',
           background:'var(--gold)', border:'none', borderRadius:4, cursor:'pointer',
