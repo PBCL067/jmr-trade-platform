@@ -275,6 +275,11 @@ export default function Suppliers() {
         </div>
       )}
       <div style={{ display: 'flex', gap: 8, marginBottom: 12, flexWrap: 'wrap', alignItems: 'center' }}>
+        <button onClick={startNew} style={{ padding:'6px 16px',
+          background:'var(--gold)', border:'none', borderRadius:4, cursor:'pointer',
+          fontFamily:'var(--font-mono)', fontSize:11, color:'#fff', letterSpacing:'0.06em' }}>
+          + ADD SUPPLIER
+        </button>
         <input value={search} onChange={e => setSearch(e.target.value)}
           placeholder="Search suppliers..."
           style={{ flex: 1, minWidth: 200, background: 'var(--bg-card)',
