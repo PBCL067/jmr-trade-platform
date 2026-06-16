@@ -672,7 +672,30 @@ export default function Suppliers() {
           if (geoData[0]) { lat = parseFloat(geoData[0].lat); lng = parseFloat(geoData[0].lon); }
         } catch(e) { console.warn('Geocoding failed:', e); }
       }
-      const payload = { ...form, id: editingId || autoId, lat, lng };
+      const payload = {
+        id: editingId || autoId,
+        name: form.name,
+        country: form.country,
+        city: form.city,
+        role: form.role,
+        product_category: form.product_category,
+        products: form.products,
+        website: form.website,
+        notes: form.notes,
+        verified: form.verified,
+        export_experience: form.export_experience,
+        food_grade: form.food_grade,
+        priority: form.priority,
+        size: form.size,
+        annual_capacity_mt: form.annual_capacity_mt,
+        certifications: form.certifications,
+        fob_price_range: form.fob_price_range,
+        nearest_port: form.nearest_port,
+        next_action: form.next_action,
+        status: form.status,
+        contacted: form.contacted,
+        lat, lng,
+      };
       if (editingId) {
         await updateRow('suppliers', editingId, payload);
       } else {
