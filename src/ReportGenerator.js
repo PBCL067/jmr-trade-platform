@@ -87,7 +87,7 @@ export function generateTradeFlowReport({ flows, exporter, importer, layer }) {
   .stat-label{font-size:8px;letter-spacing:0.14em;color:#8a9ab5;margin-bottom:6px;text-transform:uppercase}
   .stat-value{font-family:'Syne',sans-serif;font-weight:800;font-size:30px;color:#c8993a;line-height:1}
   .stat-unit{font-size:10px;color:#8a9ab5;margin-top:4px}
-  .mid-section{display:grid;grid-template-columns:500px 1fr;gap:20px;margin-bottom:24px}
+  .mid-section{display:flex;gap:20px;margin-bottom:24px;align-items:flex-start}
   .map-box{background:rgba(255,255,255,0.03);border-radius:10px;overflow:hidden}
   .map-header{padding:14px 16px;background:rgba(200,153,58,0.06);border-bottom:1px solid rgba(200,153,58,0.12)}
   .map-title{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:#fff;margin-bottom:4px}
@@ -158,7 +158,7 @@ export function generateTradeFlowReport({ flows, exporter, importer, layer }) {
   </div>
 
   <div class="mid-section">
-    <div class="map-box">
+    <div class="map-box" style="flex:0 0 460px">
       <div class="map-header">
         <div class="map-title">STRONG TRADE CONNECTIONS</div>
         <div class="map-sub">Key agricultural & ingredient flows from ${exporter||'Mercosur'} to markets across Africa.</div>
@@ -169,7 +169,7 @@ export function generateTradeFlowReport({ flows, exporter, importer, layer }) {
         <div class="leg-item"><div class="leg-dot" style="background:#4a9eda"></div>L2 – Value Added Ingredients</div>
       </div>
     </div>
-    <div class="right-col">
+    <div class="right-col" style="flex:1;min-width:0">
       <div class="panel">
         <div class="panel-title">Top 5 Markets by FOB Value</div>
         ${topMarkets.map(([name,val],i) => `
@@ -196,14 +196,14 @@ export function generateTradeFlowReport({ flows, exporter, importer, layer }) {
   </div>
 
   <div class="detail-label">Trade Flows Detail (${layer==='ALL'||!layer?'L1 + L2':layer})</div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 20px;margin-bottom:24px;width:100%">
-    <table style="width:100%;table-layout:fixed">
-      <colgroup><col width="24"><col width="130"><col width="100"><col width="40"><col width="70"><col width="70"><col width="50"><col width="40"></colgroup>
+  <div style="display:flex;gap:16px;margin-bottom:24px;width:100%">
+    <table style="flex:1;table-layout:fixed;border-collapse:collapse">
+      <colgroup><col width="22"><col width="110"><col width="85"><col width="36"><col width="60"><col width="65"><col width="45"><col width="36"></colgroup>
       <thead><tr><th>#</th><th>PRODUCT</th><th>TO</th><th>L</th><th>FOB</th><th>VOL MT</th><th>$/KG</th><th>PROC</th></tr></thead>
       <tbody>${col1.map((f,i) => tableRow(f,i)).join('')}</tbody>
     </table>
-    <table style="width:100%;table-layout:fixed">
-      <colgroup><col width="24"><col width="130"><col width="100"><col width="40"><col width="70"><col width="70"><col width="50"><col width="40"></colgroup>
+    <table style="flex:1;table-layout:fixed;border-collapse:collapse">
+      <colgroup><col width="22"><col width="110"><col width="85"><col width="36"><col width="60"><col width="65"><col width="45"><col width="36"></colgroup>
       <thead><tr><th>#</th><th>PRODUCT</th><th>TO</th><th>L</th><th>FOB</th><th>VOL MT</th><th>$/KG</th><th>PROC</th></tr></thead>
       <tbody>${col2.map((f,i) => tableRow(f,i+half)).join('')}</tbody>
     </table>
