@@ -126,7 +126,20 @@ export function generateTradeFlowReport({ flows, exporter, importer, layer }) {
 </style></head><body><div class="page">
 
   <div class="header">
-    <div style="display:flex;flex-direction:column;gap:2px">${LOGO_SVG}<div style="font-size:9px;letter-spacing:0.2em;color:#c8993a;margin-top:4px">GLOBAL INGREDIENTS</div></div>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <div style="display:flex;align-items:flex-end;gap:8px;line-height:1">
+        <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:36px;color:#fff;letter-spacing:0.02em">JMR</span>
+        <div style="display:flex;flex-direction:column;padding-bottom:4px">
+          <svg width="90" height="16" viewBox="0 0 90 16" style="display:block">
+            <path d="M0 8 Q45 0 90 8" fill="none" stroke="#c8993a" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="0" cy="8" r="3" fill="#c8993a"/>
+            <circle cx="90" cy="8" r="3" fill="#ffffff"/>
+          </svg>
+          <span style="font-family:'Syne',sans-serif;font-weight:500;font-size:16px;color:#c8993a;letter-spacing:2px;margin-top:2px">GLOBAL</span>
+        </div>
+      </div>
+      <div style="font-size:9px;letter-spacing:0.22em;color:#c8993a">GLOBAL INGREDIENTS</div>
+    </div
     <div class="title-block">
       <div class="main-title">${title}</div>
       <div class="sub-title">${subtitle}</div>
@@ -162,7 +175,7 @@ export function generateTradeFlowReport({ flows, exporter, importer, layer }) {
         ${topMarkets.map(([name,val],i) => `
           <div class="market-row">
             <div class="mkt-num">${i+1}</div>
-            <div class="mkt-flag">${COUNTRY_FLAGS[name]||'🌍'}</div>
+            <div style="font-size:10px;font-weight:700;color:#c8993a;width:28px;flex-shrink:0">${name.slice(0,2).toUpperCase()||'🌍'}</div>
             <div class="mkt-name">${name}</div>
             <div class="mkt-bar-wrap"><div class="mkt-bar" style="width:${(val/topMarkets[0][1]*100).toFixed(0)}%"></div></div>
             <div class="mkt-val">${fmt(val)}</div>
@@ -173,7 +186,7 @@ export function generateTradeFlowReport({ flows, exporter, importer, layer }) {
         <div class="panel-title">Top Products by FOB Value</div>
         ${topProducts.map(([name,val]) => `
           <div class="prod-row">
-            <div class="prod-icon">${PRODUCT_ICONS[name]||'📦'}</div>
+            <div style="width:8px;height:8px;border-radius:50%;background:#c8993a;flex-shrink:0;margin-top:3px"||'📦'}</div>
             <div class="prod-name">${name}</div>
             <div class="prod-val">${fmt(val)}</div>
             <div class="prod-pct">${(val/totalFob*100).toFixed(1)}%</div>
