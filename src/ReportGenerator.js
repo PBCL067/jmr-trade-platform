@@ -296,8 +296,8 @@ export function generateGapReport({ gaps, filterExporter, filterLabel }) {
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
-  body{background:#0d1f3c;font-family:'IBM Plex Mono',monospace;color:#fff;width:1200px}
-  .page{width:1200px;min-height:1400px;background:#0d1f3c;padding:40px}
+  body{background:#0b1929;font-family:'IBM Plex Mono',monospace;color:#fff;width:1100px;overflow-x:hidden}
+  .page{width:1100px;background:#0b1929;padding:36px;overflow:hidden}
   .header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid rgba(200,153,58,0.3)}
   .logo-text{font-family:'Syne',sans-serif;font-weight:800;font-size:28px;color:#fff}
   .logo-sub{font-size:10px;letter-spacing:0.2em;color:#c8993a;margin-top:4px}
@@ -314,11 +314,21 @@ export function generateGapReport({ gaps, filterExporter, filterLabel }) {
   .gap-desc{font-size:11px;color:#8a9ab5;line-height:1.6;margin-bottom:10px}
   .gap-stats{display:flex;gap:12px}
   .gap-stat{background:rgba(255,255,255,0.05);border-radius:4px;padding:8px 12px;font-size:11px}
-  .footer{display:flex;justify-content:space-between;margin-top:32px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.1);font-size:10px;color:#8a9ab5}
+  .footer{display:flex;justify-content:space-between;align-items:center;margin-top:32px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.08);font-size:10px;color:#8a9ab5}
   @media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 </style></head><body><div class="page">
   <div class="header">
-    <div><div class="logo-text">JMR <span style="color:#c8993a">⬡</span></div><div class="logo-sub">GLOBAL INGREDIENTS</div></div>
+    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+      <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:28px;color:#fff">JMR</span>
+      <div style="display:flex;flex-direction:column;justify-content:center">
+        <svg width="70" height="12" viewBox="0 0 70 12">
+          <path d="M0 6 Q35 0 70 6" fill="none" stroke="#c8993a" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="0" cy="6" r="2.5" fill="#c8993a"/>
+          <circle cx="70" cy="6" r="2.5" fill="#fff"/>
+        </svg>
+        <span style="font-family:'Syne',sans-serif;font-weight:500;font-size:13px;color:#c8993a;letter-spacing:2px">GLOBAL</span>
+      </div>
+    </div>
     <div><div class="title">GAP ANALYSIS: ${filterExporter === 'All' ? 'ALL MERCOSUR' : filterExporter.toUpperCase()} → AFRICA</div>
     <div class="subtitle">${filterLabel === 'All' ? 'ALL SIGNALS' : filterLabel} · ${gaps.length} PAIRS ANALYSED</div></div>
     <div style="background:#e74c3c;border-radius:8px;padding:16px 20px;text-align:center">
@@ -368,8 +378,8 @@ export function generateMarketIntelReport({ products, filterGap, sortBy }) {
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
-  body{background:#0d1f3c;font-family:'IBM Plex Mono',monospace;color:#fff;width:1200px}
-  .page{width:1200px;min-height:1400px;background:#0d1f3c;padding:40px}
+  body{background:#0b1929;font-family:'IBM Plex Mono',monospace;color:#fff;width:1100px;overflow-x:hidden}
+  .page{width:1100px;background:#0b1929;padding:36px;overflow:hidden}
   .header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid rgba(200,153,58,0.3)}
   .logo-text{font-family:'Syne',sans-serif;font-weight:800;font-size:28px;color:#fff}
   .logo-sub{font-size:10px;letter-spacing:0.2em;color:#c8993a;margin-top:4px}
@@ -385,11 +395,21 @@ export function generateMarketIntelReport({ products, filterGap, sortBy }) {
   .supplier-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:11px}
   .bar-wrap{flex:1;background:rgba(255,255,255,0.08);border-radius:2px;height:4px}
   .bar{height:4px;border-radius:2px}
-  .footer{display:flex;justify-content:space-between;margin-top:32px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.1);font-size:10px;color:#8a9ab5}
+  .footer{display:flex;justify-content:space-between;align-items:center;margin-top:32px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.08);font-size:10px;color:#8a9ab5}
   @media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 </style></head><body><div class="page">
   <div class="header">
-    <div><div class="logo-text">JMR <span style="color:#c8993a">⬡</span></div><div class="logo-sub">GLOBAL INGREDIENTS</div></div>
+    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+      <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:28px;color:#fff">JMR</span>
+      <div style="display:flex;flex-direction:column;justify-content:center">
+        <svg width="70" height="12" viewBox="0 0 70 12">
+          <path d="M0 6 Q35 0 70 6" fill="none" stroke="#c8993a" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="0" cy="6" r="2.5" fill="#c8993a"/>
+          <circle cx="70" cy="6" r="2.5" fill="#fff"/>
+        </svg>
+        <span style="font-family:'Syne',sans-serif;font-weight:500;font-size:13px;color:#c8993a;letter-spacing:2px">GLOBAL</span>
+      </div>
+    </div>
     <div><div class="title">MARKET INTELLIGENCE REPORT</div>
     <div class="subtitle">${filterGap === 'All' ? 'ALL SIGNALS' : filterGap} · ${products.length} PRODUCTS · SA IMPORT DATA 2024</div></div>
     <div style="background:rgba(200,153,58,0.15);border:1px solid rgba(200,153,58,0.3);border-radius:8px;padding:16px 20px;text-align:center">
@@ -443,8 +463,8 @@ export function generateSignalsReport({ signals, filter }) {
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
-  body{background:#0d1f3c;font-family:'IBM Plex Mono',monospace;color:#fff;width:1200px}
-  .page{width:1200px;min-height:1200px;background:#0d1f3c;padding:40px}
+  body{background:#0b1929;font-family:'IBM Plex Mono',monospace;color:#fff;width:1100px;overflow-x:hidden}
+  .page{width:1100px;background:#0b1929;padding:36px;overflow:hidden}
   .header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid rgba(200,153,58,0.3)}
   .logo-text{font-family:'Syne',sans-serif;font-weight:800;font-size:28px;color:#fff}
   .logo-sub{font-size:10px;letter-spacing:0.2em;color:#c8993a;margin-top:4px}
@@ -459,11 +479,21 @@ export function generateSignalsReport({ signals, filter }) {
   td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.05);font-size:12px}
   .score-bar{width:100px;background:rgba(255,255,255,0.08);border-radius:2px;height:6px;display:inline-block;vertical-align:middle;margin-right:8px}
   .score-fill{height:6px;border-radius:2px}
-  .footer{display:flex;justify-content:space-between;margin-top:32px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.1);font-size:10px;color:#8a9ab5}
+  .footer{display:flex;justify-content:space-between;align-items:center;margin-top:32px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.08);font-size:10px;color:#8a9ab5}
   @media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 </style></head><body><div class="page">
   <div class="header">
-    <div><div class="logo-text">JMR <span style="color:#c8993a">⬡</span></div><div class="logo-sub">GLOBAL INGREDIENTS</div></div>
+    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+      <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:28px;color:#fff">JMR</span>
+      <div style="display:flex;flex-direction:column;justify-content:center">
+        <svg width="70" height="12" viewBox="0 0 70 12">
+          <path d="M0 6 Q35 0 70 6" fill="none" stroke="#c8993a" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="0" cy="6" r="2.5" fill="#c8993a"/>
+          <circle cx="70" cy="6" r="2.5" fill="#fff"/>
+        </svg>
+        <span style="font-family:'Syne',sans-serif;font-weight:500;font-size:13px;color:#c8993a;letter-spacing:2px">GLOBAL</span>
+      </div>
+    </div>
     <div><div class="title">COMMODITY SIGNALS REPORT</div>
     <div class="subtitle">World Bank Pink Sheet · ${filter === 'ALL' ? 'ALL SIGNALS' : filter+' ONLY'} · Latest Available Data</div></div>
     <div style="background:rgba(200,153,58,0.15);border:1px solid rgba(200,153,58,0.3);border-radius:8px;padding:16px 20px;text-align:center">
@@ -547,8 +577,8 @@ export function generateLandedCostReport({ product, suppliers, zarUsd, tariffNot
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
-  body{background:#0d1f3c;font-family:'IBM Plex Mono',monospace;color:#fff;width:1200px}
-  .page{width:1200px;background:#0d1f3c;padding:40px}
+  body{background:#0b1929;font-family:'IBM Plex Mono',monospace;color:#fff;width:1100px;overflow-x:hidden}
+  .page{width:1100px;background:#0b1929;padding:36px;overflow:hidden}
   .header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px;padding-bottom:24px;border-bottom:2px solid rgba(200,153,58,0.4)}
   .logo-area{display:flex;flex-direction:column;gap:4px}
   .logo-text{font-family:'Syne',sans-serif;font-weight:800;font-size:32px;color:#fff;letter-spacing:0.05em}
@@ -587,9 +617,16 @@ export function generateLandedCostReport({ product, suppliers, zarUsd, tariffNot
 
   <!-- HEADER -->
   <div class="header">
-    <div class="logo-area">
-      <div class="logo-text">JMR <span style="color:#c8993a;font-size:24px">⬡</span></div>
-      <div class="logo-sub">GLOBAL INGREDIENTS</div>
+    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+      <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:28px;color:#fff">JMR</span>
+      <div style="display:flex;flex-direction:column;justify-content:center">
+        <svg width="70" height="12" viewBox="0 0 70 12">
+          <path d="M0 6 Q35 0 70 6" fill="none" stroke="#c8993a" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="0" cy="6" r="2.5" fill="#c8993a"/>
+          <circle cx="70" cy="6" r="2.5" fill="#fff"/>
+        </svg>
+        <span style="font-family:'Syne',sans-serif;font-weight:500;font-size:13px;color:#c8993a;letter-spacing:2px">GLOBAL</span>
+      </div>
     </div>
     <div class="title-area">
       <div class="report-title">LANDED COST ANALYSIS</div>
@@ -702,8 +739,8 @@ export function generateDealsReport({ deals, filter }) {
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
-  body{background:#0d1f3c;font-family:'IBM Plex Mono',monospace;color:#fff;width:1200px}
-  .page{width:1200px;min-height:1200px;background:#0d1f3c;padding:40px}
+  body{background:#0b1929;font-family:'IBM Plex Mono',monospace;color:#fff;width:1100px;overflow-x:hidden}
+  .page{width:1100px;background:#0b1929;padding:36px;overflow:hidden}
   .header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid rgba(200,153,58,0.3)}
   .logo-text{font-family:'Syne',sans-serif;font-weight:800;font-size:28px;color:#fff}
   .logo-sub{font-size:10px;letter-spacing:0.2em;color:#c8993a;margin-top:4px}
@@ -720,11 +757,21 @@ export function generateDealsReport({ deals, filter }) {
   .badge{font-size:9px;padding:4px 12px;border-radius:4px;font-weight:700;letter-spacing:0.06em}
   .deal-notes{font-size:12px;color:#8a9ab5;line-height:1.7;padding:10px 14px;background:rgba(255,255,255,0.03);border-radius:4px;margin-bottom:12px}
   .next-action{padding:10px 14px;background:rgba(232,184,75,0.08);border:1px solid rgba(232,184,75,0.2);border-radius:4px;font-size:12px;color:#e8b84b}
-  .footer{display:flex;justify-content:space-between;margin-top:32px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.1);font-size:10px;color:#8a9ab5}
+  .footer{display:flex;justify-content:space-between;align-items:center;margin-top:32px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.08);font-size:10px;color:#8a9ab5}
   @media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 </style></head><body><div class="page">
   <div class="header">
-    <div><div class="logo-text">JMR <span style="color:#c8993a">⬡</span></div><div class="logo-sub">GLOBAL INGREDIENTS</div></div>
+    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+      <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:28px;color:#fff">JMR</span>
+      <div style="display:flex;flex-direction:column;justify-content:center">
+        <svg width="70" height="12" viewBox="0 0 70 12">
+          <path d="M0 6 Q35 0 70 6" fill="none" stroke="#c8993a" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="0" cy="6" r="2.5" fill="#c8993a"/>
+          <circle cx="70" cy="6" r="2.5" fill="#fff"/>
+        </svg>
+        <span style="font-family:'Syne',sans-serif;font-weight:500;font-size:13px;color:#c8993a;letter-spacing:2px">GLOBAL</span>
+      </div>
+    </div>
     <div><div class="title">ACTIVE DEAL PIPELINE</div>
     <div class="subtitle">${filter === 'All' ? 'ALL DEALS' : filter.toUpperCase()} · Generated ${today}</div></div>
     <div style="background:rgba(200,153,58,0.15);border:1px solid rgba(200,153,58,0.3);border-radius:8px;padding:16px 20px;text-align:center">
@@ -789,8 +836,8 @@ export function generateProductIntelReport({ product, p, liveSuppliers }) {
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
-  body{background:#0d1f3c;font-family:'IBM Plex Mono',monospace;color:#fff;width:1200px}
-  .page{width:1200px;min-height:1200px;background:#0d1f3c;padding:40px}
+  body{background:#0b1929;font-family:'IBM Plex Mono',monospace;color:#fff;width:1100px;overflow-x:hidden}
+  .page{width:1100px;background:#0b1929;padding:36px;overflow:hidden}
   .header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid rgba(200,153,58,0.3)}
   .logo-text{font-family:'Syne',sans-serif;font-weight:800;font-size:28px;color:#fff}
   .logo-sub{font-size:10px;letter-spacing:0.2em;color:#c8993a;margin-top:4px}
@@ -808,11 +855,21 @@ export function generateProductIntelReport({ product, p, liveSuppliers }) {
   th{color:#8a9ab5;padding:6px 8px;text-align:left;font-size:9px;letter-spacing:0.08em;border-bottom:1px solid rgba(255,255,255,0.06)}
   td{padding:8px;border-bottom:1px solid rgba(255,255,255,0.04);font-size:11px}
   .opp{padding:14px 16px;background:rgba(46,204,113,0.06);border:1px solid rgba(46,204,113,0.2);border-radius:6px;margin-bottom:16px}
-  .footer{display:flex;justify-content:space-between;margin-top:32px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.1);font-size:10px;color:#8a9ab5}
+  .footer{display:flex;justify-content:space-between;align-items:center;margin-top:32px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.08);font-size:10px;color:#8a9ab5}
   @media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 </style></head><body><div class="page">
   <div class="header">
-    <div><div class="logo-text">JMR <span style="color:#c8993a">⬡</span></div><div class="logo-sub">GLOBAL INGREDIENTS</div></div>
+    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+      <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:28px;color:#fff">JMR</span>
+      <div style="display:flex;flex-direction:column;justify-content:center">
+        <svg width="70" height="12" viewBox="0 0 70 12">
+          <path d="M0 6 Q35 0 70 6" fill="none" stroke="#c8993a" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="0" cy="6" r="2.5" fill="#c8993a"/>
+          <circle cx="70" cy="6" r="2.5" fill="#fff"/>
+        </svg>
+        <span style="font-family:'Syne',sans-serif;font-weight:500;font-size:13px;color:#c8993a;letter-spacing:2px">GLOBAL</span>
+      </div>
+    </div>
     <div><div class="title">PRODUCT INTELLIGENCE: ${(product||'').toUpperCase()}</div>
     <div class="subtitle">${p?.hs||''} · SA IMPORT MARKET ANALYSIS · ${today}</div></div>
     <div style="background:rgba(200,153,58,0.15);border:1px solid rgba(200,153,58,0.3);border-radius:8px;padding:16px 20px;text-align:center;min-width:100px">
