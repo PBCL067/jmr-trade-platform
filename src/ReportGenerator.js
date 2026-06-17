@@ -72,14 +72,14 @@ export function generateTradeFlowReport({ flows, exporter, importer, layer }) {
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
-  body{background:#0b1929;font-family:'IBM Plex Mono',monospace;color:#fff;width:900px}
-  .page{width:900px;background:#0b1929;padding:36px}
+  body{background:#0b1929;font-family:'IBM Plex Mono',monospace;color:#fff;width:1100px;overflow-x:hidden}
+  .page{width:1100px;background:#0b1929;padding:36px;overflow:hidden}
   .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid rgba(200,153,58,0.35)}
   .title-block{text-align:center;flex:1;padding:0 20px}
   .main-title{font-family:'Syne',sans-serif;font-weight:800;font-size:26px;color:#fff;letter-spacing:0.04em;line-height:1.2;text-transform:uppercase}
   .sub-title{font-size:12px;color:#c8993a;letter-spacing:0.18em;margin-top:6px;text-transform:uppercase}
-  .flow-badge{background:#c8993a;border-radius:10px;padding:14px 18px;text-align:center;min-width:90px}
-  .flow-num{font-family:'Syne',sans-serif;font-weight:800;font-size:42px;color:#0b1929;line-height:1}
+  .flow-badge{background:#c8993a;border-radius:10px;padding:12px 16px;text-align:center;min-width:80px;flex-shrink:0}
+  .flow-num{font-family:'Syne',sans-serif;font-weight:800;font-size:36px;color:#0b1929;line-height:1}
   .flow-lbl{font-size:8px;color:#0b1929;letter-spacing:0.1em;margin-top:4px;font-weight:600}
   .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
   .stat{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:16px}
@@ -109,11 +109,11 @@ export function generateTradeFlowReport({ flows, exporter, importer, layer }) {
   .prod-val{font-size:12px;color:#4a9eda;font-weight:700;flex-shrink:0}
   .prod-pct{font-size:10px;color:#8a9ab5;width:36px;text-align:right;flex-shrink:0}
   .detail-label{font-size:9px;letter-spacing:0.16em;color:#c8993a;margin-bottom:10px;text-transform:uppercase}
-  .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 20px;margin-bottom:24px}
+  .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 16px;margin-bottom:24px;width:100%;overflow:hidden}
   table{width:100%;border-collapse:collapse}
-  th{background:rgba(200,153,58,0.12);color:#c8993a;padding:7px 8px;text-align:left;font-size:8px;letter-spacing:0.1em;border-bottom:1px solid rgba(200,153,58,0.25);text-transform:uppercase}
-  td{padding:6px 8px;border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:middle}
-  .takeaways{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+  th{background:rgba(200,153,58,0.12);color:#c8993a;padding:6px 6px;text-align:left;font-size:8px;letter-spacing:0.08em;border-bottom:1px solid rgba(200,153,58,0.25);text-transform:uppercase}
+  td{padding:5px 6px;border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:middle;font-size:11px;word-break:break-word}
+  .takeaways{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;clear:both;width:100%}
   .takeaway{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:14px}
   .ta-icon{font-size:24px;margin-bottom:8px}
   .ta-title{font-family:'Syne',sans-serif;font-weight:700;font-size:12px;color:#fff;margin-bottom:5px}
