@@ -54,17 +54,17 @@ export function generateTradeFlowReport({ flows, exporter, importer, layer }) {
 
   const tableRow = (f, i) => `
     <tr style="background:${f.layer==='L2'?'rgba(74,158,218,0.06)':i%2===0?'rgba(255,255,255,0.02)':'transparent'}">
-      <td style="color:#8a9ab5;font-size:11px;width:24px">${i+1}</td>
-      <td style="color:#fff;font-weight:600;font-size:12px">${f.product||f.hs_code||''}</td>
-      <td style="color:#8a9ab5;font-size:12px">${f.importer||''}</td>
-      <td><span style="padding:2px 7px;border-radius:3px;font-size:9px;font-weight:700;
+      <td style="color:#8a9ab5;font-size:10px;white-space:nowrap">${i+1}</td>
+      <td style="color:#fff;font-weight:600;font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:130px">${f.product||f.hs_code||''}</td>
+      <td style="color:#8a9ab5;font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100px">${f.importer||''}</td>
+      <td><span style="padding:1px 5px;border-radius:3px;font-size:8px;font-weight:700;
         background:${f.layer==='L2'?'rgba(74,158,218,0.15)':'rgba(46,204,113,0.15)'};
         color:${f.layer==='L2'?'#4a9eda':'#2ecc71'};
         border:1px solid ${f.layer==='L2'?'rgba(74,158,218,0.3)':'rgba(46,204,113,0.3)'}">${f.layer||'L1'}</span></td>
-      <td style="color:#c8993a;font-weight:700;font-size:13px">${fmt(f.fob_usd)}</td>
-      <td style="color:#ccc;font-size:12px">${f.volume_mt?f.volume_mt.toLocaleString(undefined,{maximumFractionDigits:0}):'-'}</td>
-      <td style="color:#ccc;font-size:12px">${f.price_per_kg?'$'+f.price_per_kg.toFixed(2):'-'}</td>
-      <td style="color:${f.importer_is_processor?'#e8b84b':'#4a5a70'};font-size:12px">${f.importer_is_processor?'YES ⚡':'–'}</td>
+      <td style="color:#c8993a;font-weight:700;font-size:11px;white-space:nowrap">${fmt(f.fob_usd)}</td>
+      <td style="color:#ccc;font-size:10px;white-space:nowrap">${f.volume_mt?f.volume_mt.toLocaleString(undefined,{maximumFractionDigits:0}):'-'}</td>
+      <td style="color:#ccc;font-size:10px;white-space:nowrap">${f.price_per_kg?'$'+f.price_per_kg.toFixed(2):'-'}</td>
+      <td style="color:${f.importer_is_processor?'#e8b84b':'#4a5a70'};font-size:10px;white-space:nowrap">${f.importer_is_processor?'YES':'–'}</td>
     </tr>`;
 
   const html = `<!DOCTYPE html><html><head><meta charset="utf-8">
@@ -87,7 +87,7 @@ export function generateTradeFlowReport({ flows, exporter, importer, layer }) {
   .stat-label{font-size:8px;letter-spacing:0.14em;color:#8a9ab5;margin-bottom:6px;text-transform:uppercase}
   .stat-value{font-family:'Syne',sans-serif;font-weight:800;font-size:30px;color:#c8993a;line-height:1}
   .stat-unit{font-size:10px;color:#8a9ab5;margin-top:4px}
-  .mid-section{display:grid;grid-template-columns:1.1fr 0.9fr;gap:20px;margin-bottom:24px}
+  .mid-section{display:grid;grid-template-columns:500px 1fr;gap:20px;margin-bottom:24px}
   .map-box{background:rgba(255,255,255,0.03);border-radius:10px;overflow:hidden}
   .map-header{padding:14px 16px;background:rgba(200,153,58,0.06);border-bottom:1px solid rgba(200,153,58,0.12)}
   .map-title{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:#fff;margin-bottom:4px}
@@ -163,7 +163,7 @@ export function generateTradeFlowReport({ flows, exporter, importer, layer }) {
         <div class="map-title">STRONG TRADE CONNECTIONS</div>
         <div class="map-sub">Key agricultural & ingredient flows from ${exporter||'Mercosur'} to markets across Africa.</div>
       </div>
-      <canvas id="map-canvas" width="460" height="320" style="display:block"></canvas>
+      <canvas id="map-canvas" width="480" height="300" style="display:block;width:100%"></canvas>
       <div class="legend">
         <div class="leg-item"><div class="leg-dot" style="background:#2ecc71"></div>L1 – Primary Ingredients</div>
         <div class="leg-item"><div class="leg-dot" style="background:#4a9eda"></div>L2 – Value Added Ingredients</div>
@@ -196,13 +196,15 @@ export function generateTradeFlowReport({ flows, exporter, importer, layer }) {
   </div>
 
   <div class="detail-label">Trade Flows Detail (${layer==='ALL'||!layer?'L1 + L2':layer})</div>
-  <div class="detail-grid">
-    <table>
-      <thead><tr><th>#</th><th>Product</th><th>To</th><th>Layer</th><th>FOB Value</th><th>Vol MT</th><th>$/KG</th><th>Proc?</th></tr></thead>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 20px;margin-bottom:24px;width:100%">
+    <table style="width:100%;table-layout:fixed">
+      <colgroup><col width="24"><col width="130"><col width="100"><col width="40"><col width="70"><col width="70"><col width="50"><col width="40"></colgroup>
+      <thead><tr><th>#</th><th>PRODUCT</th><th>TO</th><th>L</th><th>FOB</th><th>VOL MT</th><th>$/KG</th><th>PROC</th></tr></thead>
       <tbody>${col1.map((f,i) => tableRow(f,i)).join('')}</tbody>
     </table>
-    <table>
-      <thead><tr><th>#</th><th>Product</th><th>To</th><th>Layer</th><th>FOB Value</th><th>Vol MT</th><th>$/KG</th><th>Proc?</th></tr></thead>
+    <table style="width:100%;table-layout:fixed">
+      <colgroup><col width="24"><col width="130"><col width="100"><col width="40"><col width="70"><col width="70"><col width="50"><col width="40"></colgroup>
+      <thead><tr><th>#</th><th>PRODUCT</th><th>TO</th><th>L</th><th>FOB</th><th>VOL MT</th><th>$/KG</th><th>PROC</th></tr></thead>
       <tbody>${col2.map((f,i) => tableRow(f,i+half)).join('')}</tbody>
     </table>
   </div>
