@@ -1,15 +1,5 @@
-import React, { useRef } from 'react';
+import React from 'react';
 
-const LOGO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 50" height="36">
-  <text x="0" y="38" font-family="Syne, sans-serif" font-weight="800" font-size="34" fill="#ffffff">JMR</text>
-  <path d="M0 16 Q42 5 84 16" fill="none" stroke="#c8993a" stroke-width="3" stroke-linecap="round"/>
-  <circle cx="0" cy="16" r="3.5" fill="#c8993a"/>
-  <circle cx="84" cy="16" r="3.5" fill="#0d1f3c"/>
-  <text x="100" y="38" font-family="Syne, sans-serif" font-weight="500" font-size="34" fill="#ffffff" letter-spacing="1">GLOBAL</text>
-</svg>`;
-
-// Approximate coordinates for Africa map (normalized 0-1 within Africa bounding box)
-// Africa bbox: lon -18 to 52, lat -35 to 38
 const AFRICA_COUNTRIES_POS = {
   'Algeria':      [0.42, 0.12], 'Egypt':         [0.72, 0.18], 'Morocco':      [0.18, 0.12],
   'Libya':        [0.55, 0.18], 'Tunisia':        [0.45, 0.10], 'South Africa': [0.55, 0.88],
@@ -21,411 +11,264 @@ const AFRICA_COUNTRIES_POS = {
   'Congo':        [0.48, 0.58], 'Gabon':          [0.44, 0.57], 'Mali':         [0.30, 0.32],
   'Niger':        [0.42, 0.32], 'Burkina Faso':   [0.32, 0.40], 'Togo':         [0.36, 0.48],
   'Benin':        [0.38, 0.46], 'Mauritius':      [0.85, 0.72], 'Cabo Verde':   [0.05, 0.30],
-  'Somalia':      [0.80, 0.48], 'Sudan':          [0.65, 0.30], 'Djibouti':     [0.78, 0.42],
-  'Guinea':       [0.15, 0.45], 'Mauritania':     [0.18, 0.25],
+  'Djibouti':     [0.78, 0.42], 'Guinea':         [0.15, 0.45], 'Mauritania':   [0.18, 0.25],
 };
 
-const ARGENTINA_POS = [-0.35, 0.60]; // normalized position left of Africa map
+const COUNTRY_FLAGS = {"Algeria": "\ud83c\udde9\ud83c\uddff", "Egypt": "\ud83c\uddea\ud83c\uddec", "Morocco": "\ud83c\uddf2\ud83c\udde6", "Libya": "\ud83c\uddf1\ud83c\uddfe", "Tunisia": "\ud83c\uddf9\ud83c\uddf3", "South Africa": "\ud83c\uddff\ud83c\udde6", "Nigeria": "\ud83c\uddf3\ud83c\uddec", "Kenya": "\ud83c\uddf0\ud83c\uddea", "Ghana": "\ud83c\uddec\ud83c\udded", "Senegal": "\ud83c\uddf8\ud83c\uddf3", "Ivory Coast": "\ud83c\udde8\ud83c\uddee", "Cameroon": "\ud83c\udde8\ud83c\uddf2", "Tanzania": "\ud83c\uddf9\ud83c\uddff", "Ethiopia": "\ud83c\uddea\ud83c\uddf9", "Angola": "\ud83c\udde6\ud83c\uddf4", "Mozambique": "\ud83c\uddf2\ud83c\uddff", "Zambia": "\ud83c\uddff\ud83c\uddf2", "Zimbabwe": "\ud83c\uddff\ud83c\uddfc", "Uganda": "\ud83c\uddfa\ud83c\uddec", "Congo": "\ud83c\udde8\ud83c\uddec", "Dem. Rep. of the Congo": "\ud83c\udde8\ud83c\udde9", "Gabon": "\ud83c\uddec\ud83c\udde6", "Mali": "\ud83c\uddf2\ud83c\uddf1", "Niger": "\ud83c\uddf3\ud83c\uddea", "Burkina Faso": "\ud83c\udde7\ud83c\uddeb", "Togo": "\ud83c\uddf9\ud83c\uddec", "Benin": "\ud83c\udde7\ud83c\uddef", "Mauritius": "\ud83c\uddf2\ud83c\uddfa", "Cabo Verde": "\ud83c\udde8\ud83c\uddfb", "Somalia": "\ud83c\uddf8\ud83c\uddf4", "Sudan": "\ud83c\uddf8\ud83c\udde9", "Djibouti": "\ud83c\udde9\ud83c\uddef", "Guinea": "\ud83c\uddec\ud83c\uddf3", "Mauritania": "\ud83c\uddf2\ud83c\uddf7", "Argentina": "\ud83c\udde6\ud83c\uddf7", "Brazil": "\ud83c\udde7\ud83c\uddf7", "Uruguay": "\ud83c\uddfa\ud83c\uddfe", "Paraguay": "\ud83c\uddf5\ud83c\uddfe"};
+
+const LOGO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 50" height="44"><text x="0" y="38" font-family="Syne, sans-serif" font-weight="800" font-size="34" fill="#ffffff">JMR</text><path d="M0 16 Q42 5 84 16" fill="none" stroke="#c8993a" stroke-width="3" stroke-linecap="round"/><circle cx="0" cy="16" r="3.5" fill="#c8993a"/><circle cx="84" cy="16" r="3.5" fill="#ffffff"/><text x="100" y="38" font-family="Syne, sans-serif" font-weight="500" font-size="34" fill="#c8993a" letter-spacing="1">GLOBAL</text></svg>`;
 
 function fmt(n) {
-  if (!n) return '$0';
+  if (!n && n !== 0) return '$0';
   if (n >= 1e9) return '$' + (n/1e9).toFixed(2) + 'B';
   if (n >= 1e6) return '$' + (n/1e6).toFixed(1) + 'M';
   if (n >= 1e3) return '$' + (n/1e3).toFixed(0) + 'K';
   return '$' + n.toFixed(0);
 }
 
-function AfricaMapSVG({ flows, exporter }) {
-  const W = 500, H = 380;
-  const pad = { l: 120, r: 20, t: 20, b: 20 };
-  const mapW = W - pad.l - pad.r;
-  const mapH = H - pad.t - pad.b;
-
-  // Argentina position (left side)
-  const argX = 40, argY = H * 0.55;
-
-  // Get unique destinations
-  const destinations = [...new Set(flows.map(f => f.importer))];
-  const maxFob = Math.max(...flows.map(f => f.fob_usd || 0));
-
-  function countryPos(name) {
-    const pos = AFRICA_COUNTRIES_POS[name];
-    if (!pos) return null;
-    return [pad.l + pos[0] * mapW, pad.t + pos[1] * mapH];
-  }
-
-  return (
-    <svg width={W} height={H} style={{fontFamily:'sans-serif'}}>
-      {/* Dark background */}
-      <rect width={W} height={H} fill="#0d1f3c" rx="8"/>
-
-      {/* Africa outline - simplified polygon */}
-      <polygon points={`
-        ${pad.l + 0.18*mapW},${pad.t + 0.05*mapH}
-        ${pad.l + 0.55*mapW},${pad.t + 0.02*mapH}
-        ${pad.l + 0.85*mapW},${pad.t + 0.15*mapH}
-        ${pad.l + 1.00*mapW},${pad.t + 0.35*mapH}
-        ${pad.l + 0.95*mapW},${pad.t + 0.55*mapH}
-        ${pad.l + 0.80*mapW},${pad.t + 0.70*mapH}
-        ${pad.l + 0.75*mapW},${pad.t + 0.95*mapH}
-        ${pad.l + 0.55*mapW},${pad.t + 1.00*mapH}
-        ${pad.l + 0.35*mapW},${pad.t + 0.90*mapH}
-        ${pad.l + 0.20*mapW},${pad.t + 0.70*mapH}
-        ${pad.l + 0.05*mapW},${pad.t + 0.50*mapH}
-        ${pad.l + 0.00*mapW},${pad.t + 0.30*mapH}
-        ${pad.l + 0.10*mapW},${pad.t + 0.10*mapH}
-      `} fill="#1a3460" stroke="#2a4a7f" strokeWidth="1"/>
-
-      {/* Argentina label */}
-      <circle cx={argX} cy={argY} r="12" fill="#c8993a" opacity="0.9"/>
-      <text x={argX} y={argY-16} fill="#c8993a" fontSize="10" textAnchor="middle" fontWeight="bold">
-        {exporter || 'ARGENTINA'}
-      </text>
-
-      {/* Flow lines */}
-      {destinations.map(dest => {
-        const pos = countryPos(dest);
-        if (!pos) return null;
-        const destFlows = flows.filter(f => f.importer === dest);
-        const totalFob = destFlows.reduce((s, f) => s + (f.fob_usd || 0), 0);
-        const strokeW = Math.max(0.5, Math.min(4, (totalFob / maxFob) * 4));
-        const opacity = Math.max(0.3, Math.min(0.9, totalFob / maxFob));
-        const hasL2 = destFlows.some(f => f.layer === 'L2');
-        return (
-          <g key={dest}>
-            <path
-              d={`M ${argX} ${argY} Q ${(argX + pos[0])/2} ${Math.min(argY, pos[1]) - 60} ${pos[0]} ${pos[1]}`}
-              fill="none"
-              stroke={hasL2 ? '#4a9eda' : '#c8993a'}
-              strokeWidth={strokeW}
-              opacity={opacity}
-            />
-            <circle cx={pos[0]} cy={pos[1]} r={Math.max(3, strokeW * 1.5)}
-              fill={hasL2 ? '#4a9eda' : '#2ecc71'} opacity="0.9"/>
-          </g>
-        );
-      })}
-
-      {/* Legend */}
-      <circle cx={pad.l + 5} cy={H - 30} r="5" fill="#2ecc71"/>
-      <text x={pad.l + 14} y={H - 26} fill="#ccc" fontSize="9">L1 – Primary Ingredients</text>
-      <circle cx={pad.l + 5} cy={H - 15} r="5" fill="#4a9eda"/>
-      <text x={pad.l + 14} y={H - 11} fill="#ccc" fontSize="9">L2 – Value Added Ingredients</text>
-    </svg>
-  );
-}
-
-export function generateTradeFlowReport({ flows, exporter, importer, layer, zarUsd }) {
+export function generateTradeFlowReport({ flows, exporter, importer, layer }) {
   const totalFob   = flows.reduce((s, f) => s + (f.fob_usd || 0), 0);
   const totalVol   = flows.reduce((s, f) => s + (f.volume_mt || 0), 0);
   const avgPrice   = totalVol > 0 ? totalFob / (totalVol * 1000) : 0;
   const processors = flows.filter(f => f.importer_is_processor).length;
 
-  // Top 5 markets
   const marketMap = {};
-  flows.forEach(f => {
-    if (!marketMap[f.importer]) marketMap[f.importer] = 0;
-    marketMap[f.importer] += f.fob_usd || 0;
-  });
-  const topMarkets = Object.entries(marketMap)
-    .sort((a,b) => b[1]-a[1]).slice(0,5);
+  flows.forEach(f => { marketMap[f.importer] = (marketMap[f.importer]||0) + (f.fob_usd||0); });
+  const topMarkets = Object.entries(marketMap).sort((a,b) => b[1]-a[1]).slice(0,5);
 
-  // Top products
   const productMap = {};
-  flows.forEach(f => {
-    const k = f.product || f.hs_code;
-    if (!productMap[k]) productMap[k] = 0;
-    productMap[k] += f.fob_usd || 0;
-  });
-  const topProducts = Object.entries(productMap)
-    .sort((a,b) => b[1]-a[1]).slice(0,5);
+  flows.forEach(f => { const k = f.product||f.hs_code; productMap[k] = (productMap[k]||0) + (f.fob_usd||0); });
+  const topProducts = Object.entries(productMap).sort((a,b) => b[1]-a[1]).slice(0,5);
+
+  const PRODUCT_ICONS = {'Corn':'🌽','Corn (Maize)':'🌽','Soybean Meal':'🫘','Full Cream Milk Powder':'🥛','Milk Powder FCMP':'🥛','Sunflower Oil':'🌻','Soybean Oil':'🫙','Soya Lecithin':'🧪','Modified Starch':'🏭','Soybeans':'🫘','Wheat':'🌾','Sugar':'🍬','Soy Protein':'💪'};
+  const sorted = [...flows].sort((a,b) => (b.fob_usd||0)-(a.fob_usd||0));
+  const half = Math.ceil(sorted.length/2);
+  const col1 = sorted.slice(0, half);
+  const col2 = sorted.slice(half);
 
   const title = `TRADE FLOW: ${(exporter||'ALL').toUpperCase()} → ${(importer||'ALL AFRICA').toUpperCase()}`;
-  const subtitle = layer === 'ALL' ? 'L1 + L2 FLOWS OVERVIEW' :
-                   layer === 'L1'  ? 'L1 PRIMARY FLOWS ONLY' : 'L2 VALUE-ADDED FLOWS ONLY';
+  const subtitle = layer === 'ALL' || !layer ? 'L1 + L2 FLOWS OVERVIEW' : layer === 'L1' ? 'L1 PRIMARY FLOWS ONLY' : 'L2 VALUE-ADDED FLOWS ONLY';
 
-  const html = `<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
+  const mapFlowsJson = JSON.stringify(flows.map(f => ({importer: f.importer, fob_usd: f.fob_usd||0, layer: f.layer||'L1'})));
+  const africaPosJson = JSON.stringify(AFRICA_COUNTRIES_POS);
+
+  const tableRow = (f, i) => `
+    <tr style="background:${f.layer==='L2'?'rgba(74,158,218,0.06)':i%2===0?'rgba(255,255,255,0.02)':'transparent'}">
+      <td style="color:#8a9ab5;font-size:11px;width:24px">${i+1}</td>
+      <td style="color:#fff;font-weight:600;font-size:12px">${f.product||f.hs_code||''}</td>
+      <td style="color:#8a9ab5;font-size:12px">${f.importer||''}</td>
+      <td><span style="padding:2px 7px;border-radius:3px;font-size:9px;font-weight:700;
+        background:${f.layer==='L2'?'rgba(74,158,218,0.15)':'rgba(46,204,113,0.15)'};
+        color:${f.layer==='L2'?'#4a9eda':'#2ecc71'};
+        border:1px solid ${f.layer==='L2'?'rgba(74,158,218,0.3)':'rgba(46,204,113,0.3)'}">${f.layer||'L1'}</span></td>
+      <td style="color:#c8993a;font-weight:700;font-size:13px">${fmt(f.fob_usd)}</td>
+      <td style="color:#ccc;font-size:12px">${f.volume_mt?f.volume_mt.toLocaleString(undefined,{maximumFractionDigits:0}):'-'}</td>
+      <td style="color:#ccc;font-size:12px">${f.price_per_kg?'$'+f.price_per_kg.toFixed(2):'-'}</td>
+      <td style="color:${f.importer_is_processor?'#e8b84b':'#4a5a70'};font-size:12px">${f.importer_is_processor?'YES ⚡':'–'}</td>
+    </tr>`;
+
+  const html = `<!DOCTYPE html><html><head><meta charset="utf-8">
 <title>JMR Trade Flow Report</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { background:#0d1f3c; font-family:'IBM Plex Mono', monospace; color:#fff; width:1200px; }
-  .page { width:1200px; min-height:1600px; background:#0d1f3c; padding:40px; }
-  .header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:32px; padding-bottom:24px; border-bottom:1px solid rgba(200,153,58,0.3); }
-  .logo-area { display:flex; flex-direction:column; gap:4px; }
-  .logo-text { font-family:'Syne',sans-serif; font-weight:800; font-size:28px; color:#fff; letter-spacing:0.05em; }
-  .logo-sub { font-size:10px; letter-spacing:0.2em; color:#c8993a; }
-  .title-area { text-align:center; flex:1; padding:0 40px; }
-  .title { font-family:'Syne',sans-serif; font-weight:800; font-size:32px; color:#fff; letter-spacing:0.05em; margin-bottom:6px; }
-  .subtitle { font-size:14px; color:#c8993a; letter-spacing:0.15em; }
-  .flow-count { background:#c8993a; border-radius:8px; padding:16px 20px; text-align:center; min-width:100px; }
-  .flow-count .num { font-family:'Syne',sans-serif; font-weight:800; font-size:36px; color:#0d1f3c; }
-  .flow-count .lbl { font-size:9px; letter-spacing:0.1em; color:#0d1f3c; margin-top:2px; }
-  .stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:28px; }
-  .stat-box { background:rgba(255,255,255,0.05); border:1px solid rgba(200,153,58,0.2); border-radius:8px; padding:20px; }
-  .stat-icon { font-size:24px; margin-bottom:8px; }
-  .stat-label { font-size:9px; letter-spacing:0.12em; color:#8a9ab5; margin-bottom:6px; }
-  .stat-value { font-family:'Syne',sans-serif; font-weight:800; font-size:28px; color:#c8993a; }
-  .stat-unit { font-size:11px; color:#8a9ab5; margin-top:2px; }
-  .main-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:28px; }
-  .map-section { background:rgba(255,255,255,0.03); border-radius:8px; overflow:hidden; }
-  .right-panel { display:flex; flex-direction:column; gap:16px; }
-  .panel { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:20px; }
-  .panel-title { font-size:10px; letter-spacing:0.15em; color:#c8993a; margin-bottom:14px; border-bottom:1px solid rgba(200,153,58,0.2); padding-bottom:8px; }
-  .market-row { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
-  .market-num { font-size:11px; color:#8a9ab5; width:16px; }
-  .market-name { flex:1; font-size:13px; color:#fff; }
-  .market-bar-wrap { width:120px; background:rgba(255,255,255,0.08); border-radius:2px; height:6px; }
-  .market-bar { background:#c8993a; height:6px; border-radius:2px; }
-  .market-value { font-size:12px; color:#c8993a; width:60px; text-align:right; font-weight:600; }
-  .market-pct { font-size:10px; color:#8a9ab5; width:36px; text-align:right; }
-  .product-row { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
-  .product-name { flex:1; font-size:12px; color:#fff; }
-  .product-value { font-size:12px; color:#4a9eda; font-weight:600; }
-  .product-pct { font-size:10px; color:#8a9ab5; width:36px; text-align:right; }
-  .detail-table { width:100%; border-collapse:collapse; margin-bottom:28px; font-size:11px; }
-  .detail-table th { background:rgba(200,153,58,0.15); color:#c8993a; padding:8px 10px; text-align:left; letter-spacing:0.08em; font-size:9px; border-bottom:1px solid rgba(200,153,58,0.3); }
-  .detail-table td { padding:7px 10px; border-bottom:1px solid rgba(255,255,255,0.05); color:#ccc; }
-  .detail-table tr:nth-child(even) td { background:rgba(255,255,255,0.02); }
-  .l1-badge { background:rgba(46,204,113,0.15); color:#2ecc71; border:1px solid rgba(46,204,113,0.3); padding:2px 7px; border-radius:3px; font-size:9px; }
-  .l2-badge { background:rgba(74,158,218,0.15); color:#4a9eda; border:1px solid rgba(74,158,218,0.3); padding:2px 7px; border-radius:3px; font-size:9px; }
-  .takeaways { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:28px; }
-  .takeaway { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:16px; }
-  .takeaway-icon { font-size:28px; margin-bottom:10px; }
-  .takeaway-title { font-family:'Syne',sans-serif; font-weight:700; font-size:13px; color:#fff; margin-bottom:6px; }
-  .takeaway-text { font-size:11px; color:#8a9ab5; line-height:1.6; }
-  .footer { display:flex; justify-content:space-between; align-items:center; padding-top:20px; border-top:1px solid rgba(255,255,255,0.1); margin-top:auto; }
-  .footer-left { font-size:10px; color:#8a9ab5; }
-  .footer-right { font-size:10px; color:#c8993a; letter-spacing:0.08em; }
-  @media print { body { -webkit-print-color-adjust:exact; print-color-adjust:exact; } }
-</style>
-</head>
-<body>
-<div class="page">
-  <!-- HEADER -->
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#0b1929;font-family:'IBM Plex Mono',monospace;color:#fff;width:900px}
+  .page{width:900px;background:#0b1929;padding:36px}
+  .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid rgba(200,153,58,0.35)}
+  .title-block{text-align:center;flex:1;padding:0 20px}
+  .main-title{font-family:'Syne',sans-serif;font-weight:800;font-size:26px;color:#fff;letter-spacing:0.04em;line-height:1.2;text-transform:uppercase}
+  .sub-title{font-size:12px;color:#c8993a;letter-spacing:0.18em;margin-top:6px;text-transform:uppercase}
+  .flow-badge{background:#c8993a;border-radius:10px;padding:14px 18px;text-align:center;min-width:90px}
+  .flow-num{font-family:'Syne',sans-serif;font-weight:800;font-size:42px;color:#0b1929;line-height:1}
+  .flow-lbl{font-size:8px;color:#0b1929;letter-spacing:0.1em;margin-top:4px;font-weight:600}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+  .stat{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:16px}
+  .stat-icon{font-size:22px;margin-bottom:8px}
+  .stat-label{font-size:8px;letter-spacing:0.14em;color:#8a9ab5;margin-bottom:6px;text-transform:uppercase}
+  .stat-value{font-family:'Syne',sans-serif;font-weight:800;font-size:30px;color:#c8993a;line-height:1}
+  .stat-unit{font-size:10px;color:#8a9ab5;margin-top:4px}
+  .mid-section{display:grid;grid-template-columns:1.1fr 0.9fr;gap:20px;margin-bottom:24px}
+  .map-box{background:rgba(255,255,255,0.03);border-radius:10px;overflow:hidden}
+  .map-header{padding:14px 16px;background:rgba(200,153,58,0.06);border-bottom:1px solid rgba(200,153,58,0.12)}
+  .map-title{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:#fff;margin-bottom:4px}
+  .map-sub{font-size:10px;color:#8a9ab5;line-height:1.5}
+  .right-col{display:flex;flex-direction:column;gap:16px}
+  .panel{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:18px}
+  .panel-title{font-size:9px;letter-spacing:0.16em;color:#c8993a;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid rgba(200,153,58,0.2);text-transform:uppercase}
+  .market-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+  .mkt-num{font-size:11px;color:#8a9ab5;width:16px;flex-shrink:0}
+  .mkt-flag{font-size:16px;flex-shrink:0}
+  .mkt-name{flex:1;font-size:12px;color:#fff}
+  .mkt-bar-wrap{width:80px;background:rgba(255,255,255,0.08);border-radius:2px;height:5px;flex-shrink:0}
+  .mkt-bar{background:#c8993a;height:5px;border-radius:2px}
+  .mkt-val{font-size:11px;color:#c8993a;width:52px;text-align:right;font-weight:700;flex-shrink:0}
+  .mkt-pct{font-size:10px;color:#8a9ab5;width:32px;text-align:right;flex-shrink:0}
+  .prod-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+  .prod-icon{font-size:18px;flex-shrink:0}
+  .prod-name{flex:1;font-size:12px;color:#fff}
+  .prod-val{font-size:12px;color:#4a9eda;font-weight:700;flex-shrink:0}
+  .prod-pct{font-size:10px;color:#8a9ab5;width:36px;text-align:right;flex-shrink:0}
+  .detail-label{font-size:9px;letter-spacing:0.16em;color:#c8993a;margin-bottom:10px;text-transform:uppercase}
+  .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 20px;margin-bottom:24px}
+  table{width:100%;border-collapse:collapse}
+  th{background:rgba(200,153,58,0.12);color:#c8993a;padding:7px 8px;text-align:left;font-size:8px;letter-spacing:0.1em;border-bottom:1px solid rgba(200,153,58,0.25);text-transform:uppercase}
+  td{padding:6px 8px;border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:middle}
+  .takeaways{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+  .takeaway{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:14px}
+  .ta-icon{font-size:24px;margin-bottom:8px}
+  .ta-title{font-family:'Syne',sans-serif;font-weight:700;font-size:12px;color:#fff;margin-bottom:5px}
+  .ta-text{font-size:10px;color:#8a9ab5;line-height:1.6}
+  .footer{display:flex;justify-content:space-between;align-items:center;padding-top:16px;border-top:1px solid rgba(255,255,255,0.08);font-size:10px;color:#8a9ab5}
+  .legend{display:flex;gap:16px;margin-top:10px;padding:8px 16px}
+  .leg-item{display:flex;align-items:center;gap:6px;font-size:10px;color:#8a9ab5}
+  .leg-dot{width:10px;height:10px;border-radius:50%}
+  @media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style></head><body><div class="page">
+
   <div class="header">
-    <div class="logo-area">
-      <div class="logo-text">JMR <span style="color:#c8993a">⬡</span></div>
-      <div class="logo-sub">GLOBAL INGREDIENTS</div>
+    <div style="display:flex;flex-direction:column;gap:2px">${LOGO_SVG}<div style="font-size:9px;letter-spacing:0.2em;color:#c8993a;margin-top:4px">GLOBAL INGREDIENTS</div></div>
+    <div class="title-block">
+      <div class="main-title">${title}</div>
+      <div class="sub-title">${subtitle}</div>
     </div>
-    <div class="title-area">
-      <div class="title">${title}</div>
-      <div class="subtitle">${subtitle}</div>
-    </div>
-    <div class="flow-count">
-      <div class="num">${flows.length}</div>
-      <div class="lbl">TOTAL FLOWS<br>${layer === 'ALL' ? 'L1 + L2' : layer}</div>
+    <div class="flow-badge">
+      <div class="flow-num">${flows.length}</div>
+      <div class="flow-lbl">TOTAL FLOWS<br>${layer==='ALL'||!layer?'L1 + L2':layer}</div>
     </div>
   </div>
 
-  <!-- STATS ROW -->
-  <div class="stats-row">
-    <div class="stat-box">
-      <div class="stat-icon">💰</div>
-      <div class="stat-label">TOTAL FOB VALUE</div>
-      <div class="stat-value">${fmt(totalFob)}</div>
-      <div class="stat-unit">USD</div>
-    </div>
-    <div class="stat-box">
-      <div class="stat-icon">⚓</div>
-      <div class="stat-label">TOTAL VOLUME</div>
-      <div class="stat-value">${(totalVol/1e6).toFixed(2)}M</div>
-      <div class="stat-unit">MT</div>
-    </div>
-    <div class="stat-box">
-      <div class="stat-icon">📊</div>
-      <div class="stat-label">WEIGHTED AVG PRICE</div>
-      <div class="stat-value">$${avgPrice.toFixed(2)}</div>
-      <div class="stat-unit">/KG</div>
-    </div>
-    <div class="stat-box">
-      <div class="stat-icon">🏭</div>
-      <div class="stat-label">FLOWS TO PROCESSORS</div>
-      <div class="stat-value">${processors}</div>
-      <div class="stat-unit">YES ⚡</div>
-    </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-icon">💰</div><div class="stat-label">Total FOB Value</div><div class="stat-value">${fmt(totalFob)}</div><div class="stat-unit">USD</div></div>
+    <div class="stat"><div class="stat-icon">⚓</div><div class="stat-label">Total Volume</div><div class="stat-value">${(totalVol/1e6).toFixed(2)}M</div><div class="stat-unit">MT</div></div>
+    <div class="stat"><div class="stat-icon">📊</div><div class="stat-label">Weighted Avg Price</div><div class="stat-value">$${avgPrice.toFixed(2)}</div><div class="stat-unit">/KG</div></div>
+    <div class="stat"><div class="stat-icon">🏭</div><div class="stat-label">Flows to Processors</div><div class="stat-value">${processors}</div><div class="stat-unit">YES ⚡</div></div>
   </div>
 
-  <!-- MAIN GRID: MAP + RANKINGS -->
-  <div class="main-grid">
-    <div class="map-section">
-      <div style="padding:16px;background:rgba(200,153,58,0.05);border-bottom:1px solid rgba(200,153,58,0.1)">
-        <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:4px">STRONG TRADE CONNECTIONS</div>
-        <div style="font-size:11px;color:#8a9ab5;line-height:1.5">Key agricultural & ingredient flows from ${exporter||'Mercosur'} to markets across Africa.</div>
+  <div class="mid-section">
+    <div class="map-box">
+      <div class="map-header">
+        <div class="map-title">STRONG TRADE CONNECTIONS</div>
+        <div class="map-sub">Key agricultural & ingredient flows from ${exporter||'Mercosur'} to markets across Africa.</div>
       </div>
-      <div id="map-container" style="background:#0d1a2e;padding:16px;min-height:300px;display:flex;align-items:center;justify-content:center">
-        <canvas id="map-canvas" width="460" height="300"></canvas>
+      <canvas id="map-canvas" width="460" height="320" style="display:block"></canvas>
+      <div class="legend">
+        <div class="leg-item"><div class="leg-dot" style="background:#2ecc71"></div>L1 – Primary Ingredients</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#4a9eda"></div>L2 – Value Added Ingredients</div>
       </div>
     </div>
-    <div class="right-panel">
+    <div class="right-col">
       <div class="panel">
-        <div class="panel-title">TOP 5 MARKETS BY FOB VALUE</div>
-        ${topMarkets.map(([name, val], i) => `
+        <div class="panel-title">Top 5 Markets by FOB Value</div>
+        ${topMarkets.map(([name,val],i) => `
           <div class="market-row">
-            <div class="market-num">${i+1}</div>
-            <div class="market-name">${name}</div>
-            <div class="market-bar-wrap"><div class="market-bar" style="width:${(val/topMarkets[0][1]*100).toFixed(0)}%"></div></div>
-            <div class="market-value">${fmt(val)}</div>
-            <div class="market-pct">${(val/totalFob*100).toFixed(1)}%</div>
+            <div class="mkt-num">${i+1}</div>
+            <div class="mkt-flag">${COUNTRY_FLAGS[name]||'🌍'}</div>
+            <div class="mkt-name">${name}</div>
+            <div class="mkt-bar-wrap"><div class="mkt-bar" style="width:${(val/topMarkets[0][1]*100).toFixed(0)}%"></div></div>
+            <div class="mkt-val">${fmt(val)}</div>
+            <div class="mkt-pct">${(val/totalFob*100).toFixed(1)}%</div>
           </div>`).join('')}
       </div>
       <div class="panel">
-        <div class="panel-title">TOP PRODUCTS BY FOB VALUE</div>
-        ${topProducts.map(([name, val]) => `
-          <div class="product-row">
-            <div class="product-name">${name}</div>
-            <div class="product-value">${fmt(val)}</div>
-            <div class="product-pct">${(val/totalFob*100).toFixed(1)}%</div>
+        <div class="panel-title">Top Products by FOB Value</div>
+        ${topProducts.map(([name,val]) => `
+          <div class="prod-row">
+            <div class="prod-icon">${PRODUCT_ICONS[name]||'📦'}</div>
+            <div class="prod-name">${name}</div>
+            <div class="prod-val">${fmt(val)}</div>
+            <div class="prod-pct">${(val/totalFob*100).toFixed(1)}%</div>
           </div>`).join('')}
       </div>
     </div>
   </div>
 
-  <!-- DETAIL TABLE -->
-  <div style="font-size:10px;letter-spacing:0.15em;color:#c8993a;margin-bottom:12px;">TRADE FLOWS DETAIL (${layer === 'ALL' ? 'L1 + L2' : layer})</div>
-  <table class="detail-table">
-    <thead>
-      <tr>
-        <th>#</th><th>PRODUCT</th><th>TO</th><th>LAYER</th>
-        <th>FOB VALUE (USD)</th><th>VOLUME (MT)</th><th>$/KG</th><th>PROCESSOR?</th>
-      </tr>
-    </thead>
-    <tbody>
-      ${flows.sort((a,b) => (b.fob_usd||0)-(a.fob_usd||0)).map((f, i) => `
-        <tr>
-          <td style="color:#8a9ab5">${i+1}</td>
-          <td style="color:#fff;font-weight:600">${f.product || f.hs_code}</td>
-          <td style="color:#8a9ab5">${f.importer}</td>
-          <td><span class="${f.layer === 'L2' ? 'l2-badge' : 'l1-badge'}">${f.layer||'L1'}</span></td>
-          <td style="color:#c8993a">${fmt(f.fob_usd)}</td>
-          <td style="color:#ccc">${f.volume_mt ? f.volume_mt.toLocaleString(undefined,{maximumFractionDigits:0}) : '-'}</td>
-          <td style="color:#ccc">${f.price_per_kg ? '$'+f.price_per_kg.toFixed(2) : '-'}</td>
-          <td style="color:${f.importer_is_processor ? '#e8b84b' : '#4a5a70'}">${f.importer_is_processor ? 'YES ⚡' : '–'}</td>
-        </tr>`).join('')}
-    </tbody>
-  </table>
-
-  <!-- TAKEAWAYS -->
-  <div class="takeaways">
-    <div class="takeaway">
-      <div class="takeaway-icon">🌍</div>
-      <div class="takeaway-title">North Africa leads</div>
-      <div class="takeaway-text">${topMarkets.slice(0,3).map(m=>m[0]).join(', ')} account for ${(topMarkets.slice(0,3).reduce((s,m)=>s+m[1],0)/totalFob*100).toFixed(1)}% of total FOB value.</div>
-    </div>
-    <div class="takeaway">
-      <div class="takeaway-icon">🌾</div>
-      <div class="takeaway-title">${topProducts[0]?.[0] || 'Top product'} dominates</div>
-      <div class="takeaway-text">${topProducts[0]?.[0]} represents ${topProducts[0] ? (topProducts[0][1]/totalFob*100).toFixed(1) : 0}% of total trade value.</div>
-    </div>
-    <div class="takeaway">
-      <div class="takeaway-icon">🏭</div>
-      <div class="takeaway-title">Value added opportunities</div>
-      <div class="takeaway-text">${flows.filter(f=>f.layer==='L2').length} L2 flows identified across ${[...new Set(flows.filter(f=>f.layer==='L2').map(f=>f.importer))].length} markets.</div>
-    </div>
-    <div class="takeaway">
-      <div class="takeaway-icon">🤝</div>
-      <div class="takeaway-title">Diverse market reach</div>
-      <div class="takeaway-text">${flows.length} unique trade flows across ${[...new Set(flows.map(f=>f.importer))].length} African countries.</div>
-    </div>
+  <div class="detail-label">Trade Flows Detail (${layer==='ALL'||!layer?'L1 + L2':layer})</div>
+  <div class="detail-grid">
+    <table>
+      <thead><tr><th>#</th><th>Product</th><th>To</th><th>Layer</th><th>FOB Value</th><th>Vol MT</th><th>$/KG</th><th>Proc?</th></tr></thead>
+      <tbody>${col1.map((f,i) => tableRow(f,i)).join('')}</tbody>
+    </table>
+    <table>
+      <thead><tr><th>#</th><th>Product</th><th>To</th><th>Layer</th><th>FOB Value</th><th>Vol MT</th><th>$/KG</th><th>Proc?</th></tr></thead>
+      <tbody>${col2.map((f,i) => tableRow(f,i+half)).join('')}</tbody>
+    </table>
   </div>
 
-  <!-- FOOTER -->
+  <div class="takeaways">
+    <div class="takeaway"><div class="ta-icon">🌍</div><div class="ta-title">North Africa leads</div><div class="ta-text">${topMarkets.slice(0,3).map(m=>m[0]).join(', ')} account for ${(topMarkets.slice(0,3).reduce((s,m)=>s+m[1],0)/totalFob*100).toFixed(1)}% of total FOB value.</div></div>
+    <div class="takeaway"><div class="ta-icon">🌾</div><div class="ta-title">${topProducts[0]?.[0]||''} dominates</div><div class="ta-text">${topProducts[0]?.[0]||''} represents ${topProducts[0]?(topProducts[0][1]/totalFob*100).toFixed(1):0}% of total trade value.</div></div>
+    <div class="takeaway"><div class="ta-icon">🏭</div><div class="ta-title">Value added</div><div class="ta-text">${flows.filter(f=>f.layer==='L2').length} L2 flows across ${[...new Set(flows.filter(f=>f.layer==='L2').map(f=>f.importer))].length} markets.</div></div>
+    <div class="takeaway"><div class="ta-icon">🤝</div><div class="ta-title">Diverse reach</div><div class="ta-text">${flows.length} unique flows across ${[...new Set(flows.map(f=>f.importer))].length} African countries.</div></div>
+  </div>
+
   <div class="footer">
-    <div class="footer-left">Source: JMR Trade Intelligence Platform &nbsp;|&nbsp; Data Period: Latest Available</div>
-    <div class="footer-right">www.jmrglobalgroup.com</div>
+    <div>Source: JMR Trade Intelligence Platform &nbsp;|&nbsp; Data Period: Latest Available</div>
+    <div style="color:#c8993a;letter-spacing:0.08em">www.jmrglobalgroup.com</div>
   </div>
 </div>
 
 <script>
-// Draw map on canvas
 (function() {
   const canvas = document.getElementById('map-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  const W = 460, H = 300;
-  const pad = { l: 100, r: 10, t: 10, b: 10 };
-  const mapW = W - pad.l - pad.r;
-  const mapH = H - pad.t - pad.b;
+  const W = 460, H = 320;
+  const pad = { l: 110, r: 10, t: 15, b: 15 };
+  const mapW = W - pad.l - pad.r, mapH = H - pad.t - pad.b;
 
-  // Background
   ctx.fillStyle = '#0d1a2e';
-  ctx.fillRect(0, 0, W, H);
+  ctx.fillRect(0,0,W,H);
 
-  // Africa shape
+  // Africa outline
   ctx.beginPath();
-  const pts = [
-    [0.18,0.05],[0.55,0.02],[0.85,0.15],[1.00,0.35],[0.95,0.55],
-    [0.80,0.70],[0.75,0.95],[0.55,1.00],[0.35,0.90],[0.20,0.70],
-    [0.05,0.50],[0.00,0.30],[0.10,0.10]
-  ];
-  pts.forEach(([x,y], i) => {
-    const px = pad.l + x*mapW, py = pad.t + y*mapH;
-    i === 0 ? ctx.moveTo(px,py) : ctx.lineTo(px,py);
+  [[0.18,0.05],[0.55,0.02],[0.85,0.15],[1.00,0.35],[0.95,0.55],[0.80,0.70],[0.75,0.95],[0.55,1.00],[0.35,0.90],[0.20,0.70],[0.05,0.50],[0.00,0.30],[0.10,0.10]].forEach(([x,y],i) => {
+    const px = pad.l+x*mapW, py = pad.t+y*mapH;
+    i===0 ? ctx.moveTo(px,py) : ctx.lineTo(px,py);
   });
   ctx.closePath();
-  ctx.fillStyle = '#1a3460';
-  ctx.fill();
-  ctx.strokeStyle = '#2a4a7f';
-  ctx.lineWidth = 1;
-  ctx.stroke();
+  ctx.fillStyle='#1a3460'; ctx.fill();
+  ctx.strokeStyle='#2a4a7f'; ctx.lineWidth=1; ctx.stroke();
 
-  // Argentina dot
-  const argX = 40, argY = H * 0.55;
+  const argX=50, argY=H*0.58;
+  // Argentina shape (simplified)
   ctx.beginPath();
-  ctx.arc(argX, argY, 10, 0, Math.PI*2);
-  ctx.fillStyle = '#c8993a';
-  ctx.fill();
-  ctx.fillStyle = '#c8993a';
-  ctx.font = 'bold 8px monospace';
-  ctx.textAlign = 'center';
-  ctx.fillText('${(exporter||'ARG').toUpperCase().slice(0,3)}', argX, argY - 14);
+  ctx.arc(argX, argY, 16, 0, Math.PI*2);
+  ctx.fillStyle='rgba(200,153,58,0.15)'; ctx.fill();
+  ctx.strokeStyle='#c8993a'; ctx.lineWidth=2; ctx.stroke();
+  ctx.fillStyle='#c8993a'; ctx.font='bold 10px monospace'; ctx.textAlign='center';
+  ctx.fillText('${(exporter||'ARG').slice(0,3).toUpperCase()}', argX, argY+4);
+  ctx.fillText('${COUNTRY_FLAGS[exporter||'Argentina']||'🇦🇷'}', argX, argY-20);
 
-  const POSITIONS = ${JSON.stringify(AFRICA_COUNTRIES_POS)};
-  const flows = ${JSON.stringify(flows.map(f => ({importer: f.importer, fob_usd: f.fob_usd, layer: f.layer})))};
-  const maxFob = Math.max(...flows.map(f => f.fob_usd || 0));
+  const POS = ${JSON.stringify(AFRICA_COUNTRIES_POS)};
+  const flows = ${JSON.stringify(flows.map(f=>({importer:f.importer,fob_usd:f.fob_usd||0,layer:f.layer||'L1'})))};
+  const maxFob = Math.max(...flows.map(f=>f.fob_usd||0), 1);
+  const dests = [...new Set(flows.map(f=>f.importer))];
 
-  const destinations = [...new Set(flows.map(f => f.importer))];
-  destinations.forEach(dest => {
-    const pos = POSITIONS[dest];
-    if (!pos) return;
-    const destFlows = flows.filter(f => f.importer === dest);
-    const totalFob = destFlows.reduce((s,f) => s + (f.fob_usd||0), 0);
-    const px = pad.l + pos[0]*mapW;
-    const py = pad.t + pos[1]*mapH;
-    const strokeW = Math.max(0.5, Math.min(3.5, (totalFob/maxFob)*3.5));
-    const hasL2 = destFlows.some(f => f.layer === 'L2');
+  dests.forEach(dest => {
+    const pos = POS[dest]; if(!pos) return;
+    const destFlows = flows.filter(f=>f.importer===dest);
+    const total = destFlows.reduce((s,f)=>s+(f.fob_usd||0),0);
+    const px = pad.l+pos[0]*mapW, py = pad.t+pos[1]*mapH;
+    const w = Math.max(0.5, Math.min(4, total/maxFob*4));
+    const hasL2 = destFlows.some(f=>f.layer==='L2');
+    const col = hasL2?'rgba(74,158,218,0.75)':'rgba(200,153,58,0.75)';
 
-    // Flow line
-    ctx.beginPath();
-    ctx.moveTo(argX, argY);
-    const cpx = (argX + px)/2;
-    const cpy = Math.min(argY, py) - 50;
-    ctx.quadraticCurveTo(cpx, cpy, px, py);
-    ctx.strokeStyle = hasL2 ? 'rgba(74,158,218,0.7)' : 'rgba(200,153,58,0.7)';
-    ctx.lineWidth = strokeW;
-    ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(argX,argY);
+    ctx.quadraticCurveTo((argX+px)/2, Math.min(argY,py)-55, px, py);
+    ctx.strokeStyle=col; ctx.lineWidth=w; ctx.stroke();
 
-    // Destination dot
-    ctx.beginPath();
-    ctx.arc(px, py, Math.max(3, strokeW*1.5), 0, Math.PI*2);
-    ctx.fillStyle = hasL2 ? '#4a9eda' : '#2ecc71';
-    ctx.fill();
+    ctx.beginPath(); ctx.arc(px,py,Math.max(3,w*1.8),0,Math.PI*2);
+    ctx.fillStyle=hasL2?'#4a9eda':'#2ecc71'; ctx.fill();
   });
 })();
 </script>
-</body>
-</html>`;
+</body></html>`;
 
-  const win = window.open('', '_blank', 'width=1250,height=900');
+  const win = window.open('', '_blank', 'width=960,height=900');
   win.document.write(html);
   win.document.close();
   win.focus();
-  setTimeout(() => {
-    win.print();
-  }, 1500);
+  setTimeout(() => win.print(), 1800);
 }
 
 // ── GAP ANALYSIS REPORT ──────────────────────────────────────────────────────
