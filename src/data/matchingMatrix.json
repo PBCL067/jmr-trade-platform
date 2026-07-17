@@ -1,0 +1,158 @@
+{
+  "Olipop Inc.": [
+    {
+      "supplier_name": "Acheral S.A.",
+      "city": "Acheral, Argentina",
+      "overlapping_products": [
+        "Juice Concentrate",
+        "Lemon Concentrate"
+      ],
+      "confidence_score": 90,
+      "contact_email": "martineznavarro@martineznavarro"
+    },
+    {
+      "supplier_name": "Argenti Lemon S.A.",
+      "city": "Tucum\u00e1n, Argentina",
+      "overlapping_products": [
+        "Juice Concentrate",
+        "Lemon Concentrate"
+      ],
+      "confidence_score": 90,
+      "contact_email": "jsaravia@argentilemon"
+    },
+    {
+      "supplier_name": "Citromax S.A.C.I",
+      "city": "Acheral, Argentina",
+      "overlapping_products": [
+        "Juice Concentrate",
+        "Lemon Concentrate"
+      ],
+      "confidence_score": 90,
+      "contact_email": "jescudero@citromax"
+    },
+    {
+      "supplier_name": "Citrusalta S.A.",
+      "city": "Salta, Argentina",
+      "overlapping_products": [
+        "Juice Concentrate",
+        "Lemon Concentrate"
+      ],
+      "confidence_score": 90,
+      "contact_email": "achyu@ledesma"
+    },
+    {
+      "supplier_name": "Citrusvil S.A.",
+      "city": "Buenos Aires, Argentina",
+      "overlapping_products": [
+        "Juice Concentrate",
+        "Lemon Concentrate"
+      ],
+      "confidence_score": 90,
+      "contact_email": "anolte@citrusvil"
+    }
+  ],
+  "Spindrift Beverage Co.": [
+    {
+      "supplier_name": "Acheral S.A.",
+      "city": "Acheral, Argentina",
+      "overlapping_products": [
+        "Juice Concentrate",
+        "Citrus Essential Oils"
+      ],
+      "confidence_score": 90,
+      "contact_email": "martineznavarro@martineznavarro"
+    },
+    {
+      "supplier_name": "Argenti Lemon S.A.",
+      "city": "Tucum\u00e1n, Argentina",
+      "overlapping_products": [
+        "Juice Concentrate",
+        "Citrus Essential Oils"
+      ],
+      "confidence_score": 90,
+      "contact_email": "jsaravia@argentilemon"
+    },
+    {
+      "supplier_name": "Citromax S.A.C.I",
+      "city": "Acheral, Argentina",
+      "overlapping_products": [
+        "Juice Concentrate",
+        "Citrus Essential Oils"
+      ],
+      "confidence_score": 90,
+      "contact_email": "jescudero@citromax"
+    },
+    {
+      "supplier_name": "Citrusalta S.A.",
+      "city": "Salta, Argentina",
+      "overlapping_products": [
+        "Juice Concentrate",
+        "Citrus Essential Oils"
+      ],
+      "confidence_score": 90,
+      "contact_email": "achyu@ledesma"
+    },
+    {
+      "supplier_name": "Citrusvil S.A.",
+      "city": "Buenos Aires, Argentina",
+      "overlapping_products": [
+        "Juice Concentrate",
+        "Citrus Essential Oils"
+      ],
+      "confidence_score": 90,
+      "contact_email": "anolte@citrusvil"
+    }
+  ],
+  "Kevian Kenya Ltd": [
+    {
+      "supplier_name": "Acheral S.A.",
+      "city": "Acheral, Argentina",
+      "overlapping_products": [
+        "Fresh Lemon",
+        "Fresh Fruit"
+      ],
+      "confidence_score": 90,
+      "contact_email": "martineznavarro@martineznavarro"
+    },
+    {
+      "supplier_name": "Argenti Lemon S.A.",
+      "city": "Tucum\u00e1n, Argentina",
+      "overlapping_products": [
+        "Fresh Lemon",
+        "Fresh Fruit"
+      ],
+      "confidence_score": 90,
+      "contact_email": "jsaravia@argentilemon"
+    },
+    {
+      "supplier_name": "Citromax S.A.C.I",
+      "city": "Acheral, Argentina",
+      "overlapping_products": [
+        "Fresh Lemon",
+        "Fresh Fruit"
+      ],
+      "confidence_score": 90,
+      "contact_email": "jescudero@citromax"
+    },
+    {
+      "supplier_name": "Citrusalta S.A.",
+      "city": "Salta, Argentina",
+      "overlapping_products": [
+        "Fresh Lemon",
+        "Fresh Fruit"
+      ],
+      "confidence_score": 90,
+      "contact_email": "achyu@ledesma"
+    },
+    {
+      "supplier_name": "Citrusvil S.A.",
+      "city": "Buenos Aires, Argentina",
+      "overlapping_products": [
+        "Fresh Lemon",
+        "Fresh Fruit"
+      ],
+      "confidence_score": 90,
+      "contact_email": "anolte@citrusvil"
+    }
+  ]
+}
