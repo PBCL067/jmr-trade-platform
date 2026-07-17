@@ -4,7 +4,7 @@ import { insertRow } from './supabase';
 
 const CATEGORIES = ['All', 'Distributor', 'Confectionery', 'Dairy', 'Bakery',
                     'Food Manufacturer', 'Edible Oils & Fats', 'Instant Food'];
-const COUNTRIES  = ['All', 'South Africa', 'Nigeria', 'Kenya', 'Egypt', 'Ghana', 'Morocco', 'Ethiopia', 'Tanzania', 'Zambia', 'Zimbabwe'];
+const COUNTRIES  = ['All', 'South Africa', 'Nigeria', 'Kenya', 'Egypt', 'Ghana', 'Morocco', 'Ethiopia', 'Tanzania', 'Zambia', 'Zimbabwe', 'USA', 'Netherlands', 'UK', 'Greece', 'Canada'];
 const STATUS_COLOR = {
   'Priority Target': '#e8b84b',
   'Prospect':        '#4a9eda',
@@ -46,16 +46,26 @@ export default function Buyers() {
   const [editingId, setEditingId] = useState(null);
   const [form,      setForm]      = useState(EMPTY_BUYER);
   const [saving,    setSaving]    = useState(false);
+  const [rawIngredients, setRawIngredients] = useState('');
 
-  function startNew() { setForm(EMPTY_BUYER); setEditingId(null); setShowForm(true); }
-  function startEdit(b) { setForm({ ...EMPTY_BUYER, ...b }); setEditingId(b.id); setShowForm(true); }
+  function startNew() { setForm(EMPTY_BUYER); setRawIngredients(''); setEditingId(null); setShowForm(true); }
+  function startEdit(b) {
+    setForm({ ...EMPTY_BUYER, ...b });
+    setEditingId(b.id);
+    try {
+      const parsed = typeof b.ingredient_needs === 'string' ? JSON.parse(b.ingredient_needs) : (b.ingredient_needs || []);
+      setRawIngredients(parsed.join(', '));
+    } catch(e) { setRawIngredients(''); }
+    setShowForm(true);
+  }
 
   async function handleSave() {
     if (!form.name.trim()) { alert('Name is required'); return; }
     setSaving(true);
     try {
       const autoId = form.name.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g,'');
-      const payload = { ...form, id: editingId || autoId };
+      const processedIngredients = JSON.stringify(rawIngredients.split(',').map(x => x.trim()).filter(Boolean));
+      const payload = { ...form, ingredient_needs: processedIngredients, id: editingId || autoId };
       if (editingId) {
         await updateRow('buyers', editingId, payload);
       } else {
@@ -157,9 +167,9 @@ export default function Buyers() {
             </div>
             <div style={{marginBottom:12}}><label style={labelStyleB}>Ingredient Needs (comma separated)</label>
               <input style={inputStyleB}
-                value={(() => { try { const v = JSON.parse(form.ingredient_needs||'[]'); return v.join(', '); } catch { return ''; } })()}
+                value={rawIngredients}
                 placeholder="e.g. Modified Starch, Soya Lecithin, FCMP"
-                onChange={e => setForm(p => ({...p, ingredient_needs: JSON.stringify(e.target.value.split(',').map(x=>x.trim()).filter(Boolean))}))} /></div>
+                onChange={e => setRawIngredients(e.target.value)} /></div>
             <div style={{marginBottom:20}}><label style={labelStyleB}>Notes</label>
               <textarea style={{...inputStyleB,height:80,resize:'vertical'}} value={form.notes || ''}
                 onChange={e => setForm(p => ({...p, notes: e.target.value}))} /></div>

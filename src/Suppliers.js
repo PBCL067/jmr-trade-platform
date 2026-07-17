@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fetchTable, updateRow, insertRow } from './supabase';
-import { uploadSpec, getSupplierSpecs } from './firebase';
+// import { uploadSpec, getSupplierSpecs } from './firebase';
 
 const COUNTRIES  = ['All', 'Argentina', 'Brazil', 'Uruguay', 'Chile', 'Paraguay', 'Mexico', 'Colombia', 'Ecuador', 'Peru', 'South Africa'];
 const CATEGORIES = ['All', 'Modified Starch', 'Dairy', 'Edible Oils', 'Wheat Flour', 'Gelatin', 'Soy Protein', 'Soya Lecithin', 'Milk Protein Concentrate', 'Tapioca Starch', 'Oleochemicals', 'Food Ingredients Distribution'];
@@ -103,24 +103,14 @@ function SupplierCard({ s, buyers, onEdit }) {
 
   async function loadSpecs() {
     if (specsLoaded) return;
-    const data = await getSupplierSpecs(s.id);
+    // Stubbed out legacy Firebase fetch
+    const data = []; 
     setSpecs(data);
     setSpecsLoaded(true);
   }
 
   async function handleUpload(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    setUploading(true);
-    try {
-      const spec = await uploadSpec(s.id, file);
-      setSpecs(prev => [...prev, spec]);
-      alert('Upload successful: ' + file.name);
-    } catch(err) {
-      console.error('Upload error full:', err);
-      alert('Upload failed: ' + (err.code || '') + ' ' + (err.message || JSON.stringify(err)));
-    }
-    setUploading(false);
+    alert('Upload disabled: Migrating storage layers.');
   }
 
   function toggleSpecs() {

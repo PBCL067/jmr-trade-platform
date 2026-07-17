@@ -1,30 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { fetchCollection, addDocument, updateDocument, deleteDocument } from './firebase';
-import { SUPPLIERS } from './data/supplierData';
+import { fetchTable, insertRow, updateRow, deleteRow } from './supabase';
 
 const SPECIALITIES = [
-  'All',
-  'Modified Starch E1422',
-  'Wheat Starch',
-  'Modified Wheat Starch',
-  'Cassava Starch',
-  'Maize Starch',
-  'Glucose Syrup',
-  'Edible Oils',
-  'Dairy / Milk Powder',
-  'Gelatin',
-  'Soy Protein',
-  'Wheat Flour',
-  'Corn Flour',
-  'General Ingredients',
+  'All', 'Modified Starch E1422', 'Wheat Starch', 'Modified Wheat Starch',
+  'Cassava Starch', 'Maize Starch', 'Glucose Syrup', 'Edible Oils',
+  'Dairy / Milk Powder', 'Milk Powder FCMP', 'Gelatin', 'Soy Protein',
+  'Wheat Flour', 'Corn Flour', 'General Ingredients', 'Lemon Concentrate',
 ];
 
-const COUNTRIES = ['All', 'Argentina', 'Brazil', 'Uruguay', 'Chile', 'Paraguay', 'Mexico',
-  'Colombia', 'Ecuador', 'Peru', 'South Africa', 'Germany', 'UK', 'Other'];
+const COUNTRIES = ['All', 'Argentina', 'Brazil', 'Uruguay', 'Chile', 'Paraguay',
+  'Mexico', 'Colombia', 'Ecuador', 'Peru', 'South Africa', 'Germany', 'UK', 'Other'];
 
 const STATUS_COLOR = {
   'Active':    '#2ecc71',
   'Warm':      '#e8b84b',
+  'Qualified': '#3b82f6',
   'Cold':      '#4a5a70',
   'No Fit':    '#e74c3c',
 };
@@ -34,44 +24,8 @@ const EMPTY_FORM = {
   email: '', phone: '', whatsapp: '',
   specialities: [],
   last_contacted: '', contact_method: '',
-  status: 'Active',
-  notes: '',
-  supplier_id: '',
+  status: 'Active', notes: '', supplier_id: '',
 };
-
-// Seed contacts from today's outreach
-const SEED_CONTACTS = [
-  {
-    name: 'Fausto Nibale',
-    supplier_id: 'ff_ingredients_argentina',
-    title: 'Commercial Manager',
-    company: 'F&F Ingredients S.A.',
-    country: 'Argentina',
-    email: 'info@ffingredients.com.ar',
-    phone: '+54 3329 439720',
-    whatsapp: '+54 3329 439720',
-    specialities: ['Wheat Starch', 'Modified Wheat Starch', 'Cassava Starch'],
-    last_contacted: '2026-05-26',
-    contact_method: 'Online contact form',
-    status: 'Warm',
-    notes: 'Responded same day. F&F distributes cassava E1422 (Brazil origin, non-GMO) and is strong in wheat starch / modified wheat starch via Semino. Not a fit for corn E1422 inquiry.',
-  },
-  {
-    name: 'Santiago Cieza',
-    supplier_id: 'tate_lyle_gemacom_brazil',
-    title: 'Sales Representative',
-    company: 'Tate & Lyle / Gemacom Tech',
-    country: 'Argentina',
-    email: 'Via Tate & Lyle contact form',
-    phone: '',
-    whatsapp: '',
-    specialities: ['Modified Starch E1422', 'General Ingredients'],
-    last_contacted: '2026-05-26',
-    contact_method: 'Tate & Lyle contact form',
-    status: 'Active',
-    notes: 'Contacted via Tate & Lyle BA office contact form. Awaiting response re corn E1422 waxy for SA market.',
-  },
-];
 
 function Tag({ label, onRemove }) {
   return (
@@ -81,447 +35,297 @@ function Tag({ label, onRemove }) {
       border: '1px solid rgba(59,130,246,0.3)',
       padding: '2px 8px', borderRadius: 3 }}>
       {label}
-      {onRemove && (
-        <span onClick={onRemove} style={{ cursor: 'pointer', color: 'var(--text-muted)',
-          fontWeight: 700, marginLeft: 2 }}>×</span>
-      )}
+      {onRemove && <span onClick={onRemove} style={{ cursor: 'pointer', color: 'var(--text-muted)', fontWeight: 700, marginLeft: 2 }}>×</span>}
     </span>
   );
 }
 
-function ContactCard({ contact, onEdit }) {
+function ContactCard({ contact, onEdit, onDelete }) {
   const [expanded, setExpanded] = useState(false);
   const statusColor = STATUS_COLOR[contact.status] || '#4a5a70';
+  const specs = typeof contact.specialities === 'string' ? JSON.parse(contact.specialities) : (contact.specialities || []);
 
   return (
-    <div className="card" style={{ borderLeft: '3px solid ' + statusColor }}>
+    <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)',
+      borderRadius: 6, padding: 16, borderLeft: '3px solid ' + statusColor }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-        <div style={{ flex: 1 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 2 }}>
-            <div className="card-title" style={{ margin: 0 }}>{contact.name}</div>
-            <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: statusColor,
-              background: statusColor + '18', border: '1px solid ' + statusColor + '40',
-              padding: '2px 7px', borderRadius: 3 }}>{(contact.status || 'Active').toUpperCase()}</span>
+        <div>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>
+            {contact.name}
           </div>
-          <div className="card-sub">{contact.title} &nbsp;·&nbsp; {contact.company} &nbsp;·&nbsp; {contact.country}</div>
+          <div style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginTop: 2 }}>
+            {contact.title} · {contact.company}
+          </div>
+          <div style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+            {contact.country}{contact.last_contacted ? ` · Last contact: ${contact.last_contacted}` : ''}
+          </div>
         </div>
-        <div style={{ display: 'flex', gap: 6 }}>
-          <button onClick={() => onEdit(contact)}
-            style={{ background: 'none', border: '1px solid var(--border)', borderRadius: 4,
-              color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontSize: 10,
-              padding: '3px 8px', cursor: 'pointer' }}>edit</button>
-          <button onClick={() => setExpanded(!expanded)}
-            style={{ background: 'none', border: '1px solid var(--border)', borderRadius: 4,
-              color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontSize: 10,
-              padding: '3px 8px', cursor: 'pointer' }}>{expanded ? 'less' : 'more'}</button>
+        <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+          <span style={{ fontSize: 10, color: statusColor,
+            background: statusColor + '18', border: '1px solid ' + statusColor + '40',
+            padding: '2px 7px', borderRadius: 3, fontFamily: 'var(--font-mono)' }}>
+            {(contact.status || '').toUpperCase()}
+          </span>
+          <button onClick={() => onEdit(contact)} style={{ background: 'none', border: '1px solid var(--border)',
+            borderRadius: 4, padding: '3px 8px', cursor: 'pointer', fontSize: 11,
+            color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>Edit</button>
+          <button onClick={() => setExpanded(!expanded)} style={{ background: 'none', border: '1px solid var(--border)',
+            borderRadius: 4, padding: '3px 8px', cursor: 'pointer', fontSize: 11,
+            color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>{expanded ? '▲' : '▼'}</button>
         </div>
       </div>
 
-      {/* Specialities */}
-      {contact.specialities && contact.specialities.length > 0 && (
+      {specs.length > 0 && (
         <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginTop: 8 }}>
-          {contact.specialities.map(sp => <Tag key={sp} label={sp} />)}
+          {specs.map(s => <Tag key={s} label={s} />)}
         </div>
       )}
 
-      {/* Linked supplier */}
-      {contact.supplier_id && SUPPLIERS.find(s => s.id === contact.supplier_id) && (
-        <div style={{ marginTop: 8, display: 'inline-flex', alignItems: 'center', gap: 6,
-          fontSize: 11, fontFamily: 'var(--font-mono)',
-          color: '#e8b84b', background: 'rgba(232,184,75,0.1)',
-          border: '1px solid rgba(232,184,75,0.3)',
-          padding: '3px 10px', borderRadius: 3 }}>
-          ◈ {SUPPLIERS.find(s => s.id === contact.supplier_id).name} · {SUPPLIERS.find(s => s.id === contact.supplier_id).country}
-        </div>
-      )}
-
-      {/* Contact details */}
-      <div style={{ marginTop: 10, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px 16px' }}>
-        {contact.email && (
-          <>
-            <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>Email</span>
-            <span style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--blue)' }}>{contact.email}</span>
-          </>
-        )}
-        {contact.phone && (
-          <>
-            <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>Phone</span>
-            <span style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-primary)' }}>{contact.phone}</span>
-          </>
-        )}
-        {contact.whatsapp && contact.whatsapp !== contact.phone && (
-          <>
-            <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>WhatsApp</span>
-            <span style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: '#2ecc71' }}>{contact.whatsapp}</span>
-          </>
-        )}
-        {contact.last_contacted && (
-          <>
-            <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>Last Contact</span>
-            <span style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)' }}>
-              {contact.last_contacted} {contact.contact_method ? '· ' + contact.contact_method : ''}
-            </span>
-          </>
-        )}
-      </div>
-
-      {/* Expanded notes */}
-      {expanded && contact.notes && (
-        <div style={{ marginTop: 10, padding: '8px 12px',
-          background: 'var(--bg-hover)', border: '1px solid var(--border)',
-          borderRadius: 4, fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-          {contact.notes}
-        </div>
-      )}
-    </div>
-  );
-}
-
-function ContactForm({ initial, onSave, onCancel }) {
-  const [form, setForm] = useState(initial || EMPTY_FORM);
-  const [saving, setSaving] = useState(false);
-
-  const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
-
-  const addSpeciality = (sp) => {
-    if (sp && !form.specialities.includes(sp)) {
-      set('specialities', [...form.specialities, sp]);
-    }
-  };
-  const removeSpeciality = (sp) => set('specialities', form.specialities.filter(s => s !== sp));
-
-  const handleSave = async () => {
-    if (!form.name || !form.company) return alert('Name and company are required.');
-    setSaving(true);
-    await onSave(form);
-    setSaving(false);
-  };
-
-  const inputStyle = {
-    width: '100%', background: 'var(--bg-hover)', border: '1px solid var(--border)',
-    borderRadius: 4, color: 'var(--text-primary)', fontFamily: 'var(--font-mono)',
-    fontSize: 12, padding: '6px 10px', boxSizing: 'border-box',
-  };
-  const labelStyle = {
-    fontSize: 10, fontFamily: 'var(--font-mono)', color: 'var(--text-muted)',
-    letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 3, display: 'block',
-  };
-
-  return (
-    <div className="card" style={{ borderColor: 'var(--blue)', marginBottom: 20 }}>
-      <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 16, marginBottom: 16 }}>
-        {initial?.id ? 'Edit Contact' : 'Add New Contact'}
-      </div>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
-        <div>
-          <span style={labelStyle}>Name *</span>
-          <input style={inputStyle} value={form.name} onChange={e => set('name', e.target.value)} placeholder="Full name" />
-        </div>
-        <div>
-          <span style={labelStyle}>Title</span>
-          <input style={inputStyle} value={form.title} onChange={e => set('title', e.target.value)} placeholder="Job title" />
-        </div>
-        <div>
-          <span style={labelStyle}>Company *</span>
-          <select style={inputStyle} value={form.supplier_id || '__manual__'}
-            onChange={e => {
-              const val = e.target.value;
-              if (val === '__manual__') {
-                set('supplier_id', '');
-              } else {
-                const sup = SUPPLIERS.find(s => s.id === val);
-                if (sup) {
-                  set('supplier_id', val);
-                  set('company', sup.name);
-                  set('country', sup.country);
-                }
-              }
-            }}>
-            <option value="__manual__">{form.company || '— Select supplier or type below —'}</option>
-            {SUPPLIERS
-              .filter(s => !['buyer', 'association', 'intel contact'].some(k => (s.role||'').toLowerCase().includes(k)))
-              .sort((a,b) => (a.name||'').localeCompare(b.name||''))
-              .map(s => <option key={s.id} value={s.id}>{s.name} ({s.country})</option>)
-            }
-            <option value="__manual__">— Other (type manually) —</option>
-          </select>
-          {(!form.supplier_id) && (
-            <input style={{ ...inputStyle, marginTop: 6 }}
-              value={form.company} onChange={e => set('company', e.target.value)}
-              placeholder="Type company name manually..." />
+      {expanded && (
+        <div style={{ marginTop: 12, borderTop: '1px solid var(--border)', paddingTop: 12 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 8 }}>
+            {contact.email    && <div style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)' }}>📧 {contact.email}</div>}
+            {contact.phone    && <div style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)' }}>📞 {contact.phone}</div>}
+            {contact.whatsapp && <div style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)' }}>💬 {contact.whatsapp}</div>}
+            {contact.contact_method && <div style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)' }}>📋 {contact.contact_method}</div>}
+          </div>
+          {contact.notes && <p style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: 8 }}>{contact.notes}</p>}
+          {contact.next_action && (
+            <div style={{ padding: '6px 10px', background: 'rgba(232,184,75,0.08)',
+              border: '1px solid rgba(232,184,75,0.2)', borderRadius: 4, marginBottom: 8 }}>
+              <div style={{ fontSize: 10, color: '#e8b84b', fontFamily: 'var(--font-mono)', marginBottom: 2 }}>NEXT ACTION</div>
+              <div style={{ fontSize: 11, color: 'var(--text-secondary)' }}>{contact.next_action}</div>
+              {contact.next_action_date && <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 2 }}>{contact.next_action_date}</div>}
+            </div>
           )}
+          {contact.contact_outcome && (
+            <div style={{ padding: '6px 10px', background: 'rgba(59,130,246,0.08)',
+              border: '1px solid rgba(59,130,246,0.2)', borderRadius: 4 }}>
+              <div style={{ fontSize: 10, color: '#3b82f6', fontFamily: 'var(--font-mono)', marginBottom: 2 }}>OUTCOME</div>
+              <div style={{ fontSize: 11, color: 'var(--text-secondary)' }}>{contact.contact_outcome}</div>
+            </div>
+          )}
+          <button onClick={() => onDelete(contact.id)}
+            style={{ marginTop: 10, background: 'none', border: '1px solid rgba(231,76,60,0.3)',
+              borderRadius: 4, padding: '4px 10px', cursor: 'pointer', fontSize: 11,
+              color: '#e74c3c', fontFamily: 'var(--font-mono)' }}>Delete</button>
         </div>
-        <div>
-          <span style={labelStyle}>Country</span>
-          <select style={inputStyle} value={form.country} onChange={e => set('country', e.target.value)}>
-            <option value="">— Select —</option>
-            {COUNTRIES.slice(1).map(c => <option key={c}>{c}</option>)}
-          </select>
-        </div>
-        <div>
-          <span style={labelStyle}>Email</span>
-          <input style={inputStyle} value={form.email} onChange={e => set('email', e.target.value)} placeholder="email@company.com" />
-        </div>
-        <div>
-          <span style={labelStyle}>Phone</span>
-          <input style={inputStyle} value={form.phone} onChange={e => set('phone', e.target.value)} placeholder="+54 11 1234 5678" />
-        </div>
-        <div>
-          <span style={labelStyle}>WhatsApp</span>
-          <input style={inputStyle} value={form.whatsapp} onChange={e => set('whatsapp', e.target.value)} placeholder="+54 11 1234 5678" />
-        </div>
-        <div>
-          <span style={labelStyle}>Status</span>
-          <select style={inputStyle} value={form.status} onChange={e => set('status', e.target.value)}>
-            {Object.keys(STATUS_COLOR).map(s => <option key={s}>{s}</option>)}
-          </select>
-        </div>
-        <div>
-          <span style={labelStyle}>Last Contacted</span>
-          <input style={inputStyle} type="date" value={form.last_contacted} onChange={e => set('last_contacted', e.target.value)} />
-        </div>
-        <div>
-          <span style={labelStyle}>Contact Method</span>
-          <input style={inputStyle} value={form.contact_method} onChange={e => set('contact_method', e.target.value)} placeholder="Email / WhatsApp / Call" />
-        </div>
-      </div>
-
-      {/* Specialities */}
-      <div style={{ marginBottom: 12 }}>
-        <span style={labelStyle}>Specialities</span>
-        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 6 }}>
-          {form.specialities.map(sp => (
-            <Tag key={sp} label={sp} onRemove={() => removeSpeciality(sp)} />
-          ))}
-        </div>
-        <select style={{ ...inputStyle, width: 'auto' }}
-          onChange={e => { addSpeciality(e.target.value); e.target.value = ''; }}>
-          <option value="">+ Add speciality</option>
-          {SPECIALITIES.slice(1).filter(s => !form.specialities.includes(s)).map(s => (
-            <option key={s}>{s}</option>
-          ))}
-        </select>
-      </div>
-
-      {/* Notes */}
-      <div style={{ marginBottom: 16 }}>
-        <span style={labelStyle}>Notes</span>
-        <textarea style={{ ...inputStyle, height: 80, resize: 'vertical' }}
-          value={form.notes} onChange={e => set('notes', e.target.value)}
-          placeholder="Key notes, context, follow-up items..." />
-      </div>
-
-      <div style={{ display: 'flex', gap: 8 }}>
-        <button onClick={handleSave} disabled={saving}
-          style={{ background: '#3b82f6', border: 'none', borderRadius: 4,
-            color: '#fff', fontFamily: 'var(--font-mono)', fontSize: 12,
-            padding: '8px 20px', cursor: 'pointer', opacity: saving ? 0.6 : 1 }}>
-          {saving ? 'Saving...' : 'Save Contact'}
-        </button>
-        <button onClick={onCancel}
-          style={{ background: 'none', border: '1px solid var(--border)', borderRadius: 4,
-            color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontSize: 12,
-            padding: '8px 16px', cursor: 'pointer' }}>
-          Cancel
-        </button>
-      </div>
+      )}
     </div>
   );
 }
 
 export default function Contacts() {
-  const [contacts, setContacts]       = useState([]);
-  const [loading, setLoading]         = useState(true);
-  const [showForm, setShowForm]       = useState(false);
-  const [editContact, setEditContact] = useState(null);
-  const [search, setSearch]           = useState('');
-  const [filterCountry, setFilterCountry]       = useState('All');
-  const [filterSpeciality, setFilterSpeciality] = useState('All');
-  const [filterStatus, setFilterStatus]         = useState('All');
-  const [seeded, setSeeded]           = useState(false);
+  const [contacts,  setContacts]  = useState([]);
+  const [suppliers, setSuppliers] = useState([]);
+  const [loading,   setLoading]   = useState(true);
+  const [error,     setError]     = useState(null);
+  const [search,    setSearch]    = useState('');
+  const [specFilter, setSpecFilter] = useState('All');
+  const [countryFilter, setCountryFilter] = useState('All');
+  const [statusFilter,  setStatusFilter]  = useState('All');
+  const [showForm,  setShowForm]  = useState(false);
+  const [editingId, setEditingId] = useState(null);
+  const [form,      setForm]      = useState(EMPTY_FORM);
+  const [saving,    setSaving]    = useState(false);
 
-  useEffect(() => { loadContacts(); }, []);
+  useEffect(() => {
+    load();
+  }, []);
 
-  async function loadContacts() {
-    setLoading(true);
+  async function load() {
     try {
-      const data = await fetchCollection('contacts');
-      // Normalise specialities — REST API adds as string, form expects array
-      data.forEach(c => {
-        if (typeof c.specialities === 'string') {
-          c.specialities = c.specialities ? [c.specialities] : [];
-        } else if (!Array.isArray(c.specialities)) {
-          c.specialities = [];
-        }
-      });
-      if (data.length === 0 && !seeded) {
-        // Seed initial contacts
-        for (const c of SEED_CONTACTS) {
-          await addDocument('contacts', c);
-        }
-        setSeeded(true);
-        const fresh = await fetchCollection('contacts');
-        setContacts(fresh);
-      } else {
-        setContacts(data);
-      }
-    } catch (e) {
-      console.error('Failed to load contacts:', e);
+      const [c, s] = await Promise.all([
+        fetchTable('contacts', { order: 'updated_at', asc: false }),
+        fetchTable('suppliers', { order: 'name', asc: true }),
+      ]);
+      setContacts(c);
+      setSuppliers(s);
+    } catch(e) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
-  }
-
-  async function handleSave(form) {
-    if (editContact?.id) {
-      await updateDocument('contacts', editContact.id, form);
-    } else {
-      await addDocument('contacts', form);
-    }
-    setShowForm(false);
-    setEditContact(null);
-    await loadContacts();
-  }
-
-  function handleEdit(contact) {
-    setEditContact(contact);
-    setShowForm(true);
   }
 
   const filtered = contacts.filter(c => {
-    if (filterCountry !== 'All' && c.country !== filterCountry) return false;
-    if (filterStatus !== 'All' && (c.status || 'Active') !== filterStatus) return false;
-    if (filterSpeciality !== 'All') {
-      if (!c.specialities || !c.specialities.includes(filterSpeciality)) return false;
-    }
-    if (search) {
-      const q = search.toLowerCase();
-      const hay = ((c.name||'') + ' ' + (c.company||'') + ' ' + (c.title||'') + ' ' +
-        (c.notes||'') + ' ' + (c.specialities||[]).join(' ')).toLowerCase();
-      if (!hay.includes(q)) return false;
-    }
+    const specs = typeof c.specialities === 'string' ? JSON.parse(c.specialities) : (c.specialities || []);
+    if (search && !c.name.toLowerCase().includes(search.toLowerCase()) &&
+        !(c.company || '').toLowerCase().includes(search.toLowerCase())) return false;
+    if (specFilter !== 'All' && !specs.includes(specFilter)) return false;
+    if (countryFilter !== 'All' && c.country !== countryFilter) return false;
+    if (statusFilter  !== 'All' && c.status  !== statusFilter)  return false;
     return true;
-  }).sort((a, b) => {
-    const order = { Active: 0, Warm: 1, Cold: 2, 'No Fit': 3 };
-    return (order[a.status]||1) - (order[b.status]||1);
   });
 
-  // Status summary counts
-  const statusCounts = Object.keys(STATUS_COLOR).reduce((acc, st) => {
-    acc[st] = contacts.filter(c => (c.status || 'Active') === st).length;
-    return acc;
-  }, {});
+  function startEdit(contact) {
+    const specs = typeof contact.specialities === 'string' ? JSON.parse(contact.specialities) : (contact.specialities || []);
+    setForm({ ...EMPTY_FORM, ...contact, specialities: specs });
+    setEditingId(contact.id);
+    setShowForm(true);
+  }
 
-  const selectStyle = {
-    background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 4,
-    color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: 12,
-    padding: '6px 10px', cursor: 'pointer',
+  function startNew() {
+    setForm(EMPTY_FORM);
+    setEditingId(null);
+    setShowForm(true);
+  }
+
+  async function handleSave() {
+    setSaving(true);
+    try {
+      const payload = { ...form, specialities: JSON.stringify(form.specialities) };
+      if (editingId) {
+        await updateRow('contacts', editingId, payload);
+      } else {
+        await insertRow('contacts', payload);
+      }
+      await load();
+      setShowForm(false);
+      setForm(EMPTY_FORM);
+      setEditingId(null);
+    } catch(e) {
+      alert('Save failed: ' + e.message);
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function handleDelete(id) {
+    if (!window.confirm('Delete this contact?')) return;
+    try {
+      await deleteRow('contacts', id);
+      setContacts(prev => prev.filter(c => c.id !== id));
+    } catch(e) {
+      alert('Delete failed: ' + e.message);
+    }
+  }
+
+  const selStyle = (val, cur) => ({
+    background: val === cur ? 'var(--bg-hover)' : 'none',
+    border: '1px solid ' + (val === cur ? 'var(--border-bright)' : 'var(--border)'),
+    borderRadius: 4, padding: '4px 10px', cursor: 'pointer',
+    color: val === cur ? 'var(--text-primary)' : 'var(--text-muted)',
+    fontFamily: 'var(--font-mono)', fontSize: 11, whiteSpace: 'nowrap',
+  });
+
+  const inputStyle = {
+    width: '100%', background: 'var(--bg-card)', border: '1px solid var(--border)',
+    borderRadius: 4, padding: '6px 10px', color: 'var(--text-primary)',
+    fontFamily: 'var(--font-mono)', fontSize: 12, boxSizing: 'border-box',
   };
-  const labelStyle = {
-    fontSize: 10, fontFamily: 'var(--font-mono)', color: 'var(--text-muted)',
-    letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 4, display: 'block',
-  };
+
+  if (loading) return <div style={{ padding: 40, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>Loading contacts...</div>;
+  if (error)   return <div style={{ padding: 40, color: '#e74c3c', fontFamily: 'var(--font-mono)' }}>Error: {error}</div>;
 
   return (
     <div>
-      {/* Status summary bar */}
-      <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
-        {Object.entries(STATUS_COLOR).map(([st, color]) => {
-          const isActive = filterStatus === st;
-          return (
-            <div key={st} onClick={() => setFilterStatus(filterStatus === st ? 'All' : st)}
-              className="card" style={{ padding: '8px 14px', cursor: 'pointer',
-                flex: '1 1 auto', textAlign: 'center',
-                borderColor: isActive ? color : color + '30',
-                background: isActive ? color + '12' : undefined }}>
-              <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700,
-                fontSize: 22, color }}>{statusCounts[st] || 0}</div>
-              <div style={{ fontSize: 10, fontFamily: 'var(--font-mono)',
-                color: 'var(--text-muted)', marginTop: 2 }}>{st.toUpperCase()}</div>
-            </div>
-          );
-        })}
-        <div className="card" style={{ padding: '8px 14px', textAlign: 'center', flex: '1 1 auto' }}>
-          <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700,
-            fontSize: 22, color: 'var(--text-primary)' }}>{contacts.length}</div>
-          <div style={{ fontSize: 10, fontFamily: 'var(--font-mono)',
-            color: 'var(--text-muted)', marginTop: 2 }}>TOTAL</div>
-        </div>
-      </div>
-
-      {/* Form — for new contacts only (no editContact) */}
-      {showForm && !editContact && (
-        <ContactForm
-          initial={null}
-          onSave={handleSave}
-          onCancel={() => { setShowForm(false); setEditContact(null); }}
-        />
-      )}
-
-      {/* Filters + Add button */}
-      <div style={{ display: 'flex', gap: 8, marginBottom: 16, alignItems: 'flex-end', flexWrap: 'wrap' }}>
-        <div style={{ flex: 2, minWidth: 160 }}>
-          <span style={labelStyle}>Search</span>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', flex: 1 }}>
           <input value={search} onChange={e => setSearch(e.target.value)}
-            placeholder="Name, company, product..."
-            style={{ ...selectStyle, width: '100%' }} />
-        </div>
-        <div>
-          <span style={labelStyle}>Country</span>
-          <select value={filterCountry} onChange={e => setFilterCountry(e.target.value)} style={selectStyle}>
-            {COUNTRIES.map(c => <option key={c}>{c}</option>)}
+            placeholder="Search contacts..."
+            style={{ ...inputStyle, flex: 1, minWidth: 180, width: 'auto' }} />
+          <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)} style={inputStyle}>
+            <option value="All">Status: All</option>
+            {['Active', 'Warm', 'Qualified', 'Cold', 'No Fit'].map(s => <option key={s} value={s}>{s}</option>)}
+          </select>
+          <select value={countryFilter} onChange={e => setCountryFilter(e.target.value)} style={inputStyle}>
+            <option value="All">Country: All</option>
+            {COUNTRIES.filter(c => c !== 'All').map(c => <option key={c} value={c}>{c}</option>)}
           </select>
         </div>
-        <div>
-          <span style={labelStyle}>Speciality</span>
-          <select value={filterSpeciality} onChange={e => setFilterSpeciality(e.target.value)} style={selectStyle}>
-            {SPECIALITIES.map(s => <option key={s}>{s}</option>)}
-          </select>
-        </div>
-        <div>
-          <span style={labelStyle}>Status</span>
-          <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} style={selectStyle}>
-            <option>All</option>
-            {Object.keys(STATUS_COLOR).map(s => <option key={s}>{s}</option>)}
-          </select>
-        </div>
-        {!showForm && (
-          <button onClick={() => { setEditContact(null); setShowForm(true); }}
-            style={{ background: '#3b82f6', border: 'none', borderRadius: 4,
-              color: '#fff', fontFamily: 'var(--font-mono)', fontSize: 12,
-              padding: '8px 16px', cursor: 'pointer', alignSelf: 'flex-end' }}>
-            + Add Contact
-          </button>
-        )}
+        <button onClick={startNew}
+          style={{ marginLeft: 12, background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.3)',
+            borderRadius: 4, padding: '7px 16px', cursor: 'pointer', fontSize: 12,
+            color: '#3b82f6', fontFamily: 'var(--font-mono)', whiteSpace: 'nowrap' }}>
+          + New Contact
+        </button>
       </div>
 
-      <div style={{ marginBottom: 12, fontSize: 12, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-        {filtered.length} of {contacts.length} contacts
+      <div style={{ marginBottom: 16 }}>
+        <select value={specFilter} onChange={e => setSpecFilter(e.target.value)}
+          style={{ ...inputStyle, width: 'auto', minWidth: 220 }}>
+          {SPECIALITIES.map(s => <option key={s} value={s}>{s === 'All' ? 'Speciality: All' : s}</option>)}
+        </select>
       </div>
 
-      {loading ? (
-        <div style={{ textAlign: 'center', padding: 40, color: 'var(--text-muted)',
-          fontFamily: 'var(--font-mono)', fontSize: 12 }}>Loading contacts...</div>
-      ) : filtered.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: 40, color: 'var(--text-muted)',
-          fontFamily: 'var(--font-mono)', fontSize: 12 }}>No contacts match your filters</div>
-      ) : (
-        <div className="card-grid card-grid--2">
-          {filtered.map(c => (
-            <React.Fragment key={c.id}>
-              {showForm && editContact?.id === c.id && (
-                <div style={{ gridColumn: '1 / -1' }}>
-                  <ContactForm
-                    initial={editContact}
-                    onSave={handleSave}
-                    onCancel={() => { setShowForm(false); setEditContact(null); }}
-                  />
-                </div>
-              )}
-              <ContactCard contact={c} onEdit={handleEdit} />
-            </React.Fragment>
-          ))}
+      {showForm && (
+        <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border-bright)',
+          borderRadius: 6, padding: 20, marginBottom: 20 }}>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: 13, fontWeight: 600,
+            color: 'var(--text-primary)', marginBottom: 16 }}>
+            {editingId ? 'Edit Contact' : 'New Contact'}
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+            {[['name','Name *'],['title','Title'],['country','Country'],
+              ['email','Email'],['phone','Phone'],['whatsapp','WhatsApp'],['contact_method','Contact Method'],
+              ['last_contacted','Last Contacted (YYYY-MM-DD)'],['next_action_date','Next Action Date']].map(([k, label]) => (
+              <div key={k}>
+                <div style={{ fontSize: 10, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginBottom: 3 }}>{label}</div>
+                <input value={form[k] || ''} onChange={e => setForm(f => ({...f, [k]: e.target.value}))} style={inputStyle} />
+              </div>
+            ))}
+            <div>
+              <div style={{ fontSize: 10, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginBottom: 3 }}>Status</div>
+              <select value={form.status} onChange={e => setForm(f => ({...f, status: e.target.value}))} style={inputStyle}>
+                {['Active','Warm','Qualified','Cold','No Fit'].map(s => <option key={s}>{s}</option>)}
+              </select>
+            </div>
+            <div>
+              <div style={{ fontSize: 10, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginBottom: 3 }}>Supplier</div>
+              <select value={form.supplier_id || ''} onChange={e => {
+                const sup = suppliers.find(s => s.id === e.target.value);
+                setForm(f => ({...f, supplier_id: e.target.value, company: sup ? sup.name : f.company }));
+              }} style={inputStyle}>
+                <option value="">— None —</option>
+                {suppliers.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
+              </select>
+            </div>
+          </div>
+          <div style={{ marginTop: 10 }}>
+            <div style={{ fontSize: 10, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginBottom: 3 }}>Notes</div>
+            <textarea value={form.notes || ''} onChange={e => setForm(f => ({...f, notes: e.target.value}))}
+              rows={3} style={{ ...inputStyle, resize: 'vertical' }} />
+          </div>
+          <div style={{ marginTop: 10 }}>
+            <div style={{ fontSize: 10, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginBottom: 3 }}>Next Action</div>
+            <textarea value={form.next_action || ''} onChange={e => setForm(f => ({...f, next_action: e.target.value}))}
+              rows={2} style={{ ...inputStyle, resize: 'vertical' }} />
+          </div>
+          <div style={{ marginTop: 10 }}>
+            <div style={{ fontSize: 10, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginBottom: 6 }}>Specialities</div>
+            <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginBottom: 6 }}>
+              {form.specialities.map(s => <Tag key={s} label={s} onRemove={() => setForm(f => ({...f, specialities: f.specialities.filter(x => x !== s)}))} />)}
+            </div>
+            <select onChange={e => { const v = e.target.value; if (v && !form.specialities.includes(v)) setForm(f => ({...f, specialities: [...f.specialities, v]})); e.target.value=''; }} style={inputStyle}>
+              <option value="">+ Add speciality</option>
+              {SPECIALITIES.filter(s => s !== 'All' && !form.specialities.includes(s)).map(s => <option key={s}>{s}</option>)}
+            </select>
+          </div>
+          <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
+            <button onClick={handleSave} disabled={saving}
+              style={{ background: 'rgba(46,204,113,0.1)', border: '1px solid rgba(46,204,113,0.3)',
+                borderRadius: 4, padding: '7px 20px', cursor: 'pointer', fontSize: 12,
+                color: '#2ecc71', fontFamily: 'var(--font-mono)' }}>
+              {saving ? 'Saving...' : editingId ? 'Update' : 'Save'}
+            </button>
+            <button onClick={() => { setShowForm(false); setForm(EMPTY_FORM); setEditingId(null); }}
+              style={{ background: 'none', border: '1px solid var(--border)', borderRadius: 4,
+                padding: '7px 20px', cursor: 'pointer', fontSize: 12,
+                color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>Cancel</button>
+          </div>
         </div>
       )}
+
+      <div style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginBottom: 12 }}>
+        {filtered.length} contacts
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(380px, 1fr))', gap: 12 }}>
+        {filtered.map(c => (
+          <ContactCard key={c.id} contact={c} onEdit={startEdit} onDelete={handleDelete} />
+        ))}
+      </div>
     </div>
   );
 }
